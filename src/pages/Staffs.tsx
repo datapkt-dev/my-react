@@ -1,28 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { fetchStaffList } from '../api/staffApi';
 
 // ==========================================
 // Types & Interfaces
 // ==========================================
 
 interface AdminUser {
-  id: string; // 帳號
+  numericId: number; // 原始 id，供 React key 使用
+  id: string; // 帳號 (staff_no)
   name: string; // 姓名
   phone: string; // 手機
   email: string; // 信箱
 }
-
-// ==========================================
-// Mock Data
-// ==========================================
-
-const initialAdmins: AdminUser[] = [
-  { id: 'nexylt123', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
-  { id: 'nexylt124', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
-  { id: 'nexylt125', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
-  { id: 'nexylt126', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
-  { id: 'nexylt127', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
-  { id: 'nexylt128', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
-];
 
 // ==========================================
 // Reusable Components
@@ -138,8 +127,29 @@ const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boo
 // ==========================================
 
 const Staffs: React.FC = () => {
-  const [admins] = useState<AdminUser[]>(initialAdmins);
+  const [admins, setAdmins] = useState<AdminUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [total, setTotal] = useState(0);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchStaffList()
+      .then((res) => {
+        const mapped = res.data.items.map((s) => ({
+          numericId: s.id,
+          id: s.staff_no,
+          name: s.name,
+          phone: s.phone,
+          email: s.email,
+        }));
+        setAdmins(mapped);
+        setTotal(res.data.total);
+      })
+      .catch((err: unknown) => setError(err instanceof Error ? err.message : String(err)))
+      .finally(() => setLoading(false));
+  }, []);
 
   // 處理開啟哪一個選單
   const handleToggleMenu = (id: string) => {
@@ -160,7 +170,7 @@ const Staffs: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 48, marginBottom: 10 }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
           <h1 style={{ color: '#454545', fontSize: 24, fontWeight: '500', margin: 0, letterSpacing: 0.3 }}>管理員列表</h1>
-          <span style={{ color: '#888888', fontSize: 16, letterSpacing: 1 }}>({admins.length})</span>
+          <span style={{ color: '#888888', fontSize: 16, letterSpacing: 1 }}>({total})</span>
         </div>
         
         {/* 新增按鈕 */}
@@ -209,9 +219,15 @@ const Staffs: React.FC = () => {
 
         {/* 資料列 (Table Body) */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {admins.map((admin, index) => (
+          {loading && (
+            <div style={{ padding: '20px 10px', color: '#888888', fontSize: 14, letterSpacing: 1 }}>載入中...</div>
+          )}
+          {!loading && error && (
+            <div style={{ padding: '20px 10px', color: '#FF4444', fontSize: 14, letterSpacing: 1 }}>{error}</div>
+          )}
+          {!loading && !error && admins.map((admin, index) => (
             <AdminTableRow 
-              key={admin.id} 
+              key={admin.numericId} 
               admin={admin} 
               index={index}
               isMenuOpen={openDropdownId === admin.id}
