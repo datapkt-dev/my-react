@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { fetchStaffList } from '../api/staffApi';
+import AddStaffModal from '../components/AddStaffModal';
 
 // ==========================================
 // Types & Interfaces
@@ -132,6 +133,7 @@ const Staffs: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     const projectId = Number(localStorage.getItem('project_id')) || 1;
@@ -182,6 +184,7 @@ const Staffs: React.FC = () => {
         
         {/* 新增按鈕 */}
         <button
+          onClick={() => setIsAddModalOpen(true)}
           style={{
             height: 40,
             minWidth: 88,
@@ -245,6 +248,15 @@ const Staffs: React.FC = () => {
         </div>
         
       </div>
+
+      <AddStaffModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={(data) => {
+          console.log('新增員工資料：', data);
+          setIsAddModalOpen(false);
+        }}
+      />
 
     </div>
   );
