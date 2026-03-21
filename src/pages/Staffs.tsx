@@ -86,7 +86,6 @@ const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boo
   const [isHovered, setIsHovered] = useState(false);
   const zebraColor = index % 2 === 0 ? 'white' : '#F5F5F5';
   const backgroundColor = isHovered ? '#E0E0E0' : zebraColor;
-  const borderBottom = index % 2 === 0 ? '1px solid #E5E7EB' : 'none';
 
   return (
     <div
@@ -98,7 +97,6 @@ const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boo
         padding: '0 10px',
         height: 56,
         background: backgroundColor,
-        borderBottom: borderBottom,
       }}
     >
       <div style={{ width: 160, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.id}</div>
