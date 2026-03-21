@@ -84,7 +84,7 @@ const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
  */
 const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ admin, index, isMenuOpen, toggleMenu, closeMenu }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const zebraColor = index % 2 === 0 ? '#F9F9F9' : '#EBEBEB';
+  const zebraColor = index % 2 === 0 ? 'white' : '#F5F5F5';
   const backgroundColor = isHovered ? '#E0E0E0' : zebraColor;
 
   return (
