@@ -1,0 +1,227 @@
+import React, { useState, useRef, useEffect } from 'react';
+
+// ==========================================
+// Types & Interfaces
+// ==========================================
+
+interface AdminUser {
+  id: string; // 帳號
+  name: string; // 姓名
+  phone: string; // 手機
+  email: string; // 信箱
+}
+
+// ==========================================
+// Mock Data
+// ==========================================
+
+const initialAdmins: AdminUser[] = [
+  { id: 'nexylt123', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
+  { id: 'nexylt124', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
+  { id: 'nexylt125', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
+  { id: 'nexylt126', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
+  { id: 'nexylt127', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
+  { id: 'nexylt128', name: 'Tom', phone: '+886922123345', email: 'nexly123@gmail.com' },
+];
+
+// ==========================================
+// Reusable Components
+// ==========================================
+
+/**
+ * 操作下拉選單 Component
+ */
+const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 點擊外面關閉選單的邏輯
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      ref={dropdownRef}
+      style={{
+        width: 200,
+        padding: 10,
+        position: 'absolute',
+        right: 0,
+        top: 36, // 讓選單長在三個點點的下方
+        background: 'white',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.10)',
+        borderRadius: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 100, // 確保選單不會被下方的表格列蓋住
+      }}
+    >
+      <div style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#333333', fontSize: 14 }}>
+        查看
+      </div>
+      <div style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#333333', fontSize: 14 }}>
+        編輯
+      </div>
+      <div style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#FF4444', fontSize: 14 }}>
+        刪除
+      </div>
+    </div>
+  );
+};
+
+/**
+ * 表格的單一資料列 (Row)
+ */
+const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ admin, index, isMenuOpen, toggleMenu, closeMenu }) => {
+  // 實作斑馬紋：根據 Figma 設計，偶數列為 #F9F9F9，奇數列為 #EBEBEB
+  const backgroundColor = index % 2 === 0 ? '#F9F9F9' : '#EBEBEB';
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 10px',
+        height: 56,
+        background: backgroundColor,
+      }}
+    >
+      <div style={{ width: 160, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.id}</div>
+      <div style={{ width: 100, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.name}</div>
+      <div style={{ width: 160, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.phone}</div>
+      <div style={{ flex: 1, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.email}</div>
+      
+      {/* 操作欄位 (包含按鈕與下拉選單) */}
+      <div style={{ width: 46, padding: '0 10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+        <button
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 4,
+            display: 'flex',
+            gap: 3,
+            alignItems: 'center',
+          }}
+          onClick={(e) => {
+            e.stopPropagation(); // 避免觸發外層的其他點擊事件
+            toggleMenu();
+          }}
+        >
+          <div style={{ width: 3, height: 3, background: '#28303F', borderRadius: '50%' }} />
+          <div style={{ width: 3, height: 3, background: '#28303F', borderRadius: '50%' }} />
+          <div style={{ width: 3, height: 3, background: '#28303F', borderRadius: '50%' }} />
+        </button>
+
+        {/* 呼叫下拉選單 */}
+        <ActionDropdown isOpen={isMenuOpen} onClose={closeMenu} />
+      </div>
+    </div>
+  );
+};
+
+// ==========================================
+// Main Page Component
+// ==========================================
+
+const Staffs: React.FC = () => {
+  const [admins] = useState<AdminUser[]>(initialAdmins);
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+
+  // 處理開啟哪一個選單
+  const handleToggleMenu = (id: string) => {
+    setOpenDropdownId((prev) => (prev === id ? null : id));
+  };
+
+  return (
+    <div style={{ width: '100%', padding: '10px 20px', background: 'white', fontFamily: 'Noto Sans TC, sans-serif' }}>
+      
+      {/* 麵包屑 */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 40 }}>
+        <span style={{ color: '#999999', fontSize: 14 }}>管理員列表</span>
+        <div style={{ width: 4, height: 8, borderTop: '1px solid #333', borderRight: '1px solid #333', transform: 'rotate(45deg)', margin: '0 4px' }} />
+        <span style={{ color: '#333333', fontSize: 14 }}>管理員列表</span>
+      </div>
+
+      {/* 頁面標題與操作區 */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 48, marginBottom: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+          <h1 style={{ color: '#454545', fontSize: 24, fontWeight: '500', margin: 0, letterSpacing: 0.3 }}>管理員列表</h1>
+          <span style={{ color: '#888888', fontSize: 16, letterSpacing: 1 }}>({admins.length})</span>
+        </div>
+        
+        {/* 新增按鈕 */}
+        <button
+          style={{
+            height: 36,
+            minWidth: 88,
+            padding: '0 12px',
+            background: '#1383D3',
+            color: 'white',
+            border: 'none',
+            borderRadius: 4,
+            fontSize: 14,
+            fontWeight: '500',
+            cursor: 'pointer',
+            letterSpacing: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          新增
+        </button>
+      </div>
+
+      {/* 資料列表區塊 (移除外層多餘的包裝與陰影，直接貼齊白底) */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        
+        {/* 表頭 (Table Header) */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 10px',
+            height: 52,
+            background: 'white',
+            borderBottom: '1px solid #DEE2E6',
+          }}
+        >
+          <div style={{ width: 160, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>帳號</div>
+          <div style={{ width: 100, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>姓名</div>
+          <div style={{ width: 160, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>手機</div>
+          <div style={{ flex: 1, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>信箱</div>
+          <div style={{ width: 46, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1, textAlign: 'center' }}>操作</div>
+        </div>
+
+        {/* 資料列 (Table Body) */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {admins.map((admin, index) => (
+            <AdminTableRow 
+              key={admin.id} 
+              admin={admin} 
+              index={index} 
+              isMenuOpen={openDropdownId === admin.id}
+              toggleMenu={() => handleToggleMenu(admin.id)}
+              closeMenu={() => setOpenDropdownId(null)}
+            />
+          ))}
+        </div>
+        
+      </div>
+
+    </div>
+  );
+};
+
+export default Staffs;
