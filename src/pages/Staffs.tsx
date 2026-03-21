@@ -82,18 +82,21 @@ const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 /**
  * 表格的單一資料列 (Row)
  */
-const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ admin, index, isMenuOpen, toggleMenu, closeMenu }) => {
-  // 實作斑馬紋：根據 Figma 設計，偶數列為 #F9F9F9，奇數列為 #EBEBEB
-  const backgroundColor = index % 2 === 0 ? '#F9F9F9' : '#EBEBEB';
+const AdminTableRow: React.FC<{ admin: AdminUser; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ admin, isMenuOpen, toggleMenu, closeMenu }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const backgroundColor = isHovered ? '#F5F5F5' : 'transparent';
 
   return (
     <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         display: 'flex',
         alignItems: 'center',
         padding: '0 10px',
         height: 56,
         background: backgroundColor,
+        borderBottom: '1px solid #E5E7EB',
       }}
     >
       <div style={{ width: 160, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.id}</div>
@@ -144,7 +147,7 @@ const Staffs: React.FC = () => {
   };
 
   return (
-    <div style={{ width: '100%', padding: '10px 20px', background: 'white', fontFamily: 'Noto Sans TC, sans-serif' }}>
+    <div style={{ width: '100%', padding: '20px 28px', background: 'white', fontFamily: 'Noto Sans TC, sans-serif' }}>
       
       {/* 麵包屑 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 40 }}>
@@ -163,13 +166,13 @@ const Staffs: React.FC = () => {
         {/* 新增按鈕 */}
         <button
           style={{
-            height: 36,
+            height: 40,
             minWidth: 88,
             padding: '0 12px',
             background: '#1383D3',
             color: 'white',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: 8,
             fontSize: 14,
             fontWeight: '500',
             cursor: 'pointer',
@@ -206,11 +209,10 @@ const Staffs: React.FC = () => {
 
         {/* 資料列 (Table Body) */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {admins.map((admin, index) => (
+          {admins.map((admin) => (
             <AdminTableRow 
               key={admin.id} 
               admin={admin} 
-              index={index} 
               isMenuOpen={openDropdownId === admin.id}
               toggleMenu={() => handleToggleMenu(admin.id)}
               closeMenu={() => setOpenDropdownId(null)}
