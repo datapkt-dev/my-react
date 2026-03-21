@@ -82,9 +82,10 @@ const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 /**
  * 表格的單一資料列 (Row)
  */
-const AdminTableRow: React.FC<{ admin: AdminUser; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ admin, isMenuOpen, toggleMenu, closeMenu }) => {
+const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ admin, index, isMenuOpen, toggleMenu, closeMenu }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const backgroundColor = isHovered ? '#F5F5F5' : 'transparent';
+  const zebraColor = index % 2 === 0 ? '#F9F9F9' : '#EBEBEB';
+  const backgroundColor = isHovered ? '#E0E0E0' : zebraColor;
 
   return (
     <div
@@ -209,10 +210,11 @@ const Staffs: React.FC = () => {
 
         {/* 資料列 (Table Body) */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {admins.map((admin) => (
+          {admins.map((admin, index) => (
             <AdminTableRow 
               key={admin.id} 
               admin={admin} 
+              index={index}
               isMenuOpen={openDropdownId === admin.id}
               toggleMenu={() => handleToggleMenu(admin.id)}
               closeMenu={() => setOpenDropdownId(null)}

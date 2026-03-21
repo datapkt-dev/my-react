@@ -201,7 +201,7 @@ const Layout: React.FC = () => {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
-      <main style={{ flex: 1, background: '#f1f5f9', minHeight: '100vh' }}>
+      <main style={{ flex: 1, background: 'white', minHeight: '100vh' }}>
         <TopNavbar user={{ name: 'Admin' }} hasUnreadNotification />
         <div className="page-content">
           <Outlet />
