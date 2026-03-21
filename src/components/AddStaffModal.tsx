@@ -3,20 +3,22 @@ import React, { useState, useEffect } from 'react';
 interface AddStaffModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { name: string; staff_no: string; email: string }) => void;
+  onSubmit: (data: { name: string; staff_no: string; email: string; phone: string }) => void;
 }
 
 const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [name, setName] = useState('');
   const [staffNo, setStaffNo] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState<{ name?: string; staff_no?: string; email?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; staff_no?: string; email?: string; phone?: string }>({});
 
   // 關閉時重置表單
   useEffect(() => {
     if (!isOpen) {
-      setName('');
       setStaffNo('');
+      setName('');
+      setPhone('');
       setEmail('');
       setErrors({});
     }
@@ -27,9 +29,10 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const validate = () => {
-    const newErrors: { name?: string; staff_no?: string; email?: string } = {};
-    if (!name.trim()) newErrors.name = '姓名不能為空';
+    const newErrors: { name?: string; staff_no?: string; email?: string; phone?: string } = {};
     if (!staffNo.trim()) newErrors.staff_no = '帳號不能為空';
+    if (!name.trim()) newErrors.name = '姓名不能為空';
+    if (!phone.trim()) newErrors.phone = '手機不能為空';
     if (!email.trim()) {
       newErrors.email = 'Email 不能為空';
     } else if (!emailRegex.test(email.trim())) {
@@ -44,37 +47,41 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
       setErrors(newErrors);
       return;
     }
-    onSubmit({ name: name.trim(), staff_no: staffNo.trim(), email: email.trim() });
+    onSubmit({ staff_no: staffNo.trim(), name: name.trim(), phone: phone.trim(), email: email.trim() });
   };
 
   const inputStyle: React.CSSProperties = {
     width: '100%',
-    height: 40,
-    padding: '0 12px',
-    border: '1px solid #DEE2E6',
-    borderRadius: 4,
-    fontSize: 14,
+    height: 48,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
+    border: 'none',
+    borderRadius: 6,
+    outline: '1px solid #DEE2E6',
+    outlineOffset: '-1px',
+    fontSize: 16,
     fontFamily: 'Noto Sans TC, sans-serif',
     color: '#333333',
     boxSizing: 'border-box',
-    outline: 'none',
   };
 
   const labelStyle: React.CSSProperties = {
     display: 'block',
-    marginBottom: 6,
     fontSize: 14,
-    color: '#454545',
-    fontWeight: '500',
-    letterSpacing: 0.5,
+    color: '#333333',
+    fontWeight: '400',
+    lineHeight: '16.80px',
   };
 
   const fieldStyle: React.CSSProperties = {
-    marginBottom: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
   };
 
   const errorStyle: React.CSSProperties = {
-    marginTop: 4,
     fontSize: 12,
     color: '#FF4444',
     letterSpacing: 0.3,
@@ -99,82 +106,98 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
         style={{
           width: 480,
           background: 'white',
-          borderRadius: 8,
-          padding: '28px 32px',
+          borderRadius: 10,
+          padding: 20,
           boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.15)',
         }}
       >
-        {/* 標題 */}
-        <h2 style={{ margin: '0 0 24px 0', fontSize: 18, fontWeight: '600', color: '#333333', letterSpacing: 0.5 }}>
-          新增員工
-        </h2>
-
-        {/* 姓名 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>姓名</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="請輸入姓名"
-            style={inputStyle}
-          />
-          {errors.name && <div style={errorStyle}>{errors.name}</div>}
-        </div>
-
-        {/* 帳號 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>帳號</label>
-          <input
-            type="text"
-            value={staffNo}
-            onChange={(e) => setStaffNo(e.target.value)}
-            placeholder="請輸入帳號"
-            style={inputStyle}
-          />
-          {errors.staff_no && <div style={errorStyle}>{errors.staff_no}</div>}
-        </div>
-
-        {/* Email */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="請輸入 Email"
-            style={inputStyle}
-          />
-          {errors.email && <div style={errorStyle}>{errors.email}</div>}
-        </div>
-
-        {/* 按鈕區 */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 8 }}>
+        {/* 標題列 */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 20 }}>
+          <h2 style={{ margin: 0, fontSize: 24, fontWeight: '500', color: '#333333', letterSpacing: 1 }}>
+            新增管理員
+          </h2>
           <button
             onClick={onClose}
             style={{
-              height: 40,
-              minWidth: 88,
-              padding: '0 16px',
-              background: 'white',
-              color: '#454545',
-              border: '1px solid #DEE2E6',
-              borderRadius: 4,
-              fontSize: 14,
-              fontWeight: '500',
+              width: 24,
+              height: 24,
+              background: 'transparent',
+              border: 'none',
               cursor: 'pointer',
-              letterSpacing: 1,
-              fontFamily: 'Noto Sans TC, sans-serif',
+              color: '#28303F',
+              fontSize: 18,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
             }}
           >
-            取消
+            ×
           </button>
+        </div>
+
+        {/* 欄位區 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {/* 帳號 */}
+          <div style={fieldStyle}>
+            <label style={labelStyle}>帳號</label>
+            <input
+              type="text"
+              value={staffNo}
+              onChange={(e) => setStaffNo(e.target.value)}
+              placeholder="請輸入帳號"
+              style={inputStyle}
+            />
+            {errors.staff_no && <div style={errorStyle}>{errors.staff_no}</div>}
+          </div>
+
+          {/* 姓名 */}
+          <div style={fieldStyle}>
+            <label style={labelStyle}>姓名</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="請輸入姓名"
+              style={inputStyle}
+            />
+            {errors.name && <div style={errorStyle}>{errors.name}</div>}
+          </div>
+
+          {/* 手機 */}
+          <div style={fieldStyle}>
+            <label style={labelStyle}>手機</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="請輸入手機"
+              style={inputStyle}
+            />
+            {errors.phone && <div style={errorStyle}>{errors.phone}</div>}
+          </div>
+
+          {/* 信箱 */}
+          <div style={fieldStyle}>
+            <label style={labelStyle}>信箱</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="請輸入信箱"
+              style={inputStyle}
+            />
+            {errors.email && <div style={errorStyle}>{errors.email}</div>}
+          </div>
+        </div>
+
+        {/* 按鈕區 */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: 20 }}>
           <button
             onClick={handleSubmit}
             style={{
-              height: 40,
-              minWidth: 88,
-              padding: '0 16px',
+              width: 88,
+              height: 36,
               background: '#1383D3',
               color: 'white',
               border: 'none',
@@ -186,7 +209,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
               fontFamily: 'Noto Sans TC, sans-serif',
             }}
           >
-            送出
+            新增
           </button>
         </div>
       </div>
