@@ -252,7 +252,7 @@ const Staffs: React.FC = () => {
       <AddStaffModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSubmit={(data) => {
+        onSubmit={(data: { name: string; staff_no: string; email: string; phone: string }) => {
           console.log('新增員工資料：', data);
           setIsAddModalOpen(false);
         }}
