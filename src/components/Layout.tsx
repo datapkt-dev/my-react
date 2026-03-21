@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { logout } from '../api/authApi';
 import TopNavbar from './TopBar';
 
 
@@ -198,11 +199,23 @@ const Sidebar: React.FC = () => {
 // ==========================================
 
 const Layout: React.FC = () => {
+  const navigate = useNavigate();
+
+  // 從 localStorage 讀取登入者名稱
+  const staffRaw = localStorage.getItem('staff');
+  const staff = staffRaw ? JSON.parse(staffRaw) : null;
+  const userName = staff?.name || 'Admin';
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
       <main style={{ flex: 1, background: 'white', minHeight: '100vh' }}>
-        <TopNavbar user={{ name: 'Admin' }} hasUnreadNotification />
+        <TopNavbar user={{ name: userName }} hasUnreadNotification onLogout={handleLogout} />
         <div className="page-content">
           <Outlet />
         </div>

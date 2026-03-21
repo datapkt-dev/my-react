@@ -134,8 +134,15 @@ const Staffs: React.FC = () => {
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   useEffect(() => {
+    const projectId = Number(localStorage.getItem('project_id')) || 1;
+    if (!projectId) {
+      setError('無法取得專案 ID，請重新登入');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    fetchStaffList()
+    fetchStaffList(projectId)
       .then((res) => {
         const mapped = res.data.items.map((s) => ({
           numericId: s.id,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 // ==========================================
 // Types & Interfaces
@@ -12,6 +12,7 @@ interface UserProfile {
 interface TopNavbarProps {
   user: UserProfile;
   hasUnreadNotification?: boolean; // 控制通知鈴鐺上的紅點
+  onLogout?: () => void; // 登出回呼
 }
 
 // ==========================================
@@ -71,9 +72,27 @@ const NotificationButton: React.FC<{ hasUnread?: boolean }> = ({ hasUnread }) =>
 /**
  * 使用者資訊區塊 Component
  */
-const UserProfileMenu: React.FC<{ user: UserProfile }> = ({ user }) => {
+const UserProfileMenu: React.FC<{ user: UserProfile; onLogout?: () => void }> = ({ user, onLogout }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // 點擊外部關閉下拉選單
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
   return (
+    <div ref={menuRef} style={{ position: 'relative' }}>
     <div
+      onClick={() => setIsOpen((prev) => !prev)}
       style={{
         height: 44,
         paddingLeft: 10,
@@ -149,6 +168,46 @@ const UserProfileMenu: React.FC<{ user: UserProfile }> = ({ user }) => {
         />
       </div>
     </div>
+
+      {/* 下拉選單 */}
+      {isOpen && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 50,
+            right: 0,
+            width: 160,
+            background: 'white',
+            boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.12)',
+            borderRadius: 10,
+            padding: 6,
+            zIndex: 200,
+          }}
+        >
+          <div
+            onClick={() => {
+              setIsOpen(false);
+              onLogout?.();
+            }}
+            style={{
+              padding: '10px 14px',
+              fontSize: 14,
+              fontFamily: 'Noto Sans TC, sans-serif',
+              color: '#FF4444',
+              cursor: 'pointer',
+              borderRadius: 6,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#FFF5F5')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+          >
+            🚪 登出
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -156,7 +215,7 @@ const UserProfileMenu: React.FC<{ user: UserProfile }> = ({ user }) => {
 // Main TopNavbar Component
 // ==========================================
 
-const TopNavbar: React.FC<TopNavbarProps> = ({ user, hasUnreadNotification = false }) => {
+const TopNavbar: React.FC<TopNavbarProps> = ({ user, hasUnreadNotification = false, onLogout }) => {
   return (
     <div
       style={{
@@ -181,7 +240,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ user, hasUnreadNotification = fal
         }}
       >
         <NotificationButton hasUnread={hasUnreadNotification} />
-        <UserProfileMenu user={user} />
+        <UserProfileMenu user={user} onLogout={onLogout} />
       </div>
     </div>
   );
