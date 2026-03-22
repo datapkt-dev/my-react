@@ -3,6 +3,12 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { logout } from '../api/authApi';
 import TopNavbar from './TopBar';
 
+import HeaderPic from '../assets/HeaderPic.png'
+import DashboardPic from '../assets/dashboard.png'
+import UserPic from '../assets/users.png'
+import AdminPic from '../assets/admin_management.png'
+import SettingPic from '../assets/settings.png'
+
 
 // ==========================================
 // Types & Interfaces
@@ -16,6 +22,7 @@ interface MenuItemProps {
   hasSubItems?: boolean;
   // 未來你可以傳入真正的 SVG 或 React Icon 組件
   iconPlaceholder?: React.ReactNode; 
+  iconUrl?: string;
 }
 
 // ==========================================
@@ -31,7 +38,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
   end = false,
   isSubItem = false, 
   hasSubItems = false,
-  iconPlaceholder 
+  iconPlaceholder,
+  iconUrl
 }) => {
   return (
     <NavLink
@@ -65,8 +73,19 @@ const MenuItem: React.FC<MenuItemProps> = ({
                 alignItems: 'center' 
               }}
             >
-              {iconPlaceholder || (
-                // 預設的 Icon 佔位符 (簡單的方框)
+              {iconUrl ? (
+                <img 
+                  src={iconUrl} 
+                  alt={label} 
+                  style={{ 
+                    width: 18, 
+                    height: 18, 
+                    objectFit: 'contain',
+                    // 如果 PNG 是純黑色，想在選中時變色，可以用 filter (稍微進階的技巧)
+                    filter: isActive ? 'invert(38%) sepia(91%) saturate(1353%) hue-rotate(182deg) brightness(91%) contrast(92%)' : 'none'
+                  }} 
+                />
+              ) : (
                 <div style={{ width: 14, height: 14, border: `1.5px solid ${isActive ? '#1383D3' : '#28303F'}` }} />
               )}
             </div>
@@ -154,7 +173,7 @@ const Sidebar: React.FC = () => {
           gap: 16,
         }}
       >
-        <img style={{ width: 112.65, height: 32 }} src="https://placehold.co/113x32" alt="Logo" />
+        <img style={{ width: 112.65, height: 32,  objectFit:'cover'}} src={HeaderPic} alt="Logo" />
       </div>
 
       {/* 選單列表區域 */}
@@ -169,11 +188,11 @@ const Sidebar: React.FC = () => {
           gap: 8, // Figma 程式碼沒有寫 gap，但我加上 8px 讓項目間有呼吸空間
         }}
       >
-        <MenuItem to="/" label="儀表板" end iconPlaceholder="📊" />
-        <MenuItem to="/users" label="用戶管理" iconPlaceholder="👥" />
-        <MenuItem to="/staffs" label="員工管理" iconPlaceholder="🧑‍💼" />
-        <MenuItem to="/products" label="商品管理" iconPlaceholder="📦" />
-        <MenuItem to="/settings" label="系統設定" iconPlaceholder="⚙️" />
+        <MenuItem to="/" label="儀表板" end iconPlaceholder="📊" iconUrl={DashboardPic}/>
+        <MenuItem to="/users" label="用戶管理" iconPlaceholder="👥" iconUrl={UserPic} hasSubItems={true} />
+        <MenuItem to="/staffs" label="員工管理" iconPlaceholder="🧑‍💼" iconUrl={AdminPic}/>
+        <MenuItem to="/products" label="商品管理" iconPlaceholder="📦" iconUrl={UserPic}/>
+        <MenuItem to="/settings" label="系統設定" iconPlaceholder="⚙️" iconUrl={SettingPic}/>
       </div>
 
       {/* 底部版本號 */}

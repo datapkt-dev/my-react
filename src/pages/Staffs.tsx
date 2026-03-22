@@ -95,7 +95,7 @@ const AdminTableRow: React.FC<{ admin: AdminUser; index: number; isMenuOpen: boo
       <div style={{ flex: 1, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{admin.email}</div>
       
       {/* 操作欄位 (包含按鈕與下拉選單) */}
-      <div style={{ width: 46, padding: '0 10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+      <div style={{ width: 50, padding: '0 10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
         <button
           style={{
             background: 'transparent',
@@ -224,7 +224,7 @@ const Staffs: React.FC = () => {
           <div style={{ width: 100, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>姓名</div>
           <div style={{ width: 160, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>手機</div>
           <div style={{ flex: 1, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>信箱</div>
-          <div style={{ width: 46, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1, textAlign: 'center' }}>操作</div>
+          <div style={{ width: 50, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1, textAlign: 'center' }}>操作</div>
         </div>
 
         {/* 資料列 (Table Body) */}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Notification from '../assets/notification.png'
 
 // ==========================================
 // Types & Interfaces
@@ -48,7 +49,7 @@ const NotificationButton: React.FC<{ hasUnread?: boolean }> = ({ hasUnread }) =>
         }}
       >
         {/* 用簡單的框線暫代鈴鐺 Icon */}
-        <div style={{ width: 14, height: 16, border: '1.5px solid #333', borderRadius: '4px 4px 0 0' }} />
+         <img style={{ width: 20, height: 20, border: '0px solid #333', borderRadius: '4px 4px 0 0' }} src = {Notification}/>
         
         {/* 未讀紅點 (這裡保留 absolute 是合理的，因為它是附屬在 Icon 右上角的角標) */}
         {hasUnread && (
