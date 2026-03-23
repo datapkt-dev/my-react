@@ -1,16 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
-import { fetchUserList, fetchUserDetailList } from '../api/userApi'
+import { fetchUserList } from '../api/userApi'
+import FilterPanel, { type FilterValues } from '../components/FilterPanel'
 
 interface User {
   id: number
   name: string
   email?: string
-  //role: string
-  //status: '啟用' | '停用'
   nationality: string,
   birthday: string,
+  membershipType?: string,
+  isBanned?: boolean,
   joinDate?: string
 }
+
+const DEFAULT_FILTERS: FilterValues = {
+  nationality: '',
+  membershipType: '',
+  bannedStatus: 'all',
+};
 
 
 /**
@@ -113,15 +120,6 @@ const UserTableRow: React.FC<{ user: User; index: number; isMenuOpen: boolean; t
   );
 };
 
-const initialUsers: User[] = [
-  { id: 1, name: '王小明', email: 'wang@example.com', /*role: '管理員', status: '啟用',*/ birthday: '2025-01-15', nationality: 'Taiwan'},
-  { id: 2, name: '李美麗', email: 'li@example.com', /*role: '編輯', status: '啟用',*/ birthday: '2025-02-20', nationality: 'American' },
-  { id: 3, name: '張大偉', email: 'zhang@example.com', /*role: '使用者', status: '停用',*/ birthday: '2025-03-10', nationality: 'Taiwan' },
-  { id: 4, name: '陳怡君', email: 'chen@example.com', /*role: '使用者', status: '啟用',*/ birthday: '2025-04-05', nationality: 'Taiwan' },
-  { id: 5, name: '林志豪', email: 'lin@example.com', /*role: '編輯', status: '啟用',*/ birthday: '2025-05-12', nationality: 'Taiwan' },
-  { id: 6, name: '黃淑芬', email: 'huang@example.com', /*role: '使用者', status: '停用',*/ birthday: '2025-06-18', nationality: 'Taiwan' },
-]
-
 const formatDate = (dateString: string | undefined): string => {
   if (!dateString) return '--'; // 防呆：避免 API 沒給資料時崩潰
   
@@ -137,23 +135,33 @@ const formatDate = (dateString: string | undefined): string => {
 
 const Users:React.FC = () => {
   const [users, setUsers] = useState<User[]>([])
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
-  //const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [pendingFilters, setPendingFilters] = useState<FilterValues>(DEFAULT_FILTERS);
+  const [appliedFilters, setAppliedFilters] = useState<FilterValues>(DEFAULT_FILTERS);
 
   const handleToggleMenu = (id: number) => {
     setOpenDropdownId((prev) => (prev === id ? null : id));
   };
 
-  /*const toggleStatus = (id: number) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === id ? { ...u, status: u.status === '啟用' ? '停用' : '啟用' } : u
-      )
-    )
-  }*/
+  const applyFilters = (list: User[], filters: FilterValues): User[] => {
+    return list.filter((user) => {
+      const matchNationality =
+        filters.nationality === '' ||
+        user.nationality.toLowerCase().includes(filters.nationality.toLowerCase());
+      const matchMembership =
+        filters.membershipType === '' ||
+        (user.membershipType ?? '').toLowerCase().includes(filters.membershipType.toLowerCase());
+      const matchBanned =
+        filters.bannedStatus === 'all' ||
+        (filters.bannedStatus === 'banned' ? user.isBanned === true : user.isBanned !== true);
+      return matchNationality && matchMembership && matchBanned;
+    });
+  };
 
   useEffect(() => {
     const projectId = Number(localStorage.getItem('project_id')) || 1;
@@ -171,13 +179,23 @@ const Users:React.FC = () => {
           name: s.name,
           birthday: s.birthday,
           nationality: s.country,
-          email: s.email
+          email: s.email,
+          membershipType: s.membership_type,
+          isBanned: s.is_banned,
         }));
         setUsers(mapped);
+        setTotal(res.data.total);
+        setFilteredUsers(applyFilters(mapped, DEFAULT_FILTERS));
       })
       .catch((err: unknown) => setError(err instanceof Error ? err.message : String(err)))
       .finally(() => setLoading(false));
   },[])
+
+  const activeFilterCount = [
+    appliedFilters.nationality !== '',
+    appliedFilters.membershipType !== '',
+    appliedFilters.bannedStatus !== 'all',
+  ].filter(Boolean).length;
 
   return (
     <div style={{ width: '100%', padding: '20px 28px', background: 'white', fontFamily: 'Noto Sans TC, sans-serif' }}>
@@ -196,16 +214,19 @@ const Users:React.FC = () => {
           <span style={{ color: '#888888', fontSize: 16, letterSpacing: 1 }}>({total})</span>
         </div>
         
-        {/* 新增按鈕 */}
+        {/* 篩選按鈕 */}
         <button
-          onClick={() => {}}
+          onClick={() => {
+            setPendingFilters(appliedFilters);
+            setIsFilterOpen(true);
+          }}
           style={{
             height: 40,
             minWidth: 88,
             padding: '0 12px',
-            background: '#fff',
-            color: '#333',
-            border: '1px solid #333',
+            background: activeFilterCount > 0 ? '#EBF5FF' : '#fff',
+            color: activeFilterCount > 0 ? '#1383D3' : '#333',
+            border: `1px solid ${activeFilterCount > 0 ? '#1383D3' : '#333'}`,
             borderRadius: 4,
             fontSize: 14,
             fontWeight: '500',
@@ -213,17 +234,36 @@ const Users:React.FC = () => {
             letterSpacing: 1,
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            gap: 6,
           }}
         >
           篩選
+          {activeFilterCount > 0 && (
+            <span
+              style={{
+                background: '#1383D3',
+                color: 'white',
+                borderRadius: '50%',
+                width: 18,
+                height: 18,
+                fontSize: 11,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: '600',
+              }}
+            >
+              {activeFilterCount}
+            </span>
+          )}
         </button>
       </div>
 
-      {/* 資料列表區塊 (移除外層多餘的包裝與陰影，直接貼齊白底) */}
+      {/* 資料列表區塊 */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         
-        {/* 表頭 (Table Header) */}
+        {/* 表頭 */}
         <div
           style={{
             display: 'flex',
@@ -241,7 +281,7 @@ const Users:React.FC = () => {
           <div style={{ width: 50, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1, textAlign: 'center' }}>操作</div>
         </div>
 
-        {/* 資料列 (Table Body) */}
+        {/* 資料列 */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {loading && (
             <div style={{ padding: '20px 10px', color: '#888888', fontSize: 14, letterSpacing: 1 }}>載入中...</div>
@@ -249,7 +289,7 @@ const Users:React.FC = () => {
           {!loading && error && (
             <div style={{ padding: '20px 10px', color: '#FF4444', fontSize: 14, letterSpacing: 1 }}>{error}</div>
           )}
-          {!loading && !error && users?.map((user, index) => (
+          {!loading && !error && filteredUsers?.map((user, index) => (
             <UserTableRow 
               key={user?.id} 
               user={user} 
@@ -263,14 +303,24 @@ const Users:React.FC = () => {
         
       </div>
 
-      {/*<AddStaffModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={(data) => {
-          console.log('新增員工資料：', data);
-          setIsAddModalOpen(false);
+      {/* 篩選面板 */}
+      <FilterPanel
+        isOpen={isFilterOpen}
+        values={pendingFilters}
+        onChange={setPendingFilters}
+        onApply={() => {
+          setAppliedFilters(pendingFilters);
+          setFilteredUsers(applyFilters(users, pendingFilters));
+          setIsFilterOpen(false);
         }}
-        />*/}
+        onReset={() => {
+          setPendingFilters(DEFAULT_FILTERS);
+          setAppliedFilters(DEFAULT_FILTERS);
+          setFilteredUsers(applyFilters(users, DEFAULT_FILTERS));
+          setIsFilterOpen(false);
+        }}
+        onClose={() => setIsFilterOpen(false)}
+      />
     </div>
   );
 }

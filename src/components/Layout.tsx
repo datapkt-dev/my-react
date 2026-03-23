@@ -38,7 +38,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
   end = false,
   isSubItem = false, 
   hasSubItems = false,
-  iconPlaceholder,
   iconUrl
 }) => {
   return (
