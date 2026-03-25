@@ -23,6 +23,7 @@ interface MenuItemProps {
   // 未來你可以傳入真正的 SVG 或 React Icon 組件
   iconPlaceholder?: React.ReactNode; 
   iconUrl?: string;
+  children?: React.ReactNode; 
 }
 
 // ==========================================
@@ -32,106 +33,80 @@ interface MenuItemProps {
 /**
  * 側邊欄單一選單項目 Component（整合 NavLink 路由導航）
  */
-const MenuItem: React.FC<MenuItemProps> = ({ 
+const MenuItem: React.FC<MenuItemProps & { children?: React.ReactNode }> = ({ 
   to,
   label, 
   end = false,
   isSubItem = false, 
   hasSubItems = false,
-  iconUrl
+  iconUrl,
+  children // 接收子項目
 }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleToggle = (e: React.MouseEvent) => {
+    if (hasSubItems) {
+      e.preventDefault(); // 阻止 NavLink 立即跳轉（如果你希望先展開再說）
+      setIsOpen(!isOpen);
+    }
+  };
+
   return (
-    <NavLink
-      to={to}
-      end={end}
-      style={({ isActive }) => ({
-        width: 208,
-        height: 44,
-        paddingLeft: isSubItem ? 48 : 12, // 子項目向右縮排
-        paddingRight: 12,
-        background: isActive ? '#DAF0FF' : 'transparent',
-        borderRadius: 10,
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        gap: 16,
-        cursor: 'pointer',
-        textDecoration: 'none',
-      })}
-    >
-      {({ isActive }) => (
-        <>
-          {/* Icon 區域：如果是子項目則不顯示 Icon */}
-          {!isSubItem && (
-            <div 
-              style={{ 
-                width: 20, 
-                height: 20, 
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'center' 
-              }}
-            >
-              {iconUrl ? (
+    <>
+      <NavLink
+        to={to}
+        end={end}
+        onClick={handleToggle}
+        style={({ isActive }) => ({
+          width: 208,
+          height: 44,
+          paddingLeft: isSubItem ? 48 : 12,
+          background: isActive && !hasSubItems ? '#DAF0FF' : 'transparent',
+          borderRadius: 10,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+          textDecoration: 'none',
+          marginBottom: 4
+        })}
+      >
+        {({ isActive }) => (
+          <>
+            {!isSubItem && (
+              <div style={{ width: 20, height: 20, display: 'flex', justifyContent: 'center' }}>
                 <img 
                   src={iconUrl} 
-                  alt={label} 
                   style={{ 
-                    width: 18, 
-                    height: 18, 
-                    objectFit: 'contain',
-                    // 如果 PNG 是純黑色，想在選中時變色，可以用 filter (稍微進階的技巧)
-                    filter: isActive ? 'invert(38%) sepia(91%) saturate(1353%) hue-rotate(182deg) brightness(91%) contrast(92%)' : 'none'
+                    width: 18, height: 18, 
+                    filter: isActive ? 'invert(38%) sepia(91%) saturate(1353%) hue-rotate(182deg)' : 'none' 
                   }} 
                 />
-              ) : (
-                <div style={{ width: 14, height: 14, border: `1.5px solid ${isActive ? '#1383D3' : '#28303F'}` }} />
-              )}
+              </div>
+            )}
+            
+            <div style={{ flex: 1, color: isActive ? '#1383D3' : '#333333', fontSize: 14 }}>
+              {label}
             </div>
-          )}
-          
-          {/* 文字標籤 */}
-          <div
-            style={{
-              flex: 1,
-              color: isActive ? '#1383D3' : '#333333',
-              fontSize: 14,
-              fontFamily: 'Noto Sans TC, sans-serif',
-              fontWeight: '400',
-              lineHeight: '16.8px',
-              wordWrap: 'break-word',
-            }}
-          >
-            {label}
-          </div>
 
-          {/* 右側展開/收合箭頭佔位 */}
-          {hasSubItems && (
-            <div 
-              style={{ 
-                width: 24, 
-                height: 24, 
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'center' 
-              }}
-            >
-              {/* 用 CSS 畫一個簡單的向下箭頭 */}
-              <div 
-                style={{ 
-                  width: 8, 
-                  height: 8, 
-                  borderBottom: `1.5px solid ${isActive ? '#1383D3' : '#28303F'}`, 
-                  borderRight: `1.5px solid ${isActive ? '#1383D3' : '#28303F'}`, 
-                  transform: 'rotate(45deg)', 
-                  marginBottom: 4 
-                }} 
-              />
-            </div>
-          )}
-        </>
+            {hasSubItems && (
+              <div style={{ 
+                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', // 展開時箭頭反轉
+                transition: '0.3s' 
+              }}>
+                <div style={{ width: 8, height: 8, borderBottom: '1.5px solid #28303F', borderRight: '1.5px solid #28303F', transform: 'rotate(45deg)' }} />
+              </div>
+            )}
+          </>
+        )}
+      </NavLink>
+
+      {/* 子項目容器：根據 isOpen 決定是否顯示 */}
+      {hasSubItems && isOpen && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {children}
+        </div>
       )}
-    </NavLink>
+    </>
   );
 };
 
@@ -187,11 +162,17 @@ const Sidebar: React.FC = () => {
           gap: 8, // Figma 程式碼沒有寫 gap，但我加上 8px 讓項目間有呼吸空間
         }}
       >
-        <MenuItem to="/" label="儀表板" end iconPlaceholder="📊" iconUrl={DashboardPic}/>
-        <MenuItem to="/users" label="用戶管理" iconPlaceholder="👥" iconUrl={UserPic} hasSubItems={true} />
-        <MenuItem to="/staffs" label="員工管理" iconPlaceholder="🧑‍💼" iconUrl={AdminPic}/>
-        <MenuItem to="/products" label="商品管理" iconPlaceholder="📦" iconUrl={UserPic}/>
-        <MenuItem to="/settings" label="系統設定" iconPlaceholder="⚙️" iconUrl={SettingPic}/>
+        <MenuItem to="/" label="儀表板" end /*iconPlaceholder="📊"*/ iconUrl={DashboardPic}/>
+        <MenuItem to="/users" label="用戶管理" /*iconPlaceholder="👥"*/ iconUrl={UserPic} hasSubItems={true}>
+          <MenuItem to="/users/userList" label="使用者管理" isSubItem={true} />
+        </MenuItem>
+        <MenuItem to="/staffs" label="員工管理" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AdminPic} hasSubItems={true}>
+
+        </MenuItem>
+        <MenuItem to="/products" label="商品管理" /*iconPlaceholder="📦"*/ iconUrl={UserPic}/>
+        <MenuItem to="/settings" label="設定" /*iconPlaceholder="⚙️"*/ iconUrl={SettingPic} hasSubItems={true}>
+          <MenuItem to="/settings/region" label="地區管理" isSubItem={true} />
+        </MenuItem>
       </div>
 
       {/* 底部版本號 */}

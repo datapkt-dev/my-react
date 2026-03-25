@@ -3,45 +3,35 @@ import React, { useState, useEffect } from 'react';
 interface AddStaffModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { name: string; staff_no: string; email: string; phone: string}) => void;
+  onSubmit: (data: { name: string; memeberPings: string; nonMemberPings: string;}) => void;
 }
 
 const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [name, setName] = useState('');
-  const [staffNo, setStaffNo] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [errors, setErrors] = useState<{ name?: string; staff_no?: string; email?: string; phone?: string}>({});
+  const [memberPings, setMemberPings] = useState('');
+  const [nonMemberPings, setNonMemberPings] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; memberPings?: string; nonMemberPings?: string;}>({});
 
   // 關閉時重置表單
   useEffect(() => {
     if (!isOpen) {
       setName('');
-      setStaffNo('');
-      setEmail('');
-      setPhone('')
+      setMemberPings('');
+      setNonMemberPings('');
       setErrors({});
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   const validate = () => {
-    const newErrors: { name?: string; staff_no?: string; email?: string; phone?: string } = {};
-    const phoneRegex = /^09\d{8}$/;
-    if (!name.trim()) newErrors.name = '姓名不能為空';
-    if (!staffNo.trim()) newErrors.staff_no = '帳號不能為空';
-    if (!email.trim()) {
-      newErrors.email = 'Email 不能為空';
-    } else if (!emailRegex.test(email.trim())) {
-      newErrors.email = '請輸入有效的 Email 格式';
-    }
-    if(!phone.trim()) newErrors.phone = "手機不能為空";
-    else if (!phoneRegex.test(phone.trim())) {
-      newErrors.phone = "請輸入正確的台灣手機格式 (例如: 0912345678)";
-    }
+    const newErrors: { name?: string; memberPings?: string; nonMemberPings?: string;} = {};
+    const pings = /^\d+$/;
+    if (!name.trim()) newErrors.name = '地區不能為空';
+    if (!memberPings.trim()) newErrors.memberPings = '會員Pings不能為空';
+    else if(!pings.test(memberPings.trim())) newErrors.memberPings = '只能輸入數字';
+    if (!nonMemberPings.trim()) newErrors.nonMemberPings = '非會員Pings不能為空';
+    else if (!pings.test(nonMemberPings.trim())) newErrors.nonMemberPings = '只能輸入數字';
     return newErrors;
   };
 
@@ -51,7 +41,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
       setErrors(newErrors);
       return;
     }
-    onSubmit({ name: name.trim(), staff_no: staffNo.trim(), email: email.trim(), phone: phone.trim()});
+    onSubmit({ name: name.trim(), memeberPings: memberPings, nonMemberPings: nonMemberPings});
   };
 
   const inputStyle: React.CSSProperties = {
@@ -115,7 +105,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
         <h2 style={{ margin: '0 0 24px 0', fontSize: 18, fontWeight: '600', color: '#333333', letterSpacing: 0.5, 
             display:'flex', justifyContent:'space-between'
         }}>
-          新增管理員
+          新增地區
           <button onClick={onClose}
             style={{
               cursor: 'pointer',
@@ -125,56 +115,43 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, onClose, onSubmit
             }}>X
           </button>
         </h2>
-        {/* 帳號 */}
+        {/* 名稱 */}
         <div style={fieldStyle}>
-          <label style={labelStyle}>帳號</label>
-          <input
-            type="text"
-            value={staffNo}
-            onChange={(e) => setStaffNo(e.target.value)}
-            placeholder="請輸入帳號"
-            style={inputStyle}
-          />
-          {errors.staff_no && <div style={errorStyle}>{errors.staff_no}</div>}
-        </div>
-
-        {/* 姓名 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>姓名</label>
+          <label style={labelStyle}>名稱</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="請輸入姓名"
+            placeholder="名稱"
             style={inputStyle}
           />
           {errors.name && <div style={errorStyle}>{errors.name}</div>}
         </div>
 
-        {/* 手機 */}
+        {/* 會員Pings */}
         <div style={fieldStyle}>
-          <label style={labelStyle}>手機</label>
+          <label style={labelStyle}>會員Pings數量</label>
           <input
-            type='tel'
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="請輸入手機"
+            type="text"
+            value={memberPings}
+            onChange={(e) => setMemberPings(e.target.value)}
+            placeholder="請輸入"
             style={inputStyle}
           />
-          {errors.name && <div style={errorStyle}>{errors.phone}</div>}
+          {errors.memberPings && <div style={errorStyle}>{errors.memberPings}</div>}
         </div>
 
-        {/* Email */}
+        {/* 非會員Pings*/}
         <div style={fieldStyle}>
-          <label style={labelStyle}>信箱</label>
+          <label style={labelStyle}>非會員Pings數量</label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="請輸入 Email"
+            type='text'
+            value={nonMemberPings}
+            onChange={(e) => setNonMemberPings(e.target.value)}
+            placeholder="請輸入"
             style={inputStyle}
           />
-          {errors.email && <div style={errorStyle}>{errors.email}</div>}
+          {errors.nonMemberPings && <div style={errorStyle}>{errors.nonMemberPings}</div>}
         </div>
 
         {/* 按鈕區 */}

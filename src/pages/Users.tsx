@@ -14,9 +14,11 @@ interface User {
 }
 
 const DEFAULT_FILTERS: FilterValues = {
+  account: '',
   nationality: '',
-  membershipType: '',
-  bannedStatus: 'all',
+  name: '',
+  city: '',
+  birthday: '',
 };
 
 
@@ -135,6 +137,7 @@ const formatDate = (dateString: string | undefined): string => {
 
 const Users:React.FC = () => {
   const [users, setUsers] = useState<User[]>([])
+  const [filterRole, setFilterRole] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -150,16 +153,28 @@ const Users:React.FC = () => {
 
   const applyFilters = (list: User[], filters: FilterValues): User[] => {
     return list.filter((user) => {
+      const matchAccount = 
+        filters.account === '' || 
+        user.name?.toLowerCase().includes(filters.account?.toLowerCase());
       const matchNationality =
         filters.nationality === '' ||
-        user.nationality.toLowerCase().includes(filters.nationality.toLowerCase());
-      const matchMembership =
+        user.nationality?.toLowerCase().includes(filters.nationality?.toLowerCase());
+      /*const matchCity =
+        filters.city === '' ||
+        user.city?.toLowerCase().includes(filters.city?.toLowerCase());*/
+      const matchName =
+        filters.name === '' ||
+        user.name?.toLowerCase().includes(filters.name?.toLowerCase());
+      const matchBirthday =
+        filters.birthday === '' ||
+        user.birthday?.toLowerCase().includes(filters.birthday?.toLowerCase());
+      /*const matchMembership =
         filters.membershipType === '' ||
         (user.membershipType ?? '').toLowerCase().includes(filters.membershipType.toLowerCase());
       const matchBanned =
         filters.bannedStatus === 'all' ||
-        (filters.bannedStatus === 'banned' ? user.isBanned === true : user.isBanned !== true);
-      return matchNationality && matchMembership && matchBanned;
+        (filters.bannedStatus === 'banned' ? user.isBanned === true : user.isBanned !== true);*/
+      return matchAccount && matchNationality && matchName && matchBirthday /* && matchCity*/ ;
     });
   };
 
@@ -192,9 +207,11 @@ const Users:React.FC = () => {
   },[])
 
   const activeFilterCount = [
+    appliedFilters.account !== '',
     appliedFilters.nationality !== '',
-    appliedFilters.membershipType !== '',
-    appliedFilters.bannedStatus !== 'all',
+    appliedFilters.city !== '',
+    appliedFilters.name !== '',
+    appliedFilters.birthday !== '',
   ].filter(Boolean).length;
 
   return (
@@ -317,9 +334,11 @@ const Users:React.FC = () => {
           setPendingFilters(DEFAULT_FILTERS);
           setAppliedFilters(DEFAULT_FILTERS);
           setFilteredUsers(applyFilters(users, DEFAULT_FILTERS));
-          setIsFilterOpen(false);
+          //setIsFilterOpen(false);
         }}
         onClose={() => setIsFilterOpen(false)}
+        filterValue={filterRole}
+        setFilterValue={() => setFilterRole}
       />
     </div>
   );
