@@ -28,8 +28,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onApply,
   onReset,
   onClose,
-  filterValue,
-  setFilterValue,
+
 }) => {
   // Close on Escape key
   useEffect(() => {

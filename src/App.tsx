@@ -6,6 +6,7 @@ import Users from './pages/Users'
 import Staffs from './pages/Staffs'
 import Products from './pages/Products'
 import Region from './pages/Region'
+import UserDetail from './pages/UserDetail'
 import Settings from './pages/Settings'
 import './App.css'
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/users" element={<Outlet />} >
             <Route path="userList" element={<Users />} />
+            <Route path="/users/userList/:id" element={<UserDetail />} />
           </Route>
           <Route path="/staffs" element={<Staffs />} />
           <Route path="/products" element={<Products />} />

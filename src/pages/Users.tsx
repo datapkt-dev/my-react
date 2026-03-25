@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchUserList } from '../api/userApi'
 import FilterPanel, { type FilterValues } from '../components/FilterPanel'
 
@@ -10,7 +11,8 @@ interface User {
   birthday: string,
   membershipType?: string,
   isBanned?: boolean,
-  joinDate?: string
+  joinDate?: string,
+  avatar_url?: string
 }
 
 const DEFAULT_FILTERS: FilterValues = {
@@ -25,42 +27,35 @@ const DEFAULT_FILTERS: FilterValues = {
 /**
  * 操作下拉選單 Component
  */
-const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const ActionDropdown: React.FC<{ 
+  isOpen: boolean; 
+  onClose: () => void;
+  userId: number; // 新增 userId 傳入
+}> = ({ isOpen, onClose, userId }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate(); // 引入導航 hook
 
-  // 點擊外面關閉選單的邏輯
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
-    <div
-      ref={dropdownRef}
-      style={{
-        width: 200,
-        padding: 10,
-        position: 'absolute',
-        right: 0,
-        top: 36, // 讓選單長在三個點點的下方
-        background: 'white',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.10)',
-        borderRadius: 10,
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 100, // 確保選單不會被下方的表格列蓋住
-      }}
-    >
-      <div style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#333333', fontSize: 14 }}>
+    <div ref={dropdownRef} style={{ /* 保持你原本的 style */ position: 'absolute', right: 0, top: 36, background: 'white', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.10)', borderRadius: 10, zIndex: 100 }}>
+      <div 
+        onClick={() => {
+          navigate(`/users/userList/${userId}`); // 跳轉到詳細頁
+          onClose();
+        }}
+        style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#333333', fontSize: 14 }}
+      >
         查看
       </div>
     </div>
@@ -116,7 +111,11 @@ const UserTableRow: React.FC<{ user: User; index: number; isMenuOpen: boolean; t
         </button>
 
         {/* 呼叫下拉選單 */}
-        <ActionDropdown isOpen={isMenuOpen} onClose={closeMenu} />
+        <ActionDropdown 
+          isOpen={isMenuOpen} 
+          onClose={closeMenu} 
+          userId={user.id} // 傳遞用戶 ID
+        />
       </div>
     </div>
   );
@@ -197,6 +196,7 @@ const Users:React.FC = () => {
           email: s.email,
           membershipType: s.membership_type,
           isBanned: s.is_banned,
+          avatar_url: s.avatar_url
         }));
         setUsers(mapped);
         setTotal(res.data.total);
