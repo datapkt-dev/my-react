@@ -1,10 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import Layout from './components/Layout'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Users from './pages/Users'
 import Staffs from './pages/Staffs'
 import Products from './pages/Products'
+import Region from './pages/Region'
+import UserDetail from './pages/UserDetail'
 import Settings from './pages/Settings'
 import './App.css'
 
@@ -35,10 +37,18 @@ function App() {
           }
         >
           <Route path="/" element={<Dashboard />} />
-          <Route path="/users" element={<Users />} />
+          <Route path="/users" element={<Outlet />} >
+            <Route path="userList" element={<Users />} />
+            <Route path="/users/userList/:id" element={<UserDetail />} />
+          </Route>
           <Route path="/staffs" element={<Staffs />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/region" element={<Region />} />
+          <Route path="/settings" element={<Outlet />}> 
+            {/* 當使用者進入 /settings 時，自動跳轉到地區管理 */}
+            <Route index element={<Navigate to="region" replace />} />
+            <Route path="region" element={<Region />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

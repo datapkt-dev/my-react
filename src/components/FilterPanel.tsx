@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 
 export interface FilterValues {
+  account: string;
   nationality: string;
-  membershipType: string;
-  bannedStatus: 'all' | 'active' | 'banned';
+  city: string;
+  name: string;
+  birthday: string
+  //membershipType: string;
+  //bannedStatus: 'all' | 'active' | 'banned';
 }
 
 interface FilterPanelProps {
@@ -13,6 +17,8 @@ interface FilterPanelProps {
   onApply: () => void;
   onReset: () => void;
   onClose: () => void;
+  filterValue: string;
+  setFilterValue: (values: string) => void;
 }
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
@@ -22,6 +28,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onApply,
   onReset,
   onClose,
+
 }) => {
   // Close on Escape key
   useEffect(() => {
@@ -31,6 +38,21 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  const handleOnReset = () =>{
+    onReset();
+  }
+  const inputStyle : React.CSSProperties = {
+    height: 40,
+    padding: '0 12px',
+    border: '1px solid #D1D5DB',
+    borderRadius: 6,
+    fontSize: 14,
+    color: '#1e293b',
+    outline: 'none',
+    boxSizing: 'border-box',
+    width: '100%',
+  }
 
   return (
     <>
@@ -76,8 +98,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             borderBottom: '1px solid #E5E7EB',
           }}
         >
-          <span style={{ fontSize: 16, fontWeight: '600', color: '#1e293b', letterSpacing: 0.5 }}>
-            篩選條件
+          <span style={{ fontSize: 20, fontWeight: '600', color: '#1e293b', letterSpacing: 0.5 }}>
+            篩選
           </span>
           <button
             onClick={onClose}
@@ -102,60 +124,98 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         {/* Filter fields */}
         <div style={{ flex: 1, padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
+          {/* Account */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
+              會員帳號
+            </label>
+            <input
+              type="text"
+              value={values.account}
+              onChange={(e) => onChange({ ...values, account: e.target.value })}
+              placeholder="🔍搜尋會員帳號"
+              style={inputStyle}
+              onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
+              onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
+            />
+          </div>
+
           {/* Nationality */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 13, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
+            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
               國籍
             </label>
-            <input
-              type="text"
-              value={values.nationality}
+            <select 
+              style={inputStyle}
               onChange={(e) => onChange({ ...values, nationality: e.target.value })}
-              placeholder="輸入國籍關鍵字"
-              style={{
-                height: 40,
-                padding: '0 12px',
-                border: '1px solid #D1D5DB',
-                borderRadius: 6,
-                fontSize: 14,
-                color: '#1e293b',
-                outline: 'none',
-                boxSizing: 'border-box',
-                width: '100%',
-              }}
               onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
               onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
-            />
+              value={values.nationality}
+            >
+              <option value=''>請選擇</option>
+              <option value='America'>北美</option>
+              <option value='Taiwan'>台灣</option>
+            </select>
           </div>
 
-          {/* Membership type */}
+          {/* City */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 13, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              會員類型
+            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
+              城市
+            </label>
+            <select onChange={(e) => onChange({...values, city: (e.target as HTMLSelectElement).value })}
+              style={inputStyle}
+              onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
+              onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}     
+              value={values.city}       
+            >
+              <option value=''>請選擇</option>
+              <option value='New York'>紐約</option>
+              <option value='Taipei'>台北</option>
+            </select>
+          </div>
+
+          {/* Name */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
+              會員姓名
             </label>
             <input
               type="text"
-              value={values.membershipType}
-              onChange={(e) => onChange({ ...values, membershipType: e.target.value })}
-              placeholder="輸入會員類型關鍵字"
-              style={{
-                height: 40,
-                padding: '0 12px',
-                border: '1px solid #D1D5DB',
-                borderRadius: 6,
-                fontSize: 14,
-                color: '#1e293b',
-                outline: 'none',
-                boxSizing: 'border-box',
-                width: '100%',
-              }}
+              value={values.name}
+              onChange={(e) => onChange({ ...values, name: e.target.value })}
+              placeholder="🔍搜尋會員姓名"
+              style={inputStyle}
               onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
               onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
             />
           </div>
 
-          {/* Banned status */}
+          {/* Birthday */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
+              會員生日
+            </label>
+            <input
+              type="text"
+              value={values.birthday}
+              onChange={(e) => onChange({ ...values, birthday: e.target.value })}
+              placeholder="📅搜尋會員生日"
+              style={inputStyle}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#1383D3';
+                e.target.type = 'date';
+                setTimeout(() => e.target.showPicker(), 10);
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#D1D5DB';
+                e.target.type = 'text';
+                setTimeout(() => e.target.showPicker(), 10);
+              }}
+            />
+          </div>
+          {/* Banned status */}
+          {/*<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <label style={{ fontSize: 13, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
               帳號狀態
             </label>
@@ -190,7 +250,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 </label>
               ))}
             </div>
-          </div>
+          </div>*/}
         </div>
 
         {/* Footer buttons */}
@@ -203,7 +263,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           }}
         >
           <button
-            onClick={onReset}
+            onClick={handleOnReset}
             style={{
               flex: 1,
               height: 40,
@@ -218,7 +278,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               fontFamily: 'Noto Sans TC, sans-serif',
             }}
           >
-            重設
+            清除重選
           </button>
           <button
             onClick={onApply}
@@ -236,7 +296,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               fontFamily: 'Noto Sans TC, sans-serif',
             }}
           >
-            套用
+            查詢
           </button>
         </div>
       </div>
