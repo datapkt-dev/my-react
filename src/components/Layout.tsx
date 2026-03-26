@@ -3,10 +3,12 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { logout } from '../api/authApi';
 import TopNavbar from './TopBar';
 
-import HeaderPic from '../assets/HeaderPic.png'
+import HeaderPic from '../assets/HeaderPic.svg'
 import DashboardPic from '../assets/dashboard.png'
 import UserPic from '../assets/users.png'
 import AdminPic from '../assets/admin_management.png'
+import AnomalyPic from '../assets/anomaly_monitoring.png'
+import AnalysisPic from '../assets/report.png'
 import SettingPic from '../assets/settings.png'
 
 
@@ -163,15 +165,33 @@ const Sidebar: React.FC = () => {
         }}
       >
         <MenuItem to="/" label="儀表板" end /*iconPlaceholder="📊"*/ iconUrl={DashboardPic}/>
-        <MenuItem to="/users" label="用戶管理" /*iconPlaceholder="👥"*/ iconUrl={UserPic} hasSubItems={true}>
-          <MenuItem to="/users/userList" label="使用者管理" isSubItem={true} />
-        </MenuItem>
-        <MenuItem to="/staffs" label="員工管理" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AdminPic} hasSubItems={true}>
 
+        <MenuItem to="/staffs" label="管理員管理" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AdminPic} hasSubItems={true}>
+          <MenuItem to="/staffs" label="管理員列表" isSubItem={true} />
         </MenuItem>
-        <MenuItem to="/products" label="商品管理" /*iconPlaceholder="📦"*/ iconUrl={UserPic}/>
+
+        <MenuItem to="/users" label="用戶管理" /*iconPlaceholder="👥"*/ iconUrl={UserPic} hasSubItems={true}>
+          <MenuItem to="/users/userList" label="使用者列表" isSubItem={true} />
+          <MenuItem to="/users/suspendedList" label="停權使用者列表" isSubItem={true} />
+          <MenuItem to="/users/reportList" label="檢舉清單" isSubItem={true} />
+        </MenuItem>
+        
+        <MenuItem to="/anomaly" label="異常監控" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AnomalyPic} hasSubItems={true}>
+          <MenuItem to="/anomaly/inActiveList" label="非活躍名單分析" isSubItem={true} />
+        </MenuItem>
+
+        <MenuItem to="/analysis" label="綜合分析報表" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AnalysisPic} hasSubItems={true}>
+          <MenuItem to="/analysis/users" label="用戶分析列表" isSubItem={true} />
+          <MenuItem to="/analysis/posts" label="貼文分析列表" isSubItem={true} />
+          <MenuItem to="/analysis/usersRetaintion" label="用戶停留時間表" isSubItem={true} />
+        </MenuItem>
+
+        {
+          //<MenuItem to="/products" label="商品管理" /*iconPlaceholder="📦"*/ iconUrl={UserPic}/>
+        }
         <MenuItem to="/settings" label="設定" /*iconPlaceholder="⚙️"*/ iconUrl={SettingPic} hasSubItems={true}>
           <MenuItem to="/settings/region" label="地區管理" isSubItem={true} />
+          <MenuItem to="/settings/area" label="領域管理" isSubItem={true} />
         </MenuItem>
       </div>
 

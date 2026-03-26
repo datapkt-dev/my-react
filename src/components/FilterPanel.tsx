@@ -1,4 +1,6 @@
 import { useEffect} from 'react';
+import DatePic from '../assets/date.svg'
+import SearchPic from '../assets/search.svg'
 
 export interface FilterValues {
   account: string;
@@ -42,18 +44,40 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   const handleOnReset = () =>{
     onReset();
   }
-  const inputStyle : React.CSSProperties = {
+  const inputStyleSelect : React.CSSProperties = {
     height: 40,
     padding: '0 12px',
     border: '1px solid #D1D5DB',
     borderRadius: 6,
-    fontSize: 14,
+    fontSize: 16,
     color: '#1e293b',
     outline: 'none',
     boxSizing: 'border-box',
     width: '100%',
   }
-
+  const inputStyleIcon : React.CSSProperties = {
+    height: 40,
+    padding: '0 12px',
+    border: 'none',
+    borderRadius: 6,
+    fontSize: 16,
+    color: '#1e293b',
+    outline: 'none',
+    boxSizing: 'border-box',
+    width: '100%',
+  }
+  const inputSection : React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    padding: 12,
+    borderRadius: 6,
+    outline: '1px #DEE2E6 solid',
+    outlineOffset: '-1px',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 8, display: 'inline-flex',
+  }
+  
   return (
     <>
       {/* Backdrop overlay */}
@@ -95,7 +119,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '20px 24px',
-            borderBottom: '1px solid #E5E7EB',
+            borderBottom: 'none',
           }}
         >
           <span style={{ fontSize: 20, fontWeight: '600', color: '#1e293b', letterSpacing: 0.5 }}>
@@ -129,15 +153,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
               會員帳號
             </label>
-            <input
-              type="text"
-              value={values.account}
-              onChange={(e) => onChange({ ...values, account: e.target.value })}
-              placeholder="🔍搜尋會員帳號"
-              style={inputStyle}
-              onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
-              onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
-            />
+            <div style={inputSection}>
+              <img src={SearchPic}/>
+              <input
+                type="text"
+                value={values.account}
+                onChange={(e) => onChange({ ...values, account: e.target.value })}
+                placeholder="搜尋會員帳號"
+                style={inputStyleIcon}
+                onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
+                onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
+              />
+            </div>
           </div>
 
           {/* Nationality */}
@@ -146,7 +173,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               國籍
             </label>
             <select 
-              style={inputStyle}
+              style={inputStyleSelect}
               onChange={(e) => onChange({ ...values, nationality: e.target.value })}
               onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
               onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
@@ -164,7 +191,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               城市
             </label>
             <select onChange={(e) => onChange({...values, city: (e.target as HTMLSelectElement).value })}
-              style={inputStyle}
+              style={inputStyleSelect}
               onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
               onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}     
               value={values.city}       
@@ -180,15 +207,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
               會員姓名
             </label>
-            <input
-              type="text"
-              value={values.name}
-              onChange={(e) => onChange({ ...values, name: e.target.value })}
-              placeholder="🔍搜尋會員姓名"
-              style={inputStyle}
-              onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
-              onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
-            />
+            <div style={inputSection}>
+              <img src={SearchPic}/>
+              <input
+                type="text"
+                value={values.name}
+                onChange={(e) => onChange({ ...values, name: e.target.value })}
+                placeholder="搜尋會員姓名"
+                style={inputStyleIcon}
+                onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
+                onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
+              />
+            </div>
           </div>
 
           {/* Birthday */}
@@ -196,24 +226,72 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
               會員生日
             </label>
-            <input
-              type="text"
-              value={values.birthday}
-              onChange={(e) => onChange({ ...values, birthday: e.target.value })}
-              placeholder="📅搜尋會員生日"
-              style={inputStyle}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#1383D3';
-                e.target.type = 'date';
-                setTimeout(() => e.target.showPicker(), 10);
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#D1D5DB';
-                e.target.type = 'text';
-                setTimeout(() => e.target.showPicker(), 10);
-              }}
-            />
+            <div style={inputSection}>
+              <img src={DatePic}/>
+              <input
+                type="text"
+                value={values.birthday}
+                onChange={(e) => onChange({ ...values, birthday: e.target.value })}
+                placeholder="搜尋會員生日"
+                style={inputStyleIcon}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#1383D3';
+                  e.target.type = 'date';
+                  setTimeout(() => e.target.showPicker(), 10);
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#D1D5DB';
+                  e.target.type = 'text';
+                  setTimeout(() => e.target.showPicker(), 10);
+                }}
+              />
+            </div>
           </div>
+          <div
+            style={{
+              padding: '16px 24px',
+              borderTop: 'none',
+              display: 'flex',
+              gap: 12,
+            }}
+          >
+            <button
+              onClick={handleOnReset}
+              style={{
+                flex: 1,
+                height: 40,
+                border: '1px solid #D1D5DB',
+                borderRadius: 6,
+                background: 'white',
+                color: '#374151',
+                fontSize: 14,
+                fontWeight: '500',
+                cursor: 'pointer',
+                letterSpacing: 0.5,
+                fontFamily: 'Noto Sans TC, sans-serif',
+              }}
+            >
+              清除重選
+            </button>
+            <button
+              onClick={onApply}
+              style={{
+                flex: 1,
+                height: 40,
+                border: 'none',
+                borderRadius: 6,
+                background: '#1383D3',
+                color: 'white',
+                fontSize: 14,
+                fontWeight: '500',
+                cursor: 'pointer',
+                letterSpacing: 0.5,
+                fontFamily: 'Noto Sans TC, sans-serif',
+              }}
+            >
+              查詢
+          </button>
+        </div>
           {/* Banned status */}
           {/*<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <label style={{ fontSize: 13, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
@@ -254,51 +332,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         {/* Footer buttons */}
-        <div
-          style={{
-            padding: '16px 24px',
-            borderTop: '1px solid #E5E7EB',
-            display: 'flex',
-            gap: 12,
-          }}
-        >
-          <button
-            onClick={handleOnReset}
-            style={{
-              flex: 1,
-              height: 40,
-              border: '1px solid #D1D5DB',
-              borderRadius: 6,
-              background: 'white',
-              color: '#374151',
-              fontSize: 14,
-              fontWeight: '500',
-              cursor: 'pointer',
-              letterSpacing: 0.5,
-              fontFamily: 'Noto Sans TC, sans-serif',
-            }}
-          >
-            清除重選
-          </button>
-          <button
-            onClick={onApply}
-            style={{
-              flex: 1,
-              height: 40,
-              border: 'none',
-              borderRadius: 6,
-              background: '#1383D3',
-              color: 'white',
-              fontSize: 14,
-              fontWeight: '500',
-              cursor: 'pointer',
-              letterSpacing: 0.5,
-              fontFamily: 'Noto Sans TC, sans-serif',
-            }}
-          >
-            查詢
-          </button>
-        </div>
       </div>
     </>
   );
