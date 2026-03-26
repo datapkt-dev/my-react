@@ -42,3 +42,16 @@ export interface StaffListResponse {
     total: number;
   };
 }
+
+export interface CreateStaffPayload {
+  staff_no: string;
+  name: string;
+  email: string;
+  phone: string;
+  role_id: number;
+}
+
+export interface CreateStaffResponse {
+  message: string;
+  data: Staff;
+}

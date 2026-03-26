@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { fetchStaffList } from '../api/staffApi';
+import { fetchStaffList, createStaff } from '../api/staffApi';
+import type { CreateStaffPayload } from '../types/staff';
 import AddStaffModal from '../components/AddStaffModal';
 
 // ==========================================
@@ -134,15 +135,16 @@ const Staffs: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadStaffs = () => {
     const projectId = Number(localStorage.getItem('project_id')) || 1;
     if (!projectId) {
       setError('無法取得專案 ID，請重新登入');
       setLoading(false);
       return;
     }
-
     setLoading(true);
     fetchStaffList(projectId)
       .then((res) => {
@@ -158,7 +160,26 @@ const Staffs: React.FC = () => {
       })
       .catch((err: unknown) => setError(err instanceof Error ? err.message : String(err)))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadStaffs();
   }, []);
+
+  const handleAddStaff = async (data: CreateStaffPayload) => {
+    const projectId = Number(localStorage.getItem('project_id')) || 1;
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await createStaff(projectId, data);
+      setIsAddModalOpen(false);
+      loadStaffs(); // 重新抓取列表
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : '新增失敗，請稍後再試');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // 處理開啟哪一個選單
   const handleToggleMenu = (id: string) => {
@@ -251,11 +272,10 @@ const Staffs: React.FC = () => {
 
       <AddStaffModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={(data) => {
-          console.log('新增員工資料：', data);
-          setIsAddModalOpen(false);
-        }}
+        loading={submitting}
+        apiError={submitError}
+        onClose={() => { setIsAddModalOpen(false); setSubmitError(null); }}
+        onSubmit={handleAddStaff}
       />
 
     </div>
