@@ -166,9 +166,7 @@ const Sidebar: React.FC = () => {
         <MenuItem to="/users" label="用戶管理" /*iconPlaceholder="👥"*/ iconUrl={UserPic} hasSubItems={true}>
           <MenuItem to="/users/userList" label="使用者管理" isSubItem={true} />
         </MenuItem>
-        <MenuItem to="/staffs" label="員工管理" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AdminPic} hasSubItems={true}>
-
-        </MenuItem>
+        <MenuItem to="/staffs" label="員工管理" /*iconPlaceholder="🧑‍💼"*/ iconUrl={AdminPic}/>
         <MenuItem to="/products" label="商品管理" /*iconPlaceholder="📦"*/ iconUrl={UserPic}/>
         <MenuItem to="/settings" label="設定" /*iconPlaceholder="⚙️"*/ iconUrl={SettingPic} hasSubItems={true}>
           <MenuItem to="/settings/region" label="地區管理" isSubItem={true} />
