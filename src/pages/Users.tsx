@@ -54,7 +54,17 @@ const ActionDropdown: React.FC<{
           navigate(`/users/userList/${userId}`); // 跳轉到詳細頁
           onClose();
         }}
-        style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#333333', fontSize: 14 }}
+        style={{ 
+          padding: '0 10px',
+          width: 180, 
+          height: 40, 
+          display: 'flex', 
+          alignItems: 'center', 
+          cursor: 'pointer', 
+          borderRadius: 4, 
+          color: '#333333', 
+          fontSize: 14,
+        }}
       >
         查看
       </div>
