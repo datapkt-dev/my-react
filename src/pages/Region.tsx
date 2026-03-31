@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import AddRegion from '../components/AddRegion';
 
-// ==========================================
-// Types & Interfaces
-// ==========================================
-
 interface RegionData {
   id: number;
   region: string;
@@ -13,30 +9,20 @@ interface RegionData {
 }
 
 const initalRegions: RegionData[] = [
-    {id: 1, region:'北美', memberPings:10, nonMemberPings:20},
-    {id: 2, region:'加拿大', memberPings:10, nonMemberPings:20},
-]
+  { id: 1, region: '北美', memberPings: 10, nonMemberPings: 20 },
+  { id: 2, region: '加拿大', memberPings: 10, nonMemberPings: 20 },
+];
 
-// ==========================================
-// Reusable Components
-// ==========================================
-
-/**
- * 操作下拉選單 Component
- */
 const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // 點擊外面關閉選單的邏輯
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onClose]);
 
@@ -45,86 +31,39 @@ const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
   return (
     <div
       ref={dropdownRef}
-      style={{
-        width: 200,
-        padding: 10,
-        position: 'absolute',
-        right: 0,
-        top: 36, // 讓選單長在三個點點的下方
-        background: 'white',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.10)',
-        borderRadius: 10,
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 100, // 確保選單不會被下方的表格列蓋住
-      }}
+      className="w-[200px] p-2.5 absolute right-0 top-9 bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-[10px] flex flex-col z-[100]"
     >
-      <div style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#333333', fontSize: 14 }}>
-        查看
-      </div>
-      <div style={{ padding: '0 10px', height: 40, display: 'flex', alignItems: 'center', cursor: 'pointer', borderRadius: 4, color: '#FF4444', fontSize: 14 }}>
-        刪除
-      </div>
+      <div className="px-2.5 h-10 flex items-center cursor-pointer rounded text-text-dark text-sm">查看</div>
+      <div className="px-2.5 h-10 flex items-center cursor-pointer rounded text-danger text-sm">刪除</div>
     </div>
   );
 };
 
-/**
- * 表格的單一資料列 (Row)
- */
 const RegionTableRow: React.FC<{ region: RegionData; index: number; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ region, index, isMenuOpen, toggleMenu, closeMenu }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const zebraColor = index % 2 === 0 ? 'white' : '#F5F5F5';
-  const backgroundColor = isHovered ? '#E0E0E0' : zebraColor;
-
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 10px',
-        height: 56,
-        background: backgroundColor,
-      }}
+      className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${
+        index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
+      }`}
     >
-      <div style={{ width: 160, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{region.region}</div>
-      <div style={{ width: 160, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{region.memberPings}</div>
-      <div style={{ flex: 1, padding: '0 10px', color: '#454545', fontSize: 14, letterSpacing: 1 }}>{region.nonMemberPings}</div>
+      <div className="w-40 px-2.5 text-text-medium text-sm tracking-wide">{region.region}</div>
+      <div className="w-40 px-2.5 text-text-medium text-sm tracking-wide">{region.memberPings}</div>
+      <div className="flex-1 px-2.5 text-text-medium text-sm tracking-wide">{region.nonMemberPings}</div>
       
-      {/* 操作欄位 (包含按鈕與下拉選單) */}
-      <div style={{ width: 50, padding: '0 10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+      <div className="w-[50px] px-2.5 flex justify-center relative">
         <button
-          style={{
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            padding: 4,
-            display: 'flex',
-            gap: 3,
-            alignItems: 'center',
-          }}
-          onClick={(e) => {
-            e.stopPropagation(); // 避免觸發外層的其他點擊事件
-            toggleMenu();
-          }}
+          className="bg-transparent border-none cursor-pointer p-1 flex gap-[3px] items-center"
+          onClick={(e) => { e.stopPropagation(); toggleMenu(); }}
         >
-          <div style={{ width: 3, height: 3, background: '#28303F', borderRadius: '50%' }} />
-          <div style={{ width: 3, height: 3, background: '#28303F', borderRadius: '50%' }} />
-          <div style={{ width: 3, height: 3, background: '#28303F', borderRadius: '50%' }} />
+          <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
+          <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
+          <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
         </button>
-
-        {/* 呼叫下拉選單 */}
         <ActionDropdown isOpen={isMenuOpen} onClose={closeMenu} />
       </div>
     </div>
   );
 };
-
-// ==========================================
-// Main Page Component
-// ==========================================
 
 const Region: React.FC = () => {
   const [regions, setRegions] = useState<RegionData[]>(initalRegions);
@@ -134,108 +73,52 @@ const Region: React.FC = () => {
   const [openDropdownId, setOpenDropdownId] = useState<string | null | number>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  /*useEffect(() => {
-    const projectId = Number(localStorage.getItem('project_id')) || 1;
-    if (!projectId) {
-      setError('無法取得專案 ID，請重新登入');
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    fetchStaffList(projectId)
-      .then((res) => {
-        const mapped = res.data.items.map((s) => ({
-          id:s.id,
-          region:s.region,
-          memberPings:s.pings,
-          nonMemberPings:s.nonPings,
-        }));
-        setRegions(mapped);
-        setTotal(res.data.total);
-      })
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : String(err)))
-      .finally(() => setLoading(false));
-  }, []);*/
-
-  // 處理開啟哪一個選單
   const handleToggleMenu = (id: number) => {
     setOpenDropdownId((prev) => (prev === id ? null : id));
   };
 
   return (
-    <div style={{ width: '100%', padding: '20px 28px', background: 'white', fontFamily: 'Noto Sans TC, sans-serif' }}>
-      
+    <div className="w-full py-5 px-7 bg-white font-sans">
       {/* 麵包屑 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 40 }}>
-        <span style={{ color: '#999999', fontSize: 14 }}>設定</span>
-        <div style={{ width: 4, height: 8, borderTop: '1px solid #333', borderRight: '1px solid #333', transform: 'rotate(45deg)', margin: '0 4px' }} />
-        <span style={{ color: '#333333', fontSize: 14 }}>地區管理</span>
+      <div className="flex items-center gap-2 h-10">
+        <span className="text-text-muted text-sm">設定</span>
+        <div className="w-1 h-2 border-t border-r border-[#333] rotate-45 mx-1" />
+        <span className="text-text-dark text-sm">地區管理</span>
       </div>
 
       {/* 頁面標題與操作區 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 48, marginBottom: 10 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-          <h1 style={{ color: '#454545', fontSize: 24, fontWeight: '500', margin: 0, letterSpacing: 0.3 }}>地區管理</h1>
-          <span style={{ color: '#888888', fontSize: 16, letterSpacing: 1 }}>({total})</span>
+      <div className="flex justify-between items-center h-12 mb-2.5">
+        <div className="flex items-baseline gap-2.5">
+          <h1 className="text-text-medium text-2xl font-medium m-0 tracking-wide">地區管理</h1>
+          <span className="text-text-light text-base tracking-wide">({total})</span>
         </div>
         
-        {/* 新增按鈕 */}
         <button
           onClick={() => setIsAddModalOpen(true)}
-          style={{
-            height: 40,
-            minWidth: 88,
-            padding: '0 12px',
-            background: '#1383D3',
-            color: 'white',
-            border: 'none',
-            borderRadius: 4,
-            fontSize: 14,
-            fontWeight: '500',
-            cursor: 'pointer',
-            letterSpacing: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
+          className="h-10 min-w-[88px] px-3 bg-primary text-white border-none rounded text-sm font-medium cursor-pointer tracking-wide flex justify-center items-center"
         >
           新增
         </button>
       </div>
 
-      {/* 資料列表區塊 (移除外層多餘的包裝與陰影，直接貼齊白底) */}
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        
-        {/* 表頭 (Table Header) */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '0 10px',
-            height: 52,
-            background: 'white',
-            borderBottom: '1px solid #DEE2E6',
-          }}
-        >
-          <div style={{ width: 160, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>地區名稱</div>
-          <div style={{ width: 160, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>會員Ping數</div>
-          <div style={{ flex: 1, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1 }}>非會員Ping數</div>
-          <div style={{ width: 50, padding: '0 10px', color: '#999999', fontSize: 14, letterSpacing: 1, textAlign: 'center' }}>操作</div>
+      {/* 資料列表區塊 */}
+      <div className="flex flex-col">
+        {/* 表頭 */}
+        <div className="flex items-center px-2.5 h-[52px] bg-white border-b border-border">
+          <div className="w-40 px-2.5 text-text-muted text-sm tracking-wide">地區名稱</div>
+          <div className="w-40 px-2.5 text-text-muted text-sm tracking-wide">會員Ping數</div>
+          <div className="flex-1 px-2.5 text-text-muted text-sm tracking-wide">非會員Ping數</div>
+          <div className="w-[50px] px-2.5 text-text-muted text-sm tracking-wide text-center">操作</div>
         </div>
 
-        {/* 資料列 (Table Body) */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {loading && (
-            <div style={{ padding: '20px 10px', color: '#888888', fontSize: 14, letterSpacing: 1 }}>載入中...</div>
-          )}
-          {!loading && error && (
-            <div style={{ padding: '20px 10px', color: '#FF4444', fontSize: 14, letterSpacing: 1 }}>{error}</div>
-          )}
+        {/* 資料列 */}
+        <div className="flex flex-col">
+          {loading && <div className="py-5 px-2.5 text-text-light text-sm tracking-wide">載入中...</div>}
+          {!loading && error && <div className="py-5 px-2.5 text-danger text-sm tracking-wide">{error}</div>}
           {!loading && !error && regions.map((region, index) => (
-            <RegionTableRow 
-              key={region.id} 
-              region={region} 
+            <RegionTableRow
+              key={region.id}
+              region={region}
               index={index}
               isMenuOpen={openDropdownId === region.id}
               toggleMenu={() => handleToggleMenu(region.id)}
@@ -243,7 +126,6 @@ const Region: React.FC = () => {
             />
           ))}
         </div>
-        
       </div>
 
       <AddRegion
@@ -254,7 +136,6 @@ const Region: React.FC = () => {
           setIsAddModalOpen(false);
         }}
       />
-
     </div>
   );
 };

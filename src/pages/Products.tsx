@@ -35,54 +35,63 @@ function Products() {
   }
 
   return (
-    <div>
-      <div className="page-header">
-        <h1 className="page-title">商品管理</h1>
-        <button className="btn btn-primary">+ 新增商品</button>
+    <div className="w-full py-5 px-7 bg-white font-sans">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-text-medium text-2xl font-medium m-0 tracking-wide">商品管理</h1>
+        <button className="h-10 min-w-[88px] px-3 bg-primary text-white border-none rounded text-sm font-medium cursor-pointer tracking-wide hover:bg-primary-hover">
+          + 新增商品
+        </button>
       </div>
 
-      <div className="card">
-        <div className="search-bar">
+      <div className="bg-white rounded-[10px] border border-[#EDEDED] p-5">
+        <div className="mb-4">
           <input
             type="text"
             placeholder="搜尋商品名稱或分類..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="search-input"
+            className="w-full h-10 px-3 border border-border rounded text-sm text-text-dark outline-none font-sans focus:border-primary"
           />
         </div>
 
-        <table className="table">
+        <table className="w-full border-collapse">
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>商品名稱</th>
-              <th>分類</th>
-              <th>價格</th>
-              <th>庫存</th>
-              <th>狀態</th>
-              <th>操作</th>
+            <tr className="border-b border-border">
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">ID</th>
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">商品名稱</th>
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">分類</th>
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">價格</th>
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">庫存</th>
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">狀態</th>
+              <th className="text-left py-3 px-2.5 text-text-muted text-sm font-medium tracking-wide">操作</th>
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
-              <tr key={product.id}>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.category}</td>
-                <td>${product.price}</td>
-                <td>
-                  <span style={{ color: product.stock === 0 ? '#dc2626' : 'inherit' }}>
+            {filteredProducts.map((product, index) => (
+              <tr key={product.id} className={`hover:bg-[#E0E0E0] ${index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'}`}>
+                <td className="py-3 px-2.5 text-text-medium text-sm">{product.id}</td>
+                <td className="py-3 px-2.5 text-text-medium text-sm">{product.name}</td>
+                <td className="py-3 px-2.5 text-text-medium text-sm">{product.category}</td>
+                <td className="py-3 px-2.5 text-text-medium text-sm">${product.price}</td>
+                <td className="py-3 px-2.5 text-sm">
+                  <span className={product.stock === 0 ? 'text-danger' : 'text-text-medium'}>
                     {product.stock}
                   </span>
                 </td>
-                <td>
-                  <span className={`badge ${product.status === '上架' ? 'badge-success' : 'badge-default'}`}>
+                <td className="py-3 px-2.5 text-sm">
+                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    product.status === '上架'
+                      ? 'bg-success-light text-success'
+                      : 'bg-gray-100 text-gray-500'
+                  }`}>
                     {product.status}
                   </span>
                 </td>
-                <td>
-                  <button className="btn btn-sm" onClick={() => toggleStatus(product.id)}>
+                <td className="py-3 px-2.5 text-sm">
+                  <button
+                    className="h-8 px-3 bg-white text-text-medium border border-border rounded text-xs cursor-pointer hover:bg-bg-gray"
+                    onClick={() => toggleStatus(product.id)}
+                  >
                     {product.status === '上架' ? '下架' : '上架'}
                   </button>
                 </td>

@@ -1,17 +1,30 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import "tailwindcss";
+
+/* ===== Custom Theme ===== */
+@theme {
+  --font-sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --color-primary: #1383D3;
+  --color-primary-light: #EBF5FF;
+  --color-primary-hover: #0F6DB3;
+  --color-danger: #FF4444;
+  --color-danger-light: #FFF0F0;
+  --color-text-dark: #333333;
+  --color-text-medium: #454545;
+  --color-text-light: #888888;
+  --color-text-muted: #999999;
+  --color-border: #DEE2E6;
+  --color-bg-gray: #F4F6F7;
+  --color-bg-zebra: #F5F5F5;
+  --color-sidebar-bg: #FAFAFB;
+  --color-success: #059669;
+  --color-success-light: #ECFDF5;
+  --color-warning: #D97706;
+  --color-warning-light: #FFF8E1;
 }
 
+/* ===== Base Resets ===== */
 body {
-  margin: 0;
-  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #334155;
-  background: #f1f5f9;
+  @apply font-sans text-slate-700 bg-slate-100 m-0 antialiased;
 }
 
 a {

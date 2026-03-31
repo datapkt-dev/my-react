@@ -1,21 +1,25 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchUserList } from '../api/userApi'
+import { fetchBannedUserList } from '../api/userApi'
 import FilterPanel, { type FilterValues } from '../components/FilterPanel'
 import PageContainer from '../components/PageContainer'
 import PageHeader from '../components/PageHeader'
 import DataTable from '../components/DataTable'
 import type { ColumnDef } from '../components/DataTable'
 
+// ==========================================
+// Types & Interfaces
+// ==========================================
+
 interface User {
   id: number
   name: string
   email?: string
-  nationality: string,
-  birthday: string,
-  membershipType?: string,
-  isBanned?: boolean,
-  joinDate?: string,
+  nationality: string
+  birthday: string
+  membershipType?: string
+  isBanned?: boolean
+  joinDate?: string
   avatar_url?: string
 }
 
@@ -27,6 +31,10 @@ const DEFAULT_FILTERS: FilterValues = {
   birthday: '',
 };
 
+// ==========================================
+// Reusable Components
+// ==========================================
+
 const formatDate = (dateString: string | undefined): string => {
   if (!dateString) return '--';
   const date = new Date(dateString);
@@ -36,7 +44,7 @@ const formatDate = (dateString: string | undefined): string => {
   return `${year}-${month}-${day}`;
 };
 
-const USER_COLUMNS: ColumnDef<User>[] = [
+const SUSPENDED_USER_COLUMNS: ColumnDef<User>[] = [
   { key: 'name', label: '會員帳號', width: 'w-40' },
   { key: 'nationality', label: '國籍城市', width: 'w-[100px]' },
   { key: 'name', label: '姓名', width: 'w-40' },
@@ -47,7 +55,11 @@ const USER_COLUMNS: ColumnDef<User>[] = [
   },
 ];
 
-const Users: React.FC = () => {
+// ==========================================
+// Main Page Component
+// ==========================================
+
+const SuspendedUsers: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([])
   const [filterRole, setFilterRole] = useState("");
@@ -61,8 +73,8 @@ const Users: React.FC = () => {
 
   const applyFilters = (list: User[], filters: FilterValues): User[] => {
     return list.filter((user) => {
-      const matchAccount = 
-        filters.account === '' || 
+      const matchAccount =
+        filters.account === '' ||
         user.name?.toLowerCase().includes(filters.account?.toLowerCase());
       const matchNationality =
         filters.nationality === '' ||
@@ -86,7 +98,7 @@ const Users: React.FC = () => {
     }
 
     setLoading(true);
-    fetchUserList(projectId)
+    fetchBannedUserList(projectId)
       .then((res) => {
         const mapped = res.data.items.map((s) => ({
           id: s.id,
@@ -96,7 +108,7 @@ const Users: React.FC = () => {
           email: s.email,
           membershipType: s.membership_type,
           isBanned: s.is_banned,
-          avatar_url: s.avatar_url
+          avatar_url: s.avatar_url,
         }));
         setUsers(mapped);
         setTotal(res.data.total);
@@ -104,7 +116,7 @@ const Users: React.FC = () => {
       })
       .catch((err: unknown) => setError(err instanceof Error ? err.message : String(err)))
       .finally(() => setLoading(false));
-  }, [])
+  }, []);
 
   const activeFilterCount = [
     appliedFilters.account !== '',
@@ -117,7 +129,7 @@ const Users: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader
-        title="使用者列表"
+        title="停權使用者列表"
         count={total}
         actions={
           <button
@@ -140,7 +152,7 @@ const Users: React.FC = () => {
 
       <DataTable<User>
         data={filteredUsers}
-        columns={USER_COLUMNS}
+        columns={SUSPENDED_USER_COLUMNS}
         rowKey={(item) => item.id}
         actions={[
           { label: '查看', onClick: (item) => navigate(`/users/userList/${item.id}`) },
@@ -169,6 +181,6 @@ const Users: React.FC = () => {
       />
     </PageContainer>
   );
-}
+};
 
-export default Users
+export default SuspendedUsers;

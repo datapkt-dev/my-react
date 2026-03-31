@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import DatePic from '../assets/date.svg'
 import SearchPic from '../assets/search.svg'
 
@@ -7,9 +7,7 @@ export interface FilterValues {
   nationality: string;
   city: string;
   name: string;
-  birthday: string
-  //membershipType: string;
-  //bannedStatus: 'all' | 'active' | 'banned';
+  birthday: string;
 }
 
 interface FilterPanelProps {
@@ -30,9 +28,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onApply,
   onReset,
   onClose,
-
 }) => {
-  // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) onClose();
@@ -41,104 +37,32 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const handleOnReset = () =>{
+  const handleOnReset = () => {
     onReset();
-  }
-  const inputStyleSelect : React.CSSProperties = {
-    height: 40,
-    padding: '0 12px',
-    border: '1px solid #D1D5DB',
-    borderRadius: 6,
-    fontSize: 16,
-    color: '#1e293b',
-    outline: 'none',
-    boxSizing: 'border-box',
-    width: '100%',
-  }
-  const inputStyleIcon : React.CSSProperties = {
-    height: 40,
-    padding: '0 12px',
-    border: 'none',
-    borderRadius: 6,
-    fontSize: 16,
-    color: '#1e293b',
-    outline: 'none',
-    boxSizing: 'border-box',
-    width: '100%',
-  }
-  const inputSection : React.CSSProperties = {
-    width: '100%',
-    height: '100%',
-    padding: 12,
-    borderRadius: 6,
-    outline: '1px #DEE2E6 solid',
-    outlineOffset: '-1px',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: 8, display: 'inline-flex',
-  }
-  
+  };
+
   return (
     <>
       {/* Backdrop overlay */}
       <div
         onClick={onClose}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,0.2)',
-          zIndex: 200,
-          opacity: isOpen ? 1 : 0,
-          pointerEvents: isOpen ? 'auto' : 'none',
-          transition: 'opacity 0.3s ease',
-        }}
+        className={`fixed inset-0 bg-black/20 z-[200] transition-opacity duration-300 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
       />
 
       {/* Slide-out panel */}
       <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          width: 320,
-          height: '100vh',
-          background: 'white',
-          boxShadow: '-4px 0 20px rgba(0,0,0,0.12)',
-          zIndex: 201,
-          display: 'flex',
-          flexDirection: 'column',
-          transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 0.3s ease',
-          fontFamily: 'Noto Sans TC, sans-serif',
-        }}
+        className={`fixed top-0 right-0 w-80 h-screen bg-white shadow-[-4px_0_20px_rgba(0,0,0,0.12)] z-[201] flex flex-col font-sans transition-transform duration-300 ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
         {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '20px 24px',
-            borderBottom: 'none',
-          }}
-        >
-          <span style={{ fontSize: 20, fontWeight: '600', color: '#1e293b', letterSpacing: 0.5 }}>
-            篩選
-          </span>
+        <div className="flex items-center justify-between py-5 px-6">
+          <span className="text-xl font-semibold text-slate-800 tracking-wide">篩選</span>
           <button
             onClick={onClose}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 4,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#6B7280',
-              fontSize: 20,
-              lineHeight: 1,
-            }}
+            className="bg-transparent border-none cursor-pointer p-1 flex items-center justify-center text-gray-500 text-xl leading-none"
             aria-label="關閉篩選面板"
           >
             ✕
@@ -146,37 +70,29 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         {/* Filter fields */}
-        <div style={{ flex: 1, padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div className="flex-1 p-6 overflow-y-auto flex flex-col gap-6">
 
           {/* Account */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              會員帳號
-            </label>
-            <div style={inputSection}>
-              <img src={SearchPic}/>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700 tracking-wide">會員帳號</label>
+            <div className="w-full p-3 rounded-md outline outline-1 outline-border -outline-offset-1 inline-flex items-center gap-2">
+              <img src={SearchPic} />
               <input
                 type="text"
                 value={values.account}
                 onChange={(e) => onChange({ ...values, account: e.target.value })}
                 placeholder="搜尋會員帳號"
-                style={inputStyleIcon}
-                onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
-                onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
+                className="h-10 px-3 border-none rounded-md text-base text-slate-800 outline-none w-full"
               />
             </div>
           </div>
 
           {/* Nationality */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              國籍
-            </label>
-            <select 
-              style={inputStyleSelect}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700 tracking-wide">國籍</label>
+            <select
+              className="h-10 px-3 border border-gray-300 rounded-md text-base text-slate-800 outline-none w-full focus:border-primary"
               onChange={(e) => onChange({ ...values, nationality: e.target.value })}
-              onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
-              onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
               value={values.nationality}
             >
               <option value=''>請選擇</option>
@@ -186,15 +102,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
 
           {/* City */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              城市
-            </label>
-            <select onChange={(e) => onChange({...values, city: (e.target as HTMLSelectElement).value })}
-              style={inputStyleSelect}
-              onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
-              onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}     
-              value={values.city}       
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700 tracking-wide">城市</label>
+            <select
+              onChange={(e) => onChange({ ...values, city: (e.target as HTMLSelectElement).value })}
+              className="h-10 px-3 border border-gray-300 rounded-md text-base text-slate-800 outline-none w-full focus:border-primary"
+              value={values.city}
             >
               <option value=''>請選擇</option>
               <option value='New York'>紐約</option>
@@ -203,135 +116,58 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
 
           {/* Name */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              會員姓名
-            </label>
-            <div style={inputSection}>
-              <img src={SearchPic}/>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700 tracking-wide">會員姓名</label>
+            <div className="w-full p-3 rounded-md outline outline-1 outline-border -outline-offset-1 inline-flex items-center gap-2">
+              <img src={SearchPic} />
               <input
                 type="text"
                 value={values.name}
                 onChange={(e) => onChange({ ...values, name: e.target.value })}
                 placeholder="搜尋會員姓名"
-                style={inputStyleIcon}
-                onFocus={(e) => (e.target.style.borderColor = '#1383D3')}
-                onBlur={(e) => (e.target.style.borderColor = '#D1D5DB')}
+                className="h-10 px-3 border-none rounded-md text-base text-slate-800 outline-none w-full"
               />
             </div>
           </div>
 
           {/* Birthday */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 14, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              會員生日
-            </label>
-            <div style={inputSection}>
-              <img src={DatePic}/>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700 tracking-wide">會員生日</label>
+            <div className="w-full p-3 rounded-md outline outline-1 outline-border -outline-offset-1 inline-flex items-center gap-2">
+              <img src={DatePic} />
               <input
                 type="text"
                 value={values.birthday}
                 onChange={(e) => onChange({ ...values, birthday: e.target.value })}
                 placeholder="搜尋會員生日"
-                style={inputStyleIcon}
+                className="h-10 px-3 border-none rounded-md text-base text-slate-800 outline-none w-full"
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#1383D3';
                   e.target.type = 'date';
                   setTimeout(() => e.target.showPicker(), 10);
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = '#D1D5DB';
                   e.target.type = 'text';
-                  setTimeout(() => e.target.showPicker(), 10);
                 }}
               />
             </div>
           </div>
-          <div
-            style={{
-              padding: '16px 24px',
-              borderTop: 'none',
-              display: 'flex',
-              gap: 12,
-            }}
-          >
+
+          {/* Buttons */}
+          <div className="flex gap-3 py-4 px-6">
             <button
               onClick={handleOnReset}
-              style={{
-                flex: 1,
-                height: 40,
-                border: '1px solid #D1D5DB',
-                borderRadius: 6,
-                background: 'white',
-                color: '#374151',
-                fontSize: 14,
-                fontWeight: '500',
-                cursor: 'pointer',
-                letterSpacing: 0.5,
-                fontFamily: 'Noto Sans TC, sans-serif',
-              }}
+              className="flex-1 h-10 border border-gray-300 rounded-md bg-white text-gray-700 text-sm font-medium cursor-pointer tracking-wide font-sans"
             >
               清除重選
             </button>
             <button
               onClick={onApply}
-              style={{
-                flex: 1,
-                height: 40,
-                border: 'none',
-                borderRadius: 6,
-                background: '#1383D3',
-                color: 'white',
-                fontSize: 14,
-                fontWeight: '500',
-                cursor: 'pointer',
-                letterSpacing: 0.5,
-                fontFamily: 'Noto Sans TC, sans-serif',
-              }}
+              className="flex-1 h-10 border-none rounded-md bg-primary text-white text-sm font-medium cursor-pointer tracking-wide font-sans"
             >
               查詢
-          </button>
+            </button>
+          </div>
         </div>
-          {/* Banned status */}
-          {/*<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{ fontSize: 13, fontWeight: '500', color: '#374151', letterSpacing: 0.5 }}>
-              帳號狀態
-            </label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {(
-                [
-                  { value: 'all', label: '全部' },
-                  { value: 'active', label: '正常' },
-                  { value: 'banned', label: '已停用' },
-                ] as const
-              ).map(({ value, label }) => (
-                <label
-                  key={value}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    cursor: 'pointer',
-                    fontSize: 14,
-                    color: '#374151',
-                  }}
-                >
-                  <input
-                    type="radio"
-                    name="bannedStatus"
-                    value={value}
-                    checked={values.bannedStatus === value}
-                    onChange={() => onChange({ ...values, bannedStatus: value })}
-                    style={{ accentColor: '#1383D3', width: 16, height: 16 }}
-                  />
-                  {label}
-                </label>
-              ))}
-            </div>
-          </div>*/}
-        </div>
-
-        {/* Footer buttons */}
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 // ==========================================
 // Types
@@ -9,7 +9,10 @@ export interface StatCardData {
   value: string;
   change: string;
   color: string;
+  /** 圖標佔位符文字 (emoji / 字元) */
   icon?: string;
+  /** 圖標背景色，預設 primary */
+  iconBg?: string;
 }
 
 interface StatCardProps {
@@ -18,57 +21,41 @@ interface StatCardProps {
 
 // ==========================================
 // StatCard Component
+// 依 Figma: VERTICAL / gap-20 / p-16 / white bg / shadow
 // ==========================================
 
 const StatCard: React.FC<StatCardProps> = ({ data }) => {
-  const isPositive = data.change.startsWith('+');
-
   return (
-    <div
-      style={{
-        flex: 1,
-        minWidth: 200,
-        padding: 20,
-        background: 'white',
-        borderRadius: 10,
-        border: '1px solid #EDEDED',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-      }}
-    >
-      {/* 標籤 */}
-      <span style={{ fontSize: 14, color: '#888888', letterSpacing: 0.5 }}>
-        {data.label}
-      </span>
+    <div className="flex-1 min-w-[200px] flex flex-col items-center gap-5 p-4 bg-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+      {/* content 區塊: VERTICAL / gap-10 / FILL width */}
+      <div className="w-full flex flex-col gap-2.5">
+        {/* title + icon 列: HORIZONTAL / SPACE_BETWEEN / CENTER */}
+        <div className="w-full flex items-center justify-between gap-2.5">
+          <span className="text-sm text-text-dark tracking-wide">
+            {data.label}
+          </span>
+          {/* icon 容器: bg-primary / p-5 / FIXED / rounded */}
+          <div
+            className="w-14 h-14 flex items-center justify-center rounded-lg shrink-0"
+            style={{ backgroundColor: data.iconBg || '#1383D2' }}
+          >
+            <span className="text-white text-xl">{data.icon || '📊'}</span>
+          </div>
+        </div>
 
-      {/* 數值 */}
-      <span style={{ fontSize: 28, fontWeight: '600', color: '#333333', letterSpacing: 0.5 }}>
-        {data.value}
-      </span>
-
-      {/* 變動百分比 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <span
-          style={{
-            fontSize: 13,
-            fontWeight: '600',
-            color: data.color,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          {isPositive ? '▲' : '▼'} {data.change}
-        </span>
-        <span style={{ fontSize: 12, color: '#AAAAAA' }}>vs 上月</span>
+        {/* count 列: HORIZONTAL / CENTER cross / gap-10 / FILL width */}
+        <div className="w-full flex items-center gap-2.5">
+          <span className="text-[28px] font-semibold text-text-dark tracking-wide">
+            {data.value}
+          </span>
+        </div>
       </div>
     </div>
   );
 };
 
 // ==========================================
-// StatCardGrid – 一次渲染多張卡片
+// StatCardGrid
 // ==========================================
 
 interface StatCardGridProps {
@@ -77,13 +64,7 @@ interface StatCardGridProps {
 
 export const StatCardGrid: React.FC<StatCardGridProps> = ({ items }) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: 16,
-        flexWrap: 'wrap',
-      }}
-    >
+    <div className="flex gap-4 flex-wrap">
       {items.map((item) => (
         <StatCard key={item.label} data={item} />
       ))}

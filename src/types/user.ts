@@ -22,6 +22,65 @@ export interface UserListResponse {
     }
 }
 
+// ==========================================
+// Report 相關型別
+// ==========================================
+
+export interface ReportUser {
+    id: number;
+    name: string;
+    email: string;
+    avatar_url: string;
+    background_url: string;
+    apple_id: string;
+    membership_type: string;
+    privacy_tales: boolean;
+    privacy_cotales: boolean;
+    privacy_favorites: boolean;
+    is_banned: boolean;
+    time_added: string;
+    time_modified: string;
+}
+
+export interface Report {
+    id: number;
+    reporter_id: number;
+    report_type: string;
+    target_id: number;
+    reason: string;
+    status: string;
+    time_added: string;
+    time_modified: string;
+    reporter: ReportUser;
+}
+
+export interface ReportListResponse {
+    message: string;
+    data: {
+        items: Report[];
+        page: number;
+        size: number;
+        total: number;
+    };
+}
+
+export interface ReportTargetInfo {
+    id: number;
+    name: string;
+    email: string;
+    avatar_url: string;
+    is_banned: boolean;
+    time_added: string;
+}
+
+export interface ReportDetailResponse {
+    message: string;
+    data: {
+        report: Report;
+        target_info: ReportTargetInfo;
+    };
+}
+
 export interface UserDetailListResponse {
     message: string;
     data:{

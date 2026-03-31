@@ -23,7 +23,6 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, loading = false, 
   const [roleId, setRoleId] = useState<number>(2);
   const [errors, setErrors] = useState<{ name?: string; staff_no?: string; email?: string; phone?: string }>({});
 
-  // 關閉時重置表單
   useEffect(() => {
     if (!isOpen) {
       setName('');
@@ -72,131 +71,81 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, loading = false, 
     });
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    height: 40,
-    padding: '0 12px',
-    border: '1px solid #DEE2E6',
-    borderRadius: 4,
-    fontSize: 14,
-    fontFamily: 'Noto Sans TC, sans-serif',
-    color: '#333333',
-    boxSizing: 'border-box',
-    outline: 'none',
-  };
-
-  const labelStyle: React.CSSProperties = {
-    display: 'block',
-    marginBottom: 6,
-    fontSize: 14,
-    color: '#454545',
-    fontWeight: '500',
-    letterSpacing: 0.5,
-  };
-
-  const fieldStyle: React.CSSProperties = {
-    marginBottom: 16,
-  };
-
-  const errorStyle: React.CSSProperties = {
-    marginTop: 4,
-    fontSize: 12,
-    color: '#FF4444',
-    letterSpacing: 0.3,
-  };
-
   return (
     <div
       onClick={onClose}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0, 0, 0, 0.4)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-        fontFamily: 'Noto Sans TC, sans-serif',
-      }}
+      className="fixed inset-0 bg-black/40 flex justify-center items-center z-[1000] font-sans"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          width: 480,
-          background: 'white',
-          borderRadius: 8,
-          padding: '28px 32px',
-          boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.15)',
-        }}
+        className="w-[480px] bg-white rounded-lg py-7 px-8 shadow-[0_4px_24px_rgba(0,0,0,0.15)]"
       >
         {/* 標題 */}
-        <h2 style={{ margin: '0 0 24px 0', fontSize: 18, fontWeight: '600', color: '#333333', letterSpacing: 0.5 }}>
-          新增員工
-        </h2>
+        <h2 className="m-0 mb-6 text-lg font-semibold text-text-dark tracking-wide">新增員工</h2>
 
         {/* 姓名 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>姓名</label>
+        <div className="mb-4">
+          <label className="block mb-1.5 text-sm text-text-medium font-medium tracking-wide">姓名</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="請輸入姓名"
-            style={inputStyle}
+            className="w-full h-10 px-3 border border-border rounded text-sm font-sans text-text-dark box-border outline-none focus:border-primary"
             disabled={loading}
           />
-          {errors.name && <div style={errorStyle}>{errors.name}</div>}
+          {errors.name && <div className="mt-1 text-xs text-danger tracking-wide">{errors.name}</div>}
         </div>
 
         {/* 帳號 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>帳號</label>
+        <div className="mb-4">
+          <label className="block mb-1.5 text-sm text-text-medium font-medium tracking-wide">帳號</label>
           <input
             type="text"
             value={staffNo}
             onChange={(e) => setStaffNo(e.target.value)}
             placeholder="請輸入帳號"
-            style={inputStyle}
+            className="w-full h-10 px-3 border border-border rounded text-sm font-sans text-text-dark box-border outline-none focus:border-primary"
             disabled={loading}
           />
-          {errors.staff_no && <div style={errorStyle}>{errors.staff_no}</div>}
+          {errors.staff_no && <div className="mt-1 text-xs text-danger tracking-wide">{errors.staff_no}</div>}
         </div>
 
         {/* Email */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>Email</label>
+        <div className="mb-4">
+          <label className="block mb-1.5 text-sm text-text-medium font-medium tracking-wide">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="請輸入 Email"
-            style={inputStyle}
+            className="w-full h-10 px-3 border border-border rounded text-sm font-sans text-text-dark box-border outline-none focus:border-primary"
             disabled={loading}
           />
-          {errors.email && <div style={errorStyle}>{errors.email}</div>}
+          {errors.email && <div className="mt-1 text-xs text-danger tracking-wide">{errors.email}</div>}
         </div>
 
         {/* 手機 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>手機</label>
+        <div className="mb-4">
+          <label className="block mb-1.5 text-sm text-text-medium font-medium tracking-wide">手機</label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="請輸入手機號碼（如 +886912345678）"
-            style={inputStyle}
+            className="w-full h-10 px-3 border border-border rounded text-sm font-sans text-text-dark box-border outline-none focus:border-primary"
             disabled={loading}
           />
-          {errors.phone && <div style={errorStyle}>{errors.phone}</div>}
+          {errors.phone && <div className="mt-1 text-xs text-danger tracking-wide">{errors.phone}</div>}
         </div>
 
         {/* 角色 */}
-        <div style={fieldStyle}>
-          <label style={labelStyle}>角色</label>
+        <div className="mb-4">
+          <label className="block mb-1.5 text-sm text-text-medium font-medium tracking-wide">角色</label>
           <select
             value={roleId}
             onChange={(e) => setRoleId(Number(e.target.value))}
-            style={{ ...inputStyle, appearance: 'auto' }}
+            className="w-full h-10 px-3 border border-border rounded text-sm font-sans text-text-dark box-border outline-none appearance-auto focus:border-primary"
             disabled={loading}
           >
             {ROLE_OPTIONS.map((role) => (
@@ -207,51 +156,28 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, loading = false, 
 
         {/* API 錯誤訊息 */}
         {apiError && (
-          <div style={{ marginBottom: 12, padding: '8px 12px', background: '#FFF0F0', border: '1px solid #FFCCCC', borderRadius: 4, color: '#FF4444', fontSize: 13, letterSpacing: 0.3 }}>
+          <div className="mb-3 px-3 py-2 bg-danger-light border border-[#FFCCCC] rounded text-danger text-[13px] tracking-wide">
             {apiError}
           </div>
         )}
 
         {/* 按鈕區 */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 8 }}>
+        <div className="flex justify-end gap-3 mt-2">
           <button
             onClick={onClose}
             disabled={loading}
-            style={{
-              height: 40,
-              minWidth: 88,
-              padding: '0 16px',
-              background: 'white',
-              color: '#454545',
-              border: '1px solid #DEE2E6',
-              borderRadius: 4,
-              fontSize: 14,
-              fontWeight: '500',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              letterSpacing: 1,
-              fontFamily: 'Noto Sans TC, sans-serif',
-              opacity: loading ? 0.6 : 1,
-            }}
+            className={`h-10 min-w-[88px] px-4 bg-white text-text-medium border border-border rounded text-sm font-medium tracking-wide font-sans ${
+              loading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
+            }`}
           >
             取消
           </button>
           <button
             onClick={handleSubmit}
             disabled={loading}
-            style={{
-              height: 40,
-              minWidth: 88,
-              padding: '0 16px',
-              background: loading ? '#7FBDE8' : '#1383D3',
-              color: 'white',
-              border: 'none',
-              borderRadius: 4,
-              fontSize: 14,
-              fontWeight: '500',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              letterSpacing: 1,
-              fontFamily: 'Noto Sans TC, sans-serif',
-            }}
+            className={`h-10 min-w-[88px] px-4 text-white border-none rounded text-sm font-medium tracking-wide font-sans ${
+              loading ? 'bg-[#7FBDE8] cursor-not-allowed' : 'bg-primary cursor-pointer'
+            }`}
           >
             {loading ? '送出中...' : '送出'}
           </button>
