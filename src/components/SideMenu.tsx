@@ -309,7 +309,7 @@ const SideMenu: React.FC = () => {
                           e.currentTarget.style.background = subBg;
                         }}
                       >
-                        <span style={{ fontSize: 14, fontWeight: 400 }}>{sub.label}</span>
+                        <span style={{ fontSize: 14, fontWeight: isSubActive ? 500 : 400 }}>{sub.label}</span>
                       </NavLink>
                     );
                   })}
