@@ -82,7 +82,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ extra }) => {
         return (
           <React.Fragment key={crumb.path}>
             {idx > 0 && (
-              <div className="w-1 h-2 border-t border-r border-[#333] rotate-45 mx-1" />
+              <div className="w-2 h-2 border-t border-r border-[#333] rotate-45 mx-1 shrink-0" />
             )}
             {isLast ? (
               <span className="text-text-dark">{crumb.label}</span>

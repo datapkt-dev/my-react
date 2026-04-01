@@ -32,7 +32,9 @@ interface PageContainerProps {
 const PageContainer: React.FC<PageContainerProps> = ({ extraBreadcrumbs, children }) => {
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <Breadcrumbs extra={extraBreadcrumbs} />
+      <div className="px-5">
+        <Breadcrumbs extra={extraBreadcrumbs} />
+      </div>
       {/* MainContent — 對應 Figma mainContent: flex:1, flex-col, padding 10px 20px */}
       <div className="flex-1 flex flex-col min-h-0 px-5 py-2.5">{children}</div>
     </div>
