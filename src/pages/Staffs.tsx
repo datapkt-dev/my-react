@@ -42,6 +42,8 @@ const Staffs: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const loadStaffs = () => {
     const projectId = Number(localStorage.getItem('project_id')) || 1;
@@ -105,6 +107,14 @@ const Staffs: React.FC = () => {
           { label: '編輯', onClick: (item) => console.log('edit', item.numericId) },
           { label: '刪除', onClick: (item) => console.log('delete', item.numericId), className: 'text-danger' },
         ]}
+        pagination={{
+          currentPage,
+          pageSize,
+          totalItems: admins.length,
+          pageSizeOptions: [10, 25, 50, 100],
+          onPageChange: setCurrentPage,
+          onPageSizeChange: (size) => { setPageSize(size); setCurrentPage(1); },
+        }}
         loading={loading}
         error={error}
       />

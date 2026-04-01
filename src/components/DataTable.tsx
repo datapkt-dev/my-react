@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Pagination from './Pagination';
 
 // ==========================================
 // Types
@@ -176,6 +175,74 @@ const SortIcon: React.FC<{ field: string; sort: SortConfig }> = ({ field, sort }
 // DataTable Component
 // ==========================================
 
+// ==========================================
+// Nexly-style Pagination Footer helpers
+// ==========================================
+
+/** 產生分頁頁碼陣列（含省略號） */
+function getPageNumbers(current: number, total: number): (number | '...')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  const pages: (number | '...')[] = [1];
+  if (current > 3) pages.push('...');
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (current < total - 2) pages.push('...');
+  pages.push(total);
+  return pages;
+}
+
+/** Nexly-style 分頁按鈕（含 hover 效果） */
+const NexlyPageButton: React.FC<{
+  disabled?: boolean;
+  active?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  borderRadius?: string;
+}> = ({ disabled = false, active = false, onClick, children, borderRadius }) => {
+  const baseColor = disabled
+    ? { bg: '#F0F0F0', fg: '#999' }
+    : active
+      ? { bg: 'var(--color-primary)', fg: '#FFF' }
+      : { bg: '#FFF', fg: 'var(--color-primary)' };
+
+  return (
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className="flex items-center justify-center border-none cursor-pointer disabled:cursor-not-allowed transition-colors text-sm"
+      style={{
+        minWidth: '32px',
+        height: '34px',
+        padding: '0 8px',
+        backgroundColor: baseColor.bg,
+        color: baseColor.fg,
+        ...(borderRadius ? { borderRadius } : {}),
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled && !active) {
+          e.currentTarget.style.backgroundColor = 'var(--color-primary)';
+          e.currentTarget.style.color = '#FFF';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled && !active) {
+          e.currentTarget.style.backgroundColor = baseColor.bg;
+          e.currentTarget.style.color = baseColor.fg;
+        }
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
+// ==========================================
+// DataTable Component
+// ==========================================
+
 function DataTable<T>({
   data,
   columns,
@@ -192,124 +259,239 @@ function DataTable<T>({
 
   const hasActions = actions && actions.length > 0;
 
+  // 分頁計算
+  const currentPage = pagination?.currentPage ?? 1;
+  const pSize = pagination?.pageSize ?? 10;
+  const totalItems = pagination?.totalItems ?? data.length;
+  const maxPage = Math.max(1, Math.ceil(totalItems / pSize));
+  const isFirstPage = currentPage === 1 || data.length === 0;
+  const isLastPage = currentPage >= maxPage || data.length === 0;
+  const pageSizeOptions = pagination?.pageSizeOptions ?? [10, 25, 50, 100];
+
   // 分頁資料切片
   const displayData = pagination
     ? data.slice(
-        (pagination.currentPage - 1) * pagination.pageSize,
-        pagination.currentPage * pagination.pageSize,
+        (currentPage - 1) * pSize,
+        currentPage * pSize,
       )
     : data;
 
-  const totalPages = pagination
-    ? Math.ceil(pagination.totalItems / pagination.pageSize)
-    : 0;
+  // 顯示筆數資訊
+  const firstIndex = data.length === 0 ? 0 : (currentPage - 1) * pSize + 1;
+  const lastIndex = Math.min(currentPage * pSize, totalItems);
+
+  // 頁碼陣列
+  const pageNumbers = getPageNumbers(currentPage, maxPage);
 
   return (
-    <>
-      {/* 表格區塊 — flex-1 讓它佔滿剩餘空間 */}
-      <div className="flex-1 flex flex-col min-h-0">
-        <div className="flex-1 overflow-auto min-h-0">
-          <div className={minWidth ?? ''}>
-            {/* 表頭 */}
-            <div className="flex items-center px-2.5 h-[52px] bg-white border-b border-border sticky top-0 z-10">
-              {columns.map((col) => {
-                const widthClass = col.width
-                  ? `${col.width} shrink-0`
-                  : 'flex-1';
+    <div className="flex-1 flex flex-col min-h-0 bg-white rounded overflow-hidden"
+      style={{ boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.08)' }}>
+      {/* ===== 表格主體區域 — flex-1 + 內部捲動 ===== */}
+      <div className="flex-1 overflow-auto min-h-0">
+        <div className={minWidth ?? ''}>
+          {/* 表頭 */}
+          <div className="flex items-center px-2.5 h-[52px] bg-white border-b border-border sticky top-0 z-10">
+            {columns.map((col) => {
+              const widthClass = col.width
+                ? `${col.width} shrink-0`
+                : 'flex-1';
+              return (
+                <div
+                  key={col.key}
+                  className={`flex items-center px-2.5 text-text-muted text-sm tracking-wide ${widthClass} ${
+                    col.sortable && sort ? 'cursor-pointer select-none hover:text-text-dark transition-colors' : ''
+                  }`}
+                  onClick={() => col.sortable && sort?.onSort(col.key)}
+                >
+                  {col.label}
+                  {col.sortable && sort && <SortIcon field={col.key} sort={sort} />}
+                </div>
+              );
+            })}
+            {hasActions && (
+              <div className="w-[50px] px-2.5 text-text-muted text-sm tracking-wide text-center shrink-0">
+                操作
+              </div>
+            )}
+          </div>
+
+          {/* 內容列 */}
+          <div className="flex flex-col">
+            {loading && (
+              <div className="py-5 px-2.5 text-text-light text-sm tracking-wide">載入中...</div>
+            )}
+            {!loading && error && (
+              <div className="py-5 px-2.5 text-danger text-sm tracking-wide">{error}</div>
+            )}
+            {!loading && !error && displayData.length === 0 && (
+              <div className="py-5 px-2.5 text-text-light text-sm tracking-wide">{emptyText}</div>
+            )}
+            {!loading &&
+              !error &&
+              displayData.map((item, index) => {
+                const key = rowKey(item);
                 return (
                   <div
-                    key={col.key}
-                    className={`flex items-center px-2.5 text-text-muted text-sm tracking-wide ${widthClass} ${
-                      col.sortable && sort ? 'cursor-pointer select-none hover:text-text-dark transition-colors' : ''
+                    key={key}
+                    className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${
+                      index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
                     }`}
-                    onClick={() => col.sortable && sort?.onSort(col.key)}
                   >
-                    {col.label}
-                    {col.sortable && sort && <SortIcon field={col.key} sort={sort} />}
+                    {columns.map((col) => {
+                      const value = col.render
+                        ? col.render(item, index)
+                        : String((item as Record<string, unknown>)[col.key] ?? '--');
+                      const widthClass = col.width
+                        ? `${col.width} shrink-0`
+                        : 'flex-1';
+                      return (
+                        <div
+                          key={col.key}
+                          className={`px-2.5 text-sm text-text-medium tracking-wide ${widthClass}`}
+                        >
+                          {value}
+                        </div>
+                      );
+                    })}
+                    {hasActions && (
+                      <div className="w-[50px] px-2.5 flex justify-center relative shrink-0">
+                        <DotsButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuKey((prev) => (prev === key ? null : key));
+                          }}
+                        />
+                        <ActionDropdown
+                          isOpen={openMenuKey === key}
+                          onClose={() => setOpenMenuKey(null)}
+                          item={item}
+                          actions={actions!}
+                        />
+                      </div>
+                    )}
                   </div>
                 );
               })}
-              {hasActions && (
-                <div className="w-[50px] px-2.5 text-text-muted text-sm tracking-wide text-center shrink-0">
-                  操作
-                </div>
-              )}
-            </div>
-
-            {/* 內容列 */}
-            <div className="flex flex-col">
-              {loading && (
-                <div className="py-5 px-2.5 text-text-light text-sm tracking-wide">載入中...</div>
-              )}
-              {!loading && error && (
-                <div className="py-5 px-2.5 text-danger text-sm tracking-wide">{error}</div>
-              )}
-              {!loading && !error && displayData.length === 0 && (
-                <div className="py-5 px-2.5 text-text-light text-sm tracking-wide">{emptyText}</div>
-              )}
-              {!loading &&
-                !error &&
-                displayData.map((item, index) => {
-                  const key = rowKey(item);
-                  return (
-                    <div
-                      key={key}
-                      className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${
-                        index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
-                      }`}
-                    >
-                      {columns.map((col) => {
-                        const value = col.render
-                          ? col.render(item, index)
-                          : String((item as Record<string, unknown>)[col.key] ?? '--');
-                        const widthClass = col.width
-                          ? `${col.width} shrink-0`
-                          : 'flex-1';
-                        return (
-                          <div
-                            key={col.key}
-                            className={`px-2.5 text-sm text-text-medium tracking-wide ${widthClass}`}
-                          >
-                            {value}
-                          </div>
-                        );
-                      })}
-                      {hasActions && (
-                        <div className="w-[50px] px-2.5 flex justify-center relative shrink-0">
-                          <DotsButton
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setOpenMenuKey((prev) => (prev === key ? null : key));
-                            }}
-                          />
-                          <ActionDropdown
-                            isOpen={openMenuKey === key}
-                            onClose={() => setOpenMenuKey(null)}
-                            item={item}
-                            actions={actions!}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
           </div>
         </div>
       </div>
 
-      {/* 分頁 */}
+      {/* ===== Nexly-style 底部分頁 — 固定在表格底部，帶上方陰影 ===== */}
       {pagination && !loading && !error && data.length > 0 && (
-        <Pagination
-          currentPage={pagination.currentPage}
-          totalPages={totalPages}
-          pageSize={pagination.pageSize}
-          pageSizeOptions={pagination.pageSizeOptions}
-          onPageChange={pagination.onPageChange}
-          onPageSizeChange={pagination.onPageSizeChange}
-        />
+        <div
+          className="flex items-center justify-between shrink-0"
+          style={{
+            padding: '12px 20px',
+            boxShadow: '0px -1px 4px 0px rgba(0,0,0,0.13)',
+          }}
+        >
+          {/* 左側：showing X to Y of Z items */}
+          <div className="text-sm font-medium" style={{ color: '#5F6E7B' }}>
+            showing {firstIndex} to {lastIndex} of {totalItems} items
+          </div>
+
+          {/* 右側：分頁按鈕 + 每頁筆數 */}
+          <div className="flex items-center gap-2.5">
+            {/* 分頁按鈕群組 */}
+            <div className="flex">
+              {/* 第一頁 */}
+              <NexlyPageButton
+                disabled={isFirstPage}
+                onClick={() => pagination.onPageChange(1)}
+                borderRadius="4px 0 0 4px"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="11 17 6 12 11 7" />
+                  <polyline points="18 17 13 12 18 7" />
+                </svg>
+              </NexlyPageButton>
+
+              {/* 上一頁 */}
+              <NexlyPageButton
+                disabled={isFirstPage}
+                onClick={() => pagination.onPageChange(currentPage - 1)}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </NexlyPageButton>
+
+              {/* 頁碼按鈕 */}
+              {pageNumbers.map((p, idx) =>
+                p === '...' ? (
+                  <div
+                    key={`ellipsis-${idx}`}
+                    className="flex items-center justify-center text-sm"
+                    style={{ minWidth: '32px', height: '34px', color: 'var(--color-primary)' }}
+                  >
+                    ...
+                  </div>
+                ) : (
+                  <NexlyPageButton
+                    key={p}
+                    active={p === currentPage}
+                    onClick={() => pagination.onPageChange(p)}
+                  >
+                    {p}
+                  </NexlyPageButton>
+                ),
+              )}
+
+              {/* 下一頁 */}
+              <NexlyPageButton
+                disabled={isLastPage}
+                onClick={() => pagination.onPageChange(currentPage + 1)}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </NexlyPageButton>
+
+              {/* 最後一頁 */}
+              <NexlyPageButton
+                disabled={isLastPage}
+                onClick={() => pagination.onPageChange(maxPage)}
+                borderRadius="0 4px 4px 0"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="13 17 18 12 13 7" />
+                  <polyline points="6 17 11 12 6 7" />
+                </svg>
+              </NexlyPageButton>
+            </div>
+
+            {/* 每頁筆數選擇器 */}
+            {pagination.onPageSizeChange && (
+              <div
+                className="flex items-center"
+                style={{
+                  height: '34px',
+                  background: '#F8F9FA',
+                  padding: '0 8px',
+                  boxShadow: '1px 2px 4px 0px rgba(0,0,0,0.05) inset',
+                }}
+              >
+                <select
+                  value={pSize}
+                  onChange={(e) => {
+                    pagination.onPageSizeChange!(Number(e.target.value));
+                    pagination.onPageChange(1);
+                  }}
+                  className="border-none bg-transparent text-sm font-medium cursor-pointer outline-none"
+                  style={{ color: '#2B2F35', padding: '0 8px' }}
+                >
+                  {pageSizeOptions.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 }
 

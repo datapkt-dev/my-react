@@ -8,72 +8,74 @@ interface UserProfileCardProps {
   avatarUrl: string;
   name: string;
   birthday?: string;
-  email: string;
-  region?: string;
-  gender?: string;
-  addedDate: string;
+  phone?: string;
+  email?: string;
 }
 
 // ==========================================
-// Helpers
+// Avatar Placeholder
 // ==========================================
 
-const formatDate = (dateString: string | undefined): string => {
-  if (!dateString) return '---';
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}/${month}/${day}`;
-};
-
-const displayValue = (value: string | undefined | null) => {
-  if (value === null || value === undefined || value === '') {
-    return <span className="text-gray-300">---</span>;
-  }
-  return value;
-};
+const AvatarPlaceholder: React.FC<{ name: string; size?: number }> = ({ name, size = 100 }) => (
+  <div
+    className="flex items-center justify-center rounded"
+    style={{
+      width: `${size}px`,
+      height: `${size}px`,
+      backgroundColor: '#B6E4D0',
+      fontSize: `${size * 0.36}px`,
+      fontWeight: 600,
+      color: '#2B7A5B',
+    }}
+  >
+    {name.charAt(0)}
+  </div>
+);
 
 // ==========================================
 // UserProfileCard Component
-// 依 Figma: VERTICAL / gap-20 / p-20 / FIXED width / white bg / shadow
+// 復刻 nexly-web detail.vue 左側使用者資訊卡
+// 286px 寬 / 圓角 10px / box-shadow / 頭像 100x100 / 姓名 / 生日+電話
 // ==========================================
 
 const UserProfileCard: React.FC<UserProfileCardProps> = ({
   avatarUrl,
   name,
   birthday,
+  phone,
   email,
-  region,
-  gender,
-  addedDate,
 }) => {
   return (
-    <div className="w-[280px] flex flex-col gap-5 p-5 bg-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-      {/* avatar: HORIZONTAL / CENTER cross / gap-10 / 100x100 */}
-      <div className="flex items-center gap-2.5">
+    <div
+      className="flex flex-col gap-5 p-5 rounded-[10px] shrink-0"
+      style={{
+        width: '286px',
+        boxShadow: '0 0 6px 0 rgba(0, 0, 0, 0.20)',
+        backgroundColor: '#FFF',
+      }}
+    >
+      {/* 頭像 */}
+      {avatarUrl ? (
         <img
           src={avatarUrl}
-          alt="Avatar"
-          className="w-[100px] h-[100px] rounded-xl object-cover"
+          alt={name}
+          className="rounded object-cover object-center"
+          style={{ width: '100px', height: '100px', backgroundColor: '#B6E4D0' }}
         />
+      ) : (
+        <AvatarPlaceholder name={name} size={100} />
+      )}
+
+      {/* 名稱 */}
+      <div className="text-base font-medium" style={{ color: '#2B2F35' }}>
+        {name}
       </div>
 
-      {/* name + info 區塊: VERTICAL / gap-20 */}
-      <div className="flex flex-col gap-5">
-        {/* name: text-14:942 (較大) / color rgb(51,51,51) */}
-        <h2 className="text-xl text-text-dark font-semibold m-0">
-          {name}
-        </h2>
-
-        {/* info 欄位群: VERTICAL / gap-10 */}
-        <div className="flex flex-col gap-2.5">
-          <span className="text-sm text-text-dark">{formatDate(birthday)}</span>
-          <span className="text-sm text-text-dark">{displayValue(email)}</span>
-          <span className="text-sm text-text-dark">{displayValue(region)}</span>
-          <span className="text-sm text-text-dark">{displayValue(gender)}</span>
-          <span className="text-sm text-text-dark">{formatDate(addedDate)} 註冊</span>
-        </div>
+      {/* 生日 & 電話 */}
+      <div className="text-sm leading-relaxed" style={{ color: '#2B2F35' }}>
+        {birthday || '---'}
+        <br />
+        {phone || email || '---'}
       </div>
     </div>
   );

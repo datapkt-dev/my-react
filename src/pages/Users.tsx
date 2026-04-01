@@ -58,6 +58,8 @@ const Users: React.FC = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [pendingFilters, setPendingFilters] = useState<FilterValues>(DEFAULT_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState<FilterValues>(DEFAULT_FILTERS);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const applyFilters = (list: User[], filters: FilterValues): User[] => {
     return list.filter((user) => {
@@ -145,6 +147,14 @@ const Users: React.FC = () => {
         actions={[
           { label: '查看', onClick: (item) => navigate(`/users/userList/${item.id}`) },
         ]}
+        pagination={{
+          currentPage,
+          pageSize,
+          totalItems: filteredUsers.length,
+          pageSizeOptions: [10, 25, 50, 100],
+          onPageChange: setCurrentPage,
+          onPageSizeChange: (size) => { setPageSize(size); setCurrentPage(1); },
+        }}
         loading={loading}
         error={error}
       />
@@ -156,12 +166,14 @@ const Users: React.FC = () => {
         onApply={() => {
           setAppliedFilters(pendingFilters);
           setFilteredUsers(applyFilters(users, pendingFilters));
+          setCurrentPage(1);
           setIsFilterOpen(false);
         }}
         onReset={() => {
           setPendingFilters(DEFAULT_FILTERS);
           setAppliedFilters(DEFAULT_FILTERS);
           setFilteredUsers(applyFilters(users, DEFAULT_FILTERS));
+          setCurrentPage(1);
         }}
         onClose={() => setIsFilterOpen(false)}
         filterValue={filterRole}

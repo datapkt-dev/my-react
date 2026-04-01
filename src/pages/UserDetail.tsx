@@ -1,40 +1,56 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { fetchUserDetailList } from '../api/userApi';
+import PageContainer from '../components/PageContainer';
 import UserProfileCard from '../components/UserProfileCard';
+
+// ==========================================
+// Types
+// ==========================================
 
 interface UserDetailData {
   name: string;
   avatar_url: string;
   birthday?: string;
+  phone?: string;
   email: string;
-  region?: string;
-  gender?: string;
-  added_date: string;
-  inviter?: { name: string; code: string };
-  talesCount: number;
-  personalRate: number;
-  groupRate?: number;
+  bio?: string;
+  user_id?: string;
+  tales_count: number;
+  personal_completed_count: number;
+  personal_uncompleted_count: number;
 }
+
+// ==========================================
+// BackArrow SVG
+// ==========================================
+
+const BackArrowIcon: React.FC = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+
+// ==========================================
+// Helpers
+// ==========================================
+
+const formatDate = (dateString: string | undefined): string => {
+  if (!dateString) return '---';
+  const d = dateString.split('T')[0];
+  return d || '---';
+};
+
+// ==========================================
+// UserDetail Page
+// ==========================================
 
 const UserDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<UserDetailData>({
-    name: 'Emily Lin',
-    avatar_url: 'https://via.placeholder.com/80',
-    birthday: '1999/12/12',
-    email: 'emilylin1234@example.com',
-    region: '北美',
-    gender: '女性',
-    added_date: '2026-03-25T17:40:37+08:00',
-    inviter: { name: 'Tom', code: 'abcd54321' },
-    talesCount: 61,
-    personalRate: 20,
-    groupRate: 20,
-  });
+  const [userData, setUserData] = useState<UserDetailData | null>(null);
 
   useEffect(() => {
     const projectId = Number(localStorage.getItem('project_id')) || 1;
@@ -46,97 +62,119 @@ const UserDetails: React.FC = () => {
     setLoading(true);
     fetchUserDetailList(projectId, Number(id))
       .then((res) => {
-        const data = {
+        setUserData({
           name: res.data.name,
-          birthday: res.data.birthday,
+          birthday: formatDate(res.data.birthday),
           email: res.data.email,
-          region: res.data.country,
+          phone: res.data.phone,
           avatar_url: res.data.avatar_url,
-          added_date: res.data.time_added,
-          talesCount: res.data.tales_count,
-          personalRate: res.data.personal_completed_count,
-        }
-        setUserData(data)
+          tales_count: res.data.tales_count,
+          personal_completed_count: res.data.personal_completed_count,
+          personal_uncompleted_count: res.data.personal_uncompleted_count,
+        });
       })
       .catch((err: unknown) => setError(err instanceof Error ? err.message : String(err)))
       .finally(() => setLoading(false));
-  }, []);
-
-  const formatDisplay = (value: any, suffix: string = '') => {
-    if (value === null || value === undefined || value === '') {
-      return <span className="text-gray-300">---</span>;
-    }
-    return `${value}${suffix}`;
-  };
+  }, [id]);
 
   return (
-    <>
-      <div className="w-full py-5 px-7 bg-white font-sans">
-        {/* 麵包屑 */}
-        <div className="flex items-center gap-2 h-10">
-          <span className="text-text-muted text-sm">用戶管理 {'>'} 使用者列表</span>
-          <div className="w-1 h-2 border-t border-r border-[#333] rotate-45 mx-1" />
-          <span className="text-text-dark text-sm">使用者詳情</span>
-        </div>
+    <PageContainer
+      extraBreadcrumbs={[
+        { label: '使用者詳情', path: `/users/userList/${id}` },
+      ]}
+    >
+      {/* ===== 標題列（含返回按鈕） ===== */}
+      <div className="flex items-center justify-between mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2.5 border-none bg-transparent cursor-pointer p-0"
+        >
+          <span className="text-text-medium flex items-center">
+            <BackArrowIcon />
+          </span>
+          <h1 className="text-2xl font-medium text-text-medium m-0 tracking-wide">
+            使用者詳情
+          </h1>
+        </button>
+      </div>
 
-        <div>
-          <button
-            className="border-none bg-transparent cursor-pointer gap-2.5"
-            onClick={() => navigate(-1)}
-          >
-            <h1 className="text-text-medium text-2xl font-medium m-0 tracking-wide">
-              <span>←</span> 使用者詳情
-            </h1>
-          </button>
-        </div>
+      {/* ===== Loading / Error ===== */}
+      {loading && (
+        <div className="py-10 text-center text-sm text-text-light">載入中...</div>
+      )}
+      {!loading && error && (
+        <div className="py-10 text-center text-sm text-danger">{error}</div>
+      )}
 
-        {!loading && !error && (
-          <div className="flex min-h-screen bg-white">
-            {/* 左側資訊欄 */}
-            <UserProfileCard
-              avatarUrl={userData.avatar_url}
-              name={userData.name}
-              birthday={userData.birthday}
-              email={userData.email}
-              region={userData.region}
-              gender={userData.gender}
-              addedDate={userData.added_date}
-            />
+      {/* ===== 主體：左右兩欄 ===== */}
+      {!loading && !error && userData && (
+        <div className="flex gap-5 flex-1 min-h-0">
+          {/* ── 左側：使用者資訊卡 ── */}
+          <UserProfileCard
+            avatarUrl={userData.avatar_url}
+            name={userData.name}
+            birthday={userData.birthday}
+            phone={userData.phone}
+            email={userData.email}
+          />
 
-            {/* 右側數據卡片區 */}
-            <div className="flex-1 p-10">
-              {/* 邀請人資訊 */}
-              <div className="mb-8">
-                <div className="text-sm text-[#666] mb-3 font-medium">邀請人(碼)</div>
-                <div className={`text-base ${userData.inviter?.name ? 'text-text-dark' : 'text-gray-300'}`}>
-                  {userData.inviter?.name
-                    ? `${userData.inviter.name} (${userData.inviter.code})`
-                    : '無邀請人資訊'}
+          {/* ── 右側：詳細資料 ── */}
+          <div className="flex-1 flex flex-col gap-8">
+            {/* 邀請人(碼) */}
+            <div className="flex flex-col gap-2">
+              <div className="text-base font-medium" style={{ color: '#2B2F35' }}>
+                邀請人(碼)
+              </div>
+              <div className="text-sm" style={{ color: '#2B2F35' }}>
+                {userData.bio || '---'}{' '}
+                {userData.user_id && (
+                  <span style={{ color: '#5F6E7B' }}>({userData.user_id})</span>
+                )}
+              </div>
+            </div>
+
+            {/* Pins 數 — 卡片 */}
+            <div
+              className="rounded-[10px] p-5 flex flex-col gap-2.5"
+              style={{ boxShadow: '0 0 6px 0 rgba(0, 0, 0, 0.20)', backgroundColor: '#FFF' }}
+            >
+              <div className="text-sm" style={{ color: '#2B2F35' }}>
+                Pins數
+              </div>
+              <div className="text-[30px] font-medium" style={{ color: '#2B2F35' }}>
+                {userData.tales_count}
+              </div>
+            </div>
+
+            {/* 成就達成率 — 兩張卡片 */}
+            <div className="flex gap-8 w-full">
+              <div
+                className="flex-1 rounded-[10px] p-5 flex flex-col gap-2.5"
+                style={{ boxShadow: '0 0 6px 0 rgba(0, 0, 0, 0.20)', backgroundColor: '#FFF' }}
+              >
+                <div className="text-sm" style={{ color: '#2B2F35' }}>
+                  個人成就達成率
+                </div>
+                <div className="text-[30px] font-medium" style={{ color: '#2B2F35' }}>
+                  {userData.personal_completed_count}
                 </div>
               </div>
-
-              {/* Tales數 */}
-              <div className="bg-white rounded-[10px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#F0F0F0]">
-                <div className="text-sm text-[#666] mb-3 font-medium">Tales數</div>
-                <div className="text-[32px] text-text-dark font-semibold">{formatDisplay(userData.talesCount)}</div>
-              </div>
-
-              {/* 成就率 */}
-              <div className="flex gap-6 mt-6">
-                <div className="flex-1 bg-white rounded-[10px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#F0F0F0]">
-                  <div className="text-sm text-[#666] mb-3 font-medium">個人成就達成率</div>
-                  <div className="text-[32px] text-text-dark font-semibold">{formatDisplay(userData.personalRate, '%')}</div>
+              <div
+                className="flex-1 rounded-[10px] p-5 flex flex-col gap-2.5"
+                style={{ boxShadow: '0 0 6px 0 rgba(0, 0, 0, 0.20)', backgroundColor: '#FFF' }}
+              >
+                <div className="text-sm" style={{ color: '#2B2F35' }}>
+                  團體成就達成率
                 </div>
-                <div className="flex-1 bg-white rounded-[10px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#F0F0F0]">
-                  <div className="text-sm text-[#666] mb-3 font-medium">團體成就達成率</div>
-                  <div className="text-[32px] text-text-dark font-semibold">{formatDisplay(userData.groupRate, '%')}</div>
+                <div className="text-[30px] font-medium" style={{ color: '#2B2F35' }}>
+                  {userData.personal_uncompleted_count}
                 </div>
               </div>
             </div>
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </PageContainer>
   );
 };
 

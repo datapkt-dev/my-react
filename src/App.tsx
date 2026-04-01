@@ -15,6 +15,8 @@ import UserAnalytics from './pages/UserAnalytics'
 import PostAnalytics from './pages/PostAnalytics'
 import NotificationManagement from './pages/NotificationManagement'
 import Settings from './pages/Settings'
+import TestDemo from './pages/TestDemo'
+import UserDetailDemo from './pages/UserDetailDemo'
 import './App.css'
 
 /**
@@ -85,6 +87,8 @@ function App() {
             <Route path="users" element={<UserAnalytics />} />
             <Route path="posts" element={<PostAnalytics />} />
           </Route>
+          <Route path="/test-demo" element={<TestDemo />} />
+          <Route path="/user-detail-demo" element={<UserDetailDemo />} />
           <Route path="/notifications" element={<NotificationManagement />} />
           <Route path="/settings" element={<Outlet />}> 
             {/* 當使用者進入 /settings 時，自動跳轉到地區管理 */}
