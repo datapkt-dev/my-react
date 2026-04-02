@@ -287,7 +287,7 @@ const SideMenu: React.FC = () => {
                   {item.subMenu!.map((sub) => {
                     const isSubActive = isPathActive(location.pathname, sub.to, true);
                     const subBg = isSubActive ? '#DAF0FF' : 'transparent';
-                    const subColor = isSubActive ? '#333' : '#333';
+                    const subColor = isSubActive ? '#1383D3' : '#333';
 
                     return (
                       <NavLink
