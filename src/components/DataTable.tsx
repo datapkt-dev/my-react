@@ -295,7 +295,7 @@ function DataTable<T>({
       style={{ boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.08)' }}>
       {/* ===== 表格主體區域 — flex-1 + 內部捲動 ===== */}
       <div className="flex-1 overflow-auto min-h-0">
-        <div className={layout === 'scroll' ? (minWidth ?? '') : ''}>
+        <div className={minWidth ?? ''}>
           {/* 表頭 */}
           <div className={`flex items-center px-2.5 h-[52px] bg-white border-b border-border sticky top-0 z-10${layout === 'fill' ? ' justify-between' : ''}`}>
             {columns.map((col) => {
