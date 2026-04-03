@@ -27,14 +27,13 @@ interface ReportRow {
 // ==========================================
 
 const REPORT_COLUMNS: ColumnDef<ReportRow>[] = [
-  { key: 'reporterName', label: '檢舉人', width: 'w-40' },
-  { key: 'reportType', label: '檢舉類型', width: 'w-[120px]' },
-  { key: 'targetId', label: '被檢舉對象', width: 'w-[100px]' },
+  { key: 'reporterName', label: '檢舉人' },
+  { key: 'reportType', label: '檢舉類型' },
+  { key: 'targetId', label: '被檢舉對象' },
   { key: 'reason', label: '原因', truncate: true },
   {
     key: 'status',
     label: '狀態',
-    width: 'w-[100px]',
     render: (item) => (
       <span className={`font-medium ${statusColor(item.status)}`}>
         {statusLabel(item.status)}
@@ -44,7 +43,6 @@ const REPORT_COLUMNS: ColumnDef<ReportRow>[] = [
   {
     key: 'timeAdded',
     label: '檢舉時間',
-    width: 'w-[120px]',
     render: (item) => <>{formatDate(item.timeAdded)}</>,
   },
 ];
@@ -388,6 +386,7 @@ const ReportList: React.FC = () => {
         data={filteredReports}
         columns={REPORT_COLUMNS}
         rowKey={(item) => item.id}
+        layout="fill"
         actions={[
           { label: '查看', onClick: (item) => handleOpenModal(item.id) },
         ]}

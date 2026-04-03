@@ -45,9 +45,9 @@ const formatDate = (dateString: string | undefined): string => {
 };
 
 const SUSPENDED_USER_COLUMNS: ColumnDef<User>[] = [
-  { key: 'name', label: '會員帳號', width: 'w-40' },
-  { key: 'nationality', label: '國籍城市', width: 'w-[100px]' },
-  { key: 'name', label: '姓名', width: 'w-40' },
+  { key: 'name', label: '會員帳號' },
+  { key: 'nationality', label: '國籍城市' },
+  { key: 'name', label: '姓名' },
   {
     key: 'birthday',
     label: '生日',
@@ -154,6 +154,7 @@ const SuspendedUsers: React.FC = () => {
         data={filteredUsers}
         columns={SUSPENDED_USER_COLUMNS}
         rowKey={(item) => item.id}
+        layout="fill"
         actions={[
           { label: '查看', onClick: (item) => navigate(`/users/userList/${item.id}`) },
         ]}

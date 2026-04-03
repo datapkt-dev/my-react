@@ -24,9 +24,9 @@ interface AdminUser {
 // ==========================================
 
 const STAFF_COLUMNS: ColumnDef<AdminUser>[] = [
-  { key: 'id', label: '帳號', width: 'w-40' },
-  { key: 'name', label: '姓名', width: 'w-[100px]' },
-  { key: 'phone', label: '手機', width: 'w-40' },
+  { key: 'id', label: '帳號' },
+  { key: 'name', label: '姓名' },
+  { key: 'phone', label: '手機' },
   { key: 'email', label: '信箱' },
 ];
 
@@ -102,6 +102,7 @@ const Staffs: React.FC = () => {
         data={admins}
         columns={STAFF_COLUMNS}
         rowKey={(item) => item.numericId}
+        layout="fill"
         actions={[
           { label: '查看', onClick: (item) => console.log('view', item.numericId) },
           { label: '編輯', onClick: (item) => console.log('edit', item.numericId) },
