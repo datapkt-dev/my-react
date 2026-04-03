@@ -69,8 +69,8 @@ const statusLabel = (status: string): string => {
 
 const statusColor = (status: string): string => {
   switch (status) {
-    case 'pending': return 'text-[#E6A817]';
-    case 'resolved': return 'text-[#28A745]';
+    case 'pending': return 'text-status-pending';
+    case 'resolved': return 'text-status-resolved';
     case 'rejected': return 'text-text-muted';
     default: return 'text-text-medium';
   }
@@ -142,10 +142,10 @@ const ReportDetailModal: React.FC<{
         ) : (
           <div className="flex flex-col gap-2.5">
             {/* 灰色資訊區塊 */}
-            <div className="flex flex-col gap-2.5 bg-[#F4F6F7] border border-border rounded p-2.5">
+            <div className="flex flex-col gap-2.5 bg-bg-gray border border-border rounded p-2.5">
               {/* 被檢舉用戶資訊 */}
               <div className="flex gap-5">
-                <div className="w-[100px] h-[100px] rounded-full overflow-hidden shrink-0 bg-[#E0E0E0]">
+                <div className="w-[100px] h-[100px] rounded-full overflow-hidden shrink-0 bg-hover-row">
                   {target?.avatar_url ? (
                     <img src={target.avatar_url} alt="" className="w-full h-full object-cover" />
                   ) : (
@@ -204,7 +204,7 @@ const ReportDetailModal: React.FC<{
                 value={dispositionReason}
                 onChange={(e) => setDispositionReason(e.target.value)}
                 placeholder="填寫原因"
-                className="bg-white border border-border rounded px-3 py-2.5 text-sm text-text-dark resize-none min-h-[60px] outline-none focus:border-primary placeholder:text-[#B0B0B0]"
+                className="bg-white border border-border rounded px-3 py-2.5 text-sm text-text-dark resize-none min-h-[60px] outline-none focus:border-primary placeholder:text-placeholder"
               />
             </div>
 
@@ -213,7 +213,7 @@ const ReportDetailModal: React.FC<{
               <div
                 onClick={() => setDisposition('ban')}
                 className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  disposition === 'ban' ? 'border-primary' : 'border-[#999]'
+                  disposition === 'ban' ? 'border-primary' : 'border-text-muted'
                 }`}
               >
                 {disposition === 'ban' && <div className="w-2 h-2 rounded-full bg-primary" />}
@@ -226,7 +226,7 @@ const ReportDetailModal: React.FC<{
               <div
                 onClick={() => setDisposition('ignore')}
                 className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  disposition === 'ignore' ? 'border-primary' : 'border-[#999]'
+                  disposition === 'ignore' ? 'border-primary' : 'border-text-muted'
                 }`}
               >
                 {disposition === 'ignore' && <div className="w-2 h-2 rounded-full bg-primary" />}
@@ -240,7 +240,7 @@ const ReportDetailModal: React.FC<{
         <div className="flex justify-end gap-4 pt-5">
           <button
             onClick={onClose}
-            className="h-10 w-[80px] border border-border rounded bg-white text-text-dark text-sm font-medium cursor-pointer hover:bg-[#F5F5F5]"
+            className="h-10 w-[80px] border border-border rounded bg-white text-text-dark text-sm font-medium cursor-pointer hover:bg-bg-zebra"
           >
             返回
           </button>

@@ -43,7 +43,7 @@ function Products() {
         </button>
       </div>
 
-      <div className="bg-white rounded-[10px] border border-[#EDEDED] p-5">
+      <div className="bg-white rounded-[10px] border border-card-border p-5">
         <div className="mb-4">
           <input
             type="text"
@@ -68,7 +68,7 @@ function Products() {
           </thead>
           <tbody>
             {filteredProducts.map((product, index) => (
-              <tr key={product.id} className={`hover:bg-[#E0E0E0] ${index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'}`}>
+              <tr key={product.id} className={`hover:bg-hover-row ${index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'}`}>
                 <td className="py-3 px-2.5 text-text-medium text-sm">{product.id}</td>
                 <td className="py-3 px-2.5 text-text-medium text-sm">{product.name}</td>
                 <td className="py-3 px-2.5 text-text-medium text-sm">{product.category}</td>

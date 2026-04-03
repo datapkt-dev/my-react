@@ -101,7 +101,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 
           {/* 日期範圍 Chip */}
           {dateRange && (
-            <div className="h-10 px-4 flex items-center rounded-md bg-[#D9F0FF] text-sm text-primary tracking-wide">
+            <div className="h-10 px-4 flex items-center rounded-md bg-sidebar-active-bg text-sm text-primary tracking-wide">
               {dateRange}
             </div>
           )}
@@ -115,7 +115,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           {showFilter && (
             <button
               onClick={onFilterClick}
-              className="h-10 px-3 flex items-center gap-1 rounded border border-primary bg-[#D9F0FF] text-sm text-text-dark tracking-wide hover:bg-primary-light transition-colors cursor-pointer"
+              className="h-10 px-3 flex items-center gap-1 rounded border border-primary bg-sidebar-active-bg text-sm text-text-dark tracking-wide hover:bg-primary-light transition-colors cursor-pointer"
             >
               <FilterIcon />
               {filterLabel}

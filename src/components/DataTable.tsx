@@ -113,7 +113,7 @@ function ActionDropdown<T>({
             action.onClick(item);
             onClose();
           }}
-          className={`px-2.5 w-[180px] h-10 flex items-center cursor-pointer text-sm hover:bg-[#F5F5F5] ${
+          className={`px-2.5 w-[180px] h-10 flex items-center cursor-pointer text-sm hover:bg-bg-zebra ${
             action.className ?? 'text-text-dark'
           }`}
         >
@@ -133,9 +133,9 @@ const DotsButton: React.FC<{ onClick: (e: React.MouseEvent) => void }> = ({ onCl
     className="bg-transparent border-none cursor-pointer p-1 flex gap-[3px] items-center"
     onClick={onClick}
   >
-    <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
-    <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
-    <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
+    <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
+    <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
+    <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
   </button>
 );
 
@@ -203,10 +203,10 @@ const NexlyPageButton: React.FC<{
   borderRadius?: string;
 }> = ({ disabled = false, active = false, onClick, children, borderRadius }) => {
   const baseColor = disabled
-    ? { bg: '#F0F0F0', fg: '#999' }
+    ? { bg: 'var(--color-disabled-bg)', fg: 'var(--color-text-muted)' }
     : active
-      ? { bg: 'var(--color-primary)', fg: '#FFF' }
-      : { bg: '#FFF', fg: 'var(--color-primary)' };
+      ? { bg: 'var(--color-primary)', fg: 'var(--color-white)' }
+      : { bg: 'var(--color-white)', fg: 'var(--color-primary)' };
 
   return (
     <button
@@ -224,7 +224,7 @@ const NexlyPageButton: React.FC<{
       onMouseEnter={(e) => {
         if (!disabled && !active) {
           e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-          e.currentTarget.style.color = '#FFF';
+          e.currentTarget.style.color = 'var(--color-white)';
         }
       }}
       onMouseLeave={(e) => {
@@ -333,7 +333,7 @@ function DataTable<T>({
                 return (
                   <div
                     key={key}
-                    className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${
+                    className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${
                       index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
                     }`}
                   >
@@ -386,7 +386,7 @@ function DataTable<T>({
           }}
         >
           {/* 左側：showing X to Y of Z items */}
-          <div className="text-sm font-medium" style={{ color: '#5F6E7B' }}>
+          <div className="text-sm font-medium" style={{ color: 'var(--color-text-secondary)' }}>
             showing {firstIndex} to {lastIndex} of {totalItems} items
           </div>
 
@@ -466,7 +466,7 @@ function DataTable<T>({
                 className="flex items-center"
                 style={{
                   height: '34px',
-                  background: '#F8F9FA',
+                  background: 'var(--color-table-header-bg)',
                   padding: '0 8px',
                   boxShadow: '1px 2px 4px 0px rgba(0,0,0,0.05) inset',
                 }}
@@ -478,7 +478,7 @@ function DataTable<T>({
                     pagination.onPageChange(1);
                   }}
                   className="border-none bg-transparent text-sm font-medium cursor-pointer outline-none"
-                  style={{ color: '#2B2F35', padding: '0 8px' }}
+                  style={{ color: 'var(--color-text-heading)', padding: '0 8px' }}
                 >
                   {pageSizeOptions.map((opt) => (
                     <option key={opt} value={opt}>

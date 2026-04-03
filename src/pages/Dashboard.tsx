@@ -69,7 +69,7 @@ const chartData = {
   datasets: [
     {
       data: [2400, 2600, 1600, 1300],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      backgroundColor: ['var(--color-chart-1)', 'var(--color-chart-2)', 'var(--color-chart-3)', 'var(--color-chart-4)'],
     },
   ],
 };
@@ -106,7 +106,7 @@ const DashboardCard: React.FC<{ card: StatCard }> = ({ card }) => (
     <div
       style={{
         borderRadius: 10,
-        background: '#fff',
+        background: 'var(--color-white)',
         boxShadow: '0 0 6px 0 rgba(0,0,0,0.1)',
         padding: 10,
       }}
@@ -121,7 +121,7 @@ const DashboardCard: React.FC<{ card: StatCard }> = ({ card }) => (
       >
         <div
           style={{
-            color: '#333',
+            color: 'var(--color-text-dark)',
             fontFamily: '"Noto Sans TC"',
             fontSize: 14,
             fontWeight: 400,
@@ -152,7 +152,7 @@ const DashboardCard: React.FC<{ card: StatCard }> = ({ card }) => (
             <div
               key={sv.label}
               style={{
-                color: '#333',
+                color: 'var(--color-text-dark)',
                 fontFamily: '"Noto Sans TC"',
                 fontSize: 30,
                 fontWeight: 500,
@@ -166,7 +166,7 @@ const DashboardCard: React.FC<{ card: StatCard }> = ({ card }) => (
       ) : (
         <div
           style={{
-            color: '#333',
+            color: 'var(--color-text-dark)',
             fontFamily: '"Noto Sans TC"',
             fontSize: 30,
             fontWeight: 500,
@@ -212,14 +212,14 @@ const Dashboard: React.FC = () => {
             <div
               style={{
                 borderRadius: 10,
-                background: '#fff',
+                background: 'var(--color-white)',
                 boxShadow: '0 0 6px 0 rgba(0,0,0,0.1)',
                 padding: 10,
               }}
             >
               <div
                 style={{
-                  color: '#333',
+                  color: 'var(--color-text-dark)',
                   fontFamily: '"Noto Sans TC"',
                   fontSize: 14,
                   fontWeight: 400,

@@ -37,7 +37,7 @@ const ChevronDown: React.FC = () => (
   <svg width="21" height="20" viewBox="0 0 21 20" fill="none" className="shrink-0">
     <path
       d="M6.5 8L10.5 12L14.5 8"
-      stroke="#28303F"
+      stroke="var(--color-icon-dark)"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -71,7 +71,7 @@ const UserProfileMenu: React.FC<{ user: UserProfile; onLogout?: () => void }> = 
       >
         {/* Avatar — 36×36 外框 + 32×32 內圈 */}
         <div className="w-9 h-9 rounded-full border border-border flex items-center justify-center shrink-0">
-          <div className="w-8 h-8 rounded-full overflow-hidden bg-[#D9F0FF] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full overflow-hidden bg-sidebar-active-bg flex items-center justify-center">
             {user.avatarUrl ? (
               <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
             ) : (
