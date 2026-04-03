@@ -2,11 +2,6 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 // ==========================================
-// Logo
-// ==========================================
-import LogoSvg from '../assets/icons/logo.svg';
-
-// ==========================================
 // Menu Icons (dark / light pairs)
 // ==========================================
 import dashboardDark from '../assets/icons/menu/dashboard-dark.svg';
@@ -207,18 +202,13 @@ const SideMenu: React.FC = () => {
       style={{
         width: 230,
         minHeight: '100vh',
-        padding: '40px 16px 16px 16px',
-        gap: 24,
+        padding: '68px 16px 16px 16px',
+        gap: 8,
         background: 'var(--color-sidebar-bg)',
         boxShadow: '2px 0px 4px 0px var(--color-shadow-light)',
         zIndex: 100,
       }}
     >
-      {/* ===== Logo ===== */}
-      <div className="flex items-center" style={{ height: 32 }}>
-        <img src={LogoSvg} alt="Logo" style={{ height: 32 }} />
-      </div>
-
       {/* ===== Menu List ===== */}
       <div className="flex-1 flex flex-col" style={{ gap: 5 }}>
         {menuData.map((item) => {
