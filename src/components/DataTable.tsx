@@ -346,7 +346,7 @@ function DataTable<T>({
                 return (
                   <div
                     key={key}
-                    className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${layout === 'fill' ? 'justify-between' : ''} ${
+                    className={`group flex items-center px-2.5 h-14 hover:bg-hover-row ${layout === 'fill' ? 'justify-between' : ''} ${
                       index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
                     }`}
                   >
@@ -369,7 +369,7 @@ function DataTable<T>({
                     {hasActions && (
                       layout === 'scroll' ? (
                         <div
-                          className={`sticky right-0 w-[50px] px-2.5 flex justify-center items-center relative shrink-0 h-14 ${
+                          className={`sticky right-0 w-[50px] px-2.5 flex justify-center items-center relative shrink-0 h-14 group-hover:bg-hover-row ${
                             index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
                           }`}
                           style={{ zIndex: 1 }}
