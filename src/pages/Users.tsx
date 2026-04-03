@@ -144,6 +144,7 @@ const Users: React.FC = () => {
         data={filteredUsers}
         columns={USER_COLUMNS}
         rowKey={(item) => item.id}
+        layout="fill"
         actions={[
           { label: '查看', onClick: (item) => navigate(`/users/userList/${item.id}`) },
         ]}

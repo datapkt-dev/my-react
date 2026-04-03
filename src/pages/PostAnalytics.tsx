@@ -110,6 +110,9 @@ const PostAnalyticsPage: React.FC = () => {
         data={sortedData}
         columns={POST_ANALYTICS_COLUMNS}
         rowKey={(item) => item.id}
+        actions={[
+          { label: '查看', onClick: (item) => console.log('view', item.id) },
+        ]}
         sort={{
           field: sortState.field,
           direction: sortState.direction,

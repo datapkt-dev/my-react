@@ -92,6 +92,7 @@ const UserAnalyticsPage: React.FC = () => {
         data={sortedData}
         columns={USER_ANALYTICS_COLUMNS}
         rowKey={(item) => item.id}
+        layout='fill'
         sort={{
           field: sortState.field,
           direction: sortState.direction,
