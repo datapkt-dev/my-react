@@ -220,7 +220,7 @@ const SideMenu: React.FC = () => {
           padding: '0 28px',
         }}
       >
-        <img src={LogoSvg} alt="nexly" style={{ height: 24 }} />
+        <img src={LogoSvg} alt="Nexly logo" style={{ height: 24 }} />
       </div>
 
       {/* ===== Menu List ===== */}
