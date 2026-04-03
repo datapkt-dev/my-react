@@ -11,7 +11,7 @@ interface ActionButton {
   /** 點擊事件 */
   onClick: () => void;
   /** 按鈕樣式變體 */
-  variant?: 'primary' | 'outline' | 'danger';
+  variant?: 'primary' | 'outline' | 'danger' | 'filter';
   /** 按鈕前方圖示（可選） */
   icon?: React.ReactNode;
 }
@@ -23,17 +23,9 @@ interface PageHeaderProps {
   count?: number | string;
   /** 額外的麵包屑項目（如動態頁名） */
   extraBreadcrumbs?: { label: string; path: string }[];
-  /** 日期範圍文字（如 "起迄日期：2025/08/01 ~ 2025/08/31"） */
-  dateRange?: string;
-  /** 是否顯示篩選按鈕 */
-  showFilter?: boolean;
-  /** 篩選按鈕點擊事件 */
-  onFilterClick?: () => void;
-  /** 篩選按鈕文字（預設「篩選」） */
-  filterLabel?: string;
-  /** 右側操作按鈕（可傳入一個或多個） */
+  /** 右側操作按鈕（新增、篩選、匯出等，依陣列順序排列） */
   actionButtons?: ActionButton[];
-  /** 完全自訂的右側區塊（優先度高於 actionButtons） */
+  /** 完全自訂右側區塊（優先度高於 actionButtons） */
   actions?: React.ReactNode;
 }
 
@@ -45,13 +37,14 @@ const VARIANT_STYLES: Record<string, string> = {
   primary: 'bg-primary text-white hover:bg-primary-hover',
   outline: 'bg-white text-text-dark border border-border hover:bg-bg-gray',
   danger: 'bg-danger text-white hover:bg-red-600',
+  filter: 'bg-sidebar-active-bg text-text-dark border border-primary hover:bg-primary-light',
 };
 
 // ==========================================
 // Filter Icon (SVG)
 // ==========================================
 
-const FilterIcon: React.FC = () => (
+export const FilterIcon: React.FC = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
     <path d="M2 4H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     <path d="M4 8H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -68,25 +61,18 @@ const FilterIcon: React.FC = () => (
 // ├── 左側（flex-col）
 // │   ├── title + count（上）
 // │   └── Breadcrumbs size="sm"（下）
-// └── 右側（self-center，垂直置中對齊整體高度）
-//     ├── DateRange chip (可選)
-//     ├── Divider (當 dateRange 與篩選同時存在)
-//     ├── FilterButton (可選)
-//     └── ActionButton[] (可選)
+// └── 右側（self-end）
+//     ├── actions（自訂插槽，可選）
+//     └── ActionButton[]（可選）
 //
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   count,
   extraBreadcrumbs,
-  dateRange,
-  showFilter = false,
-  onFilterClick,
-  filterLabel = '篩選',
   actionButtons,
   actions,
 }) => {
-  const hasRightSide =
-    actions || dateRange || showFilter || (actionButtons && actionButtons.length > 0);
+  const hasRightSide = actions || (actionButtons && actionButtons.length > 0);
 
   return (
     <div className="flex justify-between mb-2.5">
@@ -101,41 +87,15 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         <Breadcrumbs extra={extraBreadcrumbs} size="sm" />
       </div>
 
-      {/* ── 右側操作區（垂直置中） ── */}
+      {/* ── 右側操作區 ── */}
       {hasRightSide && (
         <div className="flex items-center gap-2.5 self-end">
-          {/* 完全自訂插槽（最高優先） */}
           {actions}
-
-          {/* 日期範圍 Chip */}
-          {dateRange && (
-            <div className="h-10 px-4 flex items-center rounded-md bg-sidebar-active-bg text-sm text-primary tracking-wide">
-              {dateRange}
-            </div>
-          )}
-
-          {/* 分隔線（日期 + 篩選 同時存在時） */}
-          {dateRange && showFilter && (
-            <div className="w-px h-7 bg-border" />
-          )}
-
-          {/* 篩選按鈕 */}
-          {showFilter && (
-            <button
-              onClick={onFilterClick}
-              className="h-10 px-3 flex items-center gap-1 rounded border border-primary bg-sidebar-active-bg text-sm text-text-dark tracking-wide hover:bg-primary-light transition-colors cursor-pointer"
-            >
-              <FilterIcon />
-              {filterLabel}
-            </button>
-          )}
-
-          {/* 操作按鈕群組 */}
           {actionButtons?.map((btn, idx) => (
             <button
               key={idx}
               onClick={btn.onClick}
-              className={`h-10 min-w-[88px] px-3 flex items-center justify-center gap-1.5 rounded text-sm font-medium tracking-wide transition-colors cursor-pointer ${
+              className={`h-10 px-3 flex items-center justify-center gap-1.5 rounded text-sm font-medium tracking-wide transition-colors cursor-pointer min-w-[72px] ${
                 VARIANT_STYLES[btn.variant ?? 'primary']
               }`}
             >

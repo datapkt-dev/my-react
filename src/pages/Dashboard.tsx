@@ -188,7 +188,7 @@ const Dashboard: React.FC = () => {
   return (
     <PageContainer>
       {/* 頁面標題 + 篩選 */}
-      <PageHeader title="Dashboard" showFilter onFilterClick={() => {}} />
+      <PageHeader title="Dashboard" actionButtons={[{ label: '篩選', variant: 'filter', onClick: () => {} }]} />
 
       {/* 卡片與圖表區 */}
       <div className="flex flex-col" style={{ width: '100%', gap: 20 }}>

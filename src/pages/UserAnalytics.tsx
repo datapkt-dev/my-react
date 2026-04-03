@@ -84,9 +84,9 @@ const UserAnalyticsPage: React.FC = () => {
       <PageHeader
         title="用戶分析列表"
         count={total}
-        dateRange="起迄日期：2025/08/01 ~ 2025/08/31"
-        showFilter
-        onFilterClick={() => console.log('open filter')}
+        actionButtons={[
+          { label: '篩選', variant: 'filter', onClick: () => console.log('open filter') },
+        ]}
       />
       <DataTable<UserAnalytics>
         data={sortedData}
