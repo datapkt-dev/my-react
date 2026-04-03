@@ -372,7 +372,7 @@ function DataTable<T>({
                           className={`sticky right-0 w-[50px] px-2.5 flex justify-center items-center relative shrink-0 h-14 group-hover:bg-hover-row ${
                             index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
                           }`}
-                          style={{ zIndex: 1 }}
+                          style={{ zIndex: openMenuKey === key ? 20 : 1 }}
                         >
                           <DotsButton
                             onClick={(e) => {
