@@ -103,7 +103,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 
       {/* ── 右側操作區（垂直置中） ── */}
       {hasRightSide && (
-        <div className="flex items-center gap-2.5 self-center">
+        <div className="flex items-center gap-2.5 self-end">
           {/* 完全自訂插槽（最高優先） */}
           {actions}
 

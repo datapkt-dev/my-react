@@ -202,15 +202,35 @@ const SideMenu: React.FC = () => {
       style={{
         width: 230,
         minHeight: '100vh',
-        padding: '68px 16px 16px 16px',
+        padding: '0 0 16px 0',
         gap: 8,
         background: 'var(--color-sidebar-bg)',
         boxShadow: '2px 0px 4px 0px var(--color-shadow-light)',
         zIndex: 100,
       }}
     >
+      {/* ===== Logo Placeholder ===== */}
+      <div
+        style={{
+          height: 64,
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: 120,
+            height: 32,
+            borderRadius: 8,
+            background: 'var(--color-primary)',
+          }}
+        />
+      </div>
+
       {/* ===== Menu List ===== */}
-      <div className="flex-1 flex flex-col" style={{ gap: 5 }}>
+      <div className="flex-1 flex flex-col" style={{ gap: 5, padding: '0 16px' }}>
         {menuData.map((item) => {
           const hasSubMenu = !!item.subMenu;
           const isOpen = !!openMenus[item.to];
@@ -344,7 +364,7 @@ const SideMenu: React.FC = () => {
       </div>
 
       {/* ===== Footer ===== */}
-      <div style={{ fontSize: 14, color: 'var(--color-text-muted)', paddingLeft: 12 }}>版本號</div>
+      <div style={{ fontSize: 14, color: 'var(--color-text-muted)', paddingLeft: 28 }}>版本號</div>
     </nav>
   );
 };
