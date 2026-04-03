@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import LogoSvg from '../assets/icons/logo.svg';
 
 // ==========================================
 // Menu Icons (dark / light pairs)
@@ -209,24 +210,17 @@ const SideMenu: React.FC = () => {
         zIndex: 100,
       }}
     >
-      {/* ===== Logo Placeholder ===== */}
+      {/* ===== Logo ===== */}
       <div
         style={{
           height: 64,
           flexShrink: 0,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          padding: '0 28px',
         }}
       >
-        <div
-          style={{
-            width: 120,
-            height: 32,
-            borderRadius: 8,
-            background: 'var(--color-primary)',
-          }}
-        />
+        <img src={LogoSvg} alt="nexly" style={{ height: 24 }} />
       </div>
 
       {/* ===== Menu List ===== */}
