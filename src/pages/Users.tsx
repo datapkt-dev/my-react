@@ -37,9 +37,9 @@ const formatDate = (dateString: string | undefined): string => {
 };
 
 const USER_COLUMNS: ColumnDef<User>[] = [
-  { key: 'name', label: '會員帳號', width: 'w-40' },
-  { key: 'nationality', label: '國籍城市', width: 'w-[100px]' },
-  { key: 'name', label: '姓名', width: 'w-40' },
+  { key: 'name', label: '會員帳號' },
+  { key: 'nationality', label: '國籍城市' },
+  { key: 'name', label: '姓名' },
   {
     key: 'birthday',
     label: '生日',
