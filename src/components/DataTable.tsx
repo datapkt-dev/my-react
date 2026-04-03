@@ -360,9 +360,11 @@ function DataTable<T>({
                       return (
                         <div
                           key={col.key}
-                          className={`px-2.5 text-sm text-text-medium tracking-wide ${widthClass}`}
+                          className={`px-2.5 text-sm text-text-medium tracking-wide ${widthClass}${col.truncate ? ' overflow-hidden' : ''}`}
                         >
-                          {value}
+                          <span className={col.truncate ? 'block truncate' : ''}>
+                            {value}
+                          </span>
                         </div>
                       );
                     })}
