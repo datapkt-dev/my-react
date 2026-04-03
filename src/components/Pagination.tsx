@@ -57,33 +57,33 @@ function getPageNumbers(current: number, total: number): (number | '...')[] {
 
 const FirstPageIcon: React.FC<{ disabled?: boolean }> = ({ disabled }) => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M3 3V11" stroke={disabled ? '#CCC' : '#333'} strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M11 2L5 7L11 12" stroke={disabled ? '#CCC' : '#333'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M3 3V11" stroke={disabled ? 'var(--color-disabled-text)' : 'var(--color-text-dark)'} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M11 2L5 7L11 12" stroke={disabled ? 'var(--color-disabled-text)' : 'var(--color-text-dark)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const PrevPageIcon: React.FC<{ disabled?: boolean }> = ({ disabled }) => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M9 2L4 7L9 12" stroke={disabled ? '#CCC' : '#333'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9 2L4 7L9 12" stroke={disabled ? 'var(--color-disabled-text)' : 'var(--color-text-dark)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const NextPageIcon: React.FC<{ disabled?: boolean }> = ({ disabled }) => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M5 2L10 7L5 12" stroke={disabled ? '#CCC' : '#333'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5 2L10 7L5 12" stroke={disabled ? 'var(--color-disabled-text)' : 'var(--color-text-dark)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const LastPageIcon: React.FC<{ disabled?: boolean }> = ({ disabled }) => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M11 3V11" stroke={disabled ? '#CCC' : '#333'} strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M3 2L9 7L3 12" stroke={disabled ? '#CCC' : '#333'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M11 3V11" stroke={disabled ? 'var(--color-disabled-text)' : 'var(--color-text-dark)'} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M3 2L9 7L3 12" stroke={disabled ? 'var(--color-disabled-text)' : 'var(--color-text-dark)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const ChevronDownIcon: React.FC = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path d="M3 4.5L6 7.5L9 4.5" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M3 4.5L6 7.5L9 4.5" stroke="var(--color-text-dark)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -122,7 +122,7 @@ const PageSizeSelector: React.FC<{
             <div
               key={opt}
               onClick={() => { onChange(opt); setOpen(false); }}
-              className={`px-3 py-1.5 text-sm cursor-pointer hover:bg-[#F5F5F5] ${
+              className={`px-3 py-1.5 text-sm cursor-pointer hover:bg-bg-zebra ${
                 opt === pageSize ? 'text-primary font-medium' : 'text-text-dark'
               }`}
             >
@@ -162,7 +162,7 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={isFirst}
           onClick={() => onPageChange(1)}
           className={`w-[30px] h-[30px] flex items-center justify-center border-none bg-transparent ${
-            isFirst ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[#E8EAEB]'
+            isFirst ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-hover-light'
           } rounded`}
         >
           <FirstPageIcon disabled={isFirst} />
@@ -173,7 +173,7 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={isFirst}
           onClick={() => onPageChange(currentPage - 1)}
           className={`w-[30px] h-[30px] flex items-center justify-center border-none bg-transparent ${
-            isFirst ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[#E8EAEB]'
+            isFirst ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-hover-light'
           } rounded`}
         >
           <PrevPageIcon disabled={isFirst} />
@@ -195,7 +195,7 @@ const Pagination: React.FC<PaginationProps> = ({
               className={`w-[30px] h-[30px] flex items-center justify-center border-none rounded leading-[16.8px] text-sm ${
                 p === currentPage
                   ? 'bg-primary text-white cursor-default'
-                  : 'bg-transparent text-text-dark cursor-pointer hover:bg-[#E8EAEB]'
+                  : 'bg-transparent text-text-dark cursor-pointer hover:bg-hover-light'
               }`}
             >
               {p}
@@ -208,7 +208,7 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={isLast}
           onClick={() => onPageChange(currentPage + 1)}
           className={`w-[30px] h-[30px] flex items-center justify-center border-none bg-transparent ${
-            isLast ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[#E8EAEB]'
+            isLast ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-hover-light'
           } rounded`}
         >
           <NextPageIcon disabled={isLast} />
@@ -219,7 +219,7 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={isLast}
           onClick={() => onPageChange(totalPages)}
           className={`w-[30px] h-[30px] flex items-center justify-center border-none bg-transparent ${
-            isLast ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[#E8EAEB]'
+            isLast ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-hover-light'
           } rounded`}
         >
           <LastPageIcon disabled={isLast} />

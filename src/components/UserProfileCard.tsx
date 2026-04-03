@@ -22,10 +22,10 @@ const AvatarPlaceholder: React.FC<{ name: string; size?: number }> = ({ name, si
     style={{
       width: `${size}px`,
       height: `${size}px`,
-      backgroundColor: '#B6E4D0',
+      backgroundColor: 'var(--color-avatar-bg)',
       fontSize: `${size * 0.36}px`,
       fontWeight: 600,
-      color: '#2B7A5B',
+      color: 'var(--color-avatar-text)',
     }}
   >
     {name.charAt(0)}
@@ -51,7 +51,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
       style={{
         width: '286px',
         boxShadow: '0 0 6px 0 rgba(0, 0, 0, 0.20)',
-        backgroundColor: '#FFF',
+        backgroundColor: 'var(--color-white)',
       }}
     >
       {/* 頭像 */}
@@ -60,19 +60,19 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
           src={avatarUrl}
           alt={name}
           className="rounded object-cover object-center"
-          style={{ width: '100px', height: '100px', backgroundColor: '#B6E4D0' }}
+          style={{ width: '100px', height: '100px', backgroundColor: 'var(--color-avatar-bg)' }}
         />
       ) : (
         <AvatarPlaceholder name={name} size={100} />
       )}
 
       {/* 名稱 */}
-      <div className="text-base font-medium" style={{ color: '#2B2F35' }}>
+      <div className="text-base font-medium" style={{ color: 'var(--color-text-heading)' }}>
         {name}
       </div>
 
       {/* 生日 & 電話 */}
-      <div className="text-sm leading-relaxed" style={{ color: '#2B2F35' }}>
+      <div className="text-sm leading-relaxed" style={{ color: 'var(--color-text-heading)' }}>
         {birthday || '---'}
         <br />
         {phone || email || '---'}

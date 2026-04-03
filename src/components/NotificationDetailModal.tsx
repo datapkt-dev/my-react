@@ -33,7 +33,7 @@ const CloseIcon: React.FC = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M18 6L6 18M6 6l12 12"
-      stroke="#333"
+      stroke="var(--color-text-dark)"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -124,7 +124,7 @@ const NotificationDetailModal: React.FC<NotificationDetailModalProps> = ({
         >
           {/* ===== 標題列 ===== */}
           <div className="flex items-center justify-between">
-            <div style={{ fontSize: 20, fontWeight: 500, color: '#333' }}>
+            <div style={{ fontSize: 20, fontWeight: 500, color: 'var(--color-text-dark)' }}>
               {mode === 'create' ? '新增推播' : '查看推播'}
             </div>
             <button
@@ -137,8 +137,8 @@ const NotificationDetailModal: React.FC<NotificationDetailModalProps> = ({
 
           {/* ===== 標題輸入框 ===== */}
           <div className="flex flex-col" style={{ gap: 6 }}>
-            <label style={{ fontSize: 14, fontWeight: 400, color: '#333' }}>
-              標題 <span style={{ color: '#FF4444' }}>*</span>
+            <label style={{ fontSize: 14, fontWeight: 400, color: 'var(--color-text-dark)' }}>
+              標題 <span style={{ color: 'var(--color-danger)' }}>*</span>
             </label>
             <input
               type="text"
@@ -150,18 +150,18 @@ const NotificationDetailModal: React.FC<NotificationDetailModalProps> = ({
                 height: 44,
                 padding: '0 12px',
                 borderRadius: 10,
-                border: '1px solid #DEE2E6',
+                border: '1px solid var(--color-border)',
                 fontSize: 14,
-                color: '#333',
+                color: 'var(--color-text-dark)',
                 outline: 'none',
-                background: mode === 'view' ? '#F4F6F7' : '#fff',
+                background: mode === 'view' ? 'var(--color-bg-gray)' : 'var(--color-white)',
               }}
             />
           </div>
 
           {/* ===== 推播內容 ===== */}
           <div className="flex flex-col" style={{ gap: 6 }}>
-            <label style={{ fontSize: 14, fontWeight: 400, color: '#333' }}>
+            <label style={{ fontSize: 14, fontWeight: 400, color: 'var(--color-text-dark)' }}>
               輸入內容
             </label>
             <textarea
@@ -173,42 +173,42 @@ const NotificationDetailModal: React.FC<NotificationDetailModalProps> = ({
               style={{
                 padding: 12,
                 borderRadius: 10,
-                border: '1px solid #DEE2E6',
+                border: '1px solid var(--color-border)',
                 fontSize: 14,
-                color: '#333',
+                color: 'var(--color-text-dark)',
                 outline: 'none',
                 resize: 'vertical',
                 fontFamily: 'inherit',
-                background: mode === 'view' ? '#F4F6F7' : '#fff',
+                background: mode === 'view' ? 'var(--color-bg-gray)' : 'var(--color-white)',
               }}
             />
           </div>
 
           {/* ===== 發布對象 ===== */}
           <div className="flex items-center" style={{ gap: 16 }}>
-            <div style={{ whiteSpace: 'nowrap', fontSize: 14, color: '#333' }}>
+            <div style={{ whiteSpace: 'nowrap', fontSize: 14, color: 'var(--color-text-dark)' }}>
               發布對象
             </div>
-            <label className="flex items-center" style={{ gap: 6, fontSize: 14, color: '#888' }}>
-              <input type="checkbox" checked disabled style={{ accentColor: '#1383D3' }} />
+            <label className="flex items-center" style={{ gap: 6, fontSize: 14, color: 'var(--color-text-light)' }}>
+              <input type="checkbox" checked disabled style={{ accentColor: 'var(--color-primary)' }} />
               全部
             </label>
           </div>
 
           {/* ===== 發布時間 ===== */}
           <div className="flex items-center" style={{ gap: 16 }}>
-            <div style={{ whiteSpace: 'nowrap', fontSize: 14, color: '#333' }}>
+            <div style={{ whiteSpace: 'nowrap', fontSize: 14, color: 'var(--color-text-dark)' }}>
               發布時間
             </div>
-            <label className="flex items-center" style={{ gap: 6, fontSize: 14, color: '#888' }}>
-              <input type="checkbox" checked disabled style={{ accentColor: '#1383D3' }} />
+            <label className="flex items-center" style={{ gap: 6, fontSize: 14, color: 'var(--color-text-light)' }}>
+              <input type="checkbox" checked disabled style={{ accentColor: 'var(--color-primary)' }} />
               立即發布
             </label>
           </div>
 
           {/* ===== 錯誤訊息 ===== */}
           {error && (
-            <div style={{ fontSize: 13, color: '#FF4444' }}>{error}</div>
+            <div style={{ fontSize: 13, color: 'var(--color-danger)' }}>{error}</div>
           )}
 
           {/* ===== 操作按鈕 ===== */}
@@ -222,8 +222,8 @@ const NotificationDetailModal: React.FC<NotificationDetailModalProps> = ({
                   padding: '0 24px',
                   borderRadius: 8,
                   border: 'none',
-                  background: '#1383D3',
-                  color: '#fff',
+                  background: 'var(--color-primary)',
+                  color: 'var(--color-white)',
                   fontSize: 14,
                   fontWeight: 500,
                   cursor: submitting ? 'not-allowed' : 'pointer',
@@ -241,8 +241,8 @@ const NotificationDetailModal: React.FC<NotificationDetailModalProps> = ({
                   padding: '0 24px',
                   borderRadius: 8,
                   border: 'none',
-                  background: '#1383D3',
-                  color: '#fff',
+                  background: 'var(--color-primary)',
+                  color: 'var(--color-white)',
                   fontSize: 14,
                   fontWeight: 500,
                   cursor: 'pointer',

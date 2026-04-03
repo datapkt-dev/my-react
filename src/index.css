@@ -21,6 +21,30 @@
   --color-success-light: #ECFDF5;
   --color-warning: #D97706;
   --color-warning-light: #FFF8E1;
+  --color-white: #FFFFFF;
+  --color-text-heading: #2B2F35;
+  --color-icon-dark: #28303F;
+  --color-text-secondary: #5F6E7B;
+  --color-hover-row: #E0E0E0;
+  --color-hover-light: #E8EAEB;
+  --color-disabled-bg: #F0F0F0;
+  --color-disabled-text: #CCCCCC;
+  --color-table-header-bg: #F8F9FA;
+  --color-card-border: #EDEDED;
+  --color-avatar-bg: #B6E4D0;
+  --color-avatar-text: #2B7A5B;
+  --color-primary-loading: #7FBDE8;
+  --color-danger-border: #FFCCCC;
+  --color-placeholder: #B0B0B0;
+  --color-status-pending: #E6A817;
+  --color-status-resolved: #28A745;
+  --color-login-gradient-from: #E8F4FD;
+  --color-login-gradient-to: #F0F4F8;
+  --color-chart-1: #FF6384;
+  --color-chart-2: #36A2EB;
+  --color-chart-3: #FFCE56;
+  --color-chart-4: #4BC0C0;
+  --color-shadow-light: #0000001A;
 }
 
 /* ===== Base Resets ===== */

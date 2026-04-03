@@ -93,7 +93,7 @@ function ActionDropdown<T>({
         <div
           key={i}
           onClick={() => { action.onClick(item); onClose(); }}
-          className={`px-2.5 w-[180px] h-10 flex items-center cursor-pointer text-sm hover:bg-[#F5F5F5] ${
+          className={`px-2.5 w-[180px] h-10 flex items-center cursor-pointer text-sm hover:bg-bg-zebra ${
             action.className ?? 'text-text-dark'
           }`}
         >
@@ -113,9 +113,9 @@ const DotsButton: React.FC<{ onClick: (e: React.MouseEvent) => void }> = ({ onCl
     className="bg-transparent border-none cursor-pointer p-1 flex gap-[3px] items-center"
     onClick={onClick}
   >
-    <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
-    <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
-    <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
+    <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
+    <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
+    <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
   </button>
 );
 
@@ -199,7 +199,7 @@ function NexlyStyleTable<T>({
         <table className="w-full border-collapse" style={{ minWidth: '600px' }}>
           {/* 表頭 */}
           <thead className="sticky top-0 z-10 bg-white">
-            <tr style={{ borderBottom: '1px solid #DEE2E6' }}>
+            <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
               {columns.map((col) => (
                 <th
                   key={col.key}
@@ -252,9 +252,9 @@ function NexlyStyleTable<T>({
                 return (
                   <tr
                     key={key}
-                    className="hover:bg-[#E8EAEB] transition-colors"
+                    className="hover:bg-hover-light transition-colors"
                     style={{
-                      backgroundColor: index % 2 === 0 ? 'transparent' : '#F8F9FA',
+                      backgroundColor: index % 2 === 0 ? 'transparent' : 'var(--color-table-header-bg)',
                       height: '48px',
                     }}
                   >
@@ -304,7 +304,7 @@ function NexlyStyleTable<T>({
         }}
       >
         {/* 左側：顯示筆數資訊 */}
-        <div className="text-sm font-medium" style={{ color: '#5F6E7B' }}>
+        <div className="text-sm font-medium" style={{ color: 'var(--color-text-secondary)' }}>
           showing {firstIndex} to {lastIndex} of {totalItems} items
         </div>
 
@@ -322,18 +322,18 @@ function NexlyStyleTable<T>({
                 height: '34px',
                 padding: '0 8px',
                 borderRadius: '4px 0 0 4px',
-                backgroundColor: isFirstPage ? '#F0F0F0' : '#FFF',
-                color: isFirstPage ? '#999' : 'var(--color-primary)',
+                backgroundColor: isFirstPage ? 'var(--color-disabled-bg)' : 'var(--color-white)',
+                color: isFirstPage ? 'var(--color-text-muted)' : 'var(--color-primary)',
               }}
               onMouseEnter={(e) => {
                 if (!isFirstPage) {
                   e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-                  e.currentTarget.style.color = '#FFF';
+                  e.currentTarget.style.color = 'var(--color-white)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isFirstPage) {
-                  e.currentTarget.style.backgroundColor = '#FFF';
+                  e.currentTarget.style.backgroundColor = 'var(--color-white)';
                   e.currentTarget.style.color = 'var(--color-primary)';
                 }
               }}
@@ -353,18 +353,18 @@ function NexlyStyleTable<T>({
                 minWidth: '32px',
                 height: '34px',
                 padding: '0 8px',
-                backgroundColor: isFirstPage ? '#F0F0F0' : '#FFF',
-                color: isFirstPage ? '#999' : 'var(--color-primary)',
+                backgroundColor: isFirstPage ? 'var(--color-disabled-bg)' : 'var(--color-white)',
+                color: isFirstPage ? 'var(--color-text-muted)' : 'var(--color-primary)',
               }}
               onMouseEnter={(e) => {
                 if (!isFirstPage) {
                   e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-                  e.currentTarget.style.color = '#FFF';
+                  e.currentTarget.style.color = 'var(--color-white)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isFirstPage) {
-                  e.currentTarget.style.backgroundColor = '#FFF';
+                  e.currentTarget.style.backgroundColor = 'var(--color-white)';
                   e.currentTarget.style.color = 'var(--color-primary)';
                 }
               }}
@@ -393,18 +393,18 @@ function NexlyStyleTable<T>({
                     minWidth: '32px',
                     height: '34px',
                     padding: '0 8px',
-                    backgroundColor: p === page ? 'var(--color-primary)' : '#FFF',
-                    color: p === page ? '#FFF' : 'var(--color-primary)',
+                    backgroundColor: p === page ? 'var(--color-primary)' : 'var(--color-white)',
+                    color: p === page ? 'var(--color-white)' : 'var(--color-primary)',
                   }}
                   onMouseEnter={(e) => {
                     if (p !== page) {
                       e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-                      e.currentTarget.style.color = '#FFF';
+                      e.currentTarget.style.color = 'var(--color-white)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (p !== page) {
-                      e.currentTarget.style.backgroundColor = '#FFF';
+                      e.currentTarget.style.backgroundColor = 'var(--color-white)';
                       e.currentTarget.style.color = 'var(--color-primary)';
                     }
                   }}
@@ -423,18 +423,18 @@ function NexlyStyleTable<T>({
                 minWidth: '32px',
                 height: '34px',
                 padding: '0 8px',
-                backgroundColor: isLastPage ? '#F0F0F0' : '#FFF',
-                color: isLastPage ? '#999' : 'var(--color-primary)',
+                backgroundColor: isLastPage ? 'var(--color-disabled-bg)' : 'var(--color-white)',
+                color: isLastPage ? 'var(--color-text-muted)' : 'var(--color-primary)',
               }}
               onMouseEnter={(e) => {
                 if (!isLastPage) {
                   e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-                  e.currentTarget.style.color = '#FFF';
+                  e.currentTarget.style.color = 'var(--color-white)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isLastPage) {
-                  e.currentTarget.style.backgroundColor = '#FFF';
+                  e.currentTarget.style.backgroundColor = 'var(--color-white)';
                   e.currentTarget.style.color = 'var(--color-primary)';
                 }
               }}
@@ -454,18 +454,18 @@ function NexlyStyleTable<T>({
                 height: '34px',
                 padding: '0 8px',
                 borderRadius: '0 4px 4px 0',
-                backgroundColor: isLastPage ? '#F0F0F0' : '#FFF',
-                color: isLastPage ? '#999' : 'var(--color-primary)',
+                backgroundColor: isLastPage ? 'var(--color-disabled-bg)' : 'var(--color-white)',
+                color: isLastPage ? 'var(--color-text-muted)' : 'var(--color-primary)',
               }}
               onMouseEnter={(e) => {
                 if (!isLastPage) {
                   e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-                  e.currentTarget.style.color = '#FFF';
+                  e.currentTarget.style.color = 'var(--color-white)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isLastPage) {
-                  e.currentTarget.style.backgroundColor = '#FFF';
+                  e.currentTarget.style.backgroundColor = 'var(--color-white)';
                   e.currentTarget.style.color = 'var(--color-primary)';
                 }
               }}
@@ -482,7 +482,7 @@ function NexlyStyleTable<T>({
             className="flex items-center"
             style={{
               height: '34px',
-              background: '#F8F9FA',
+              background: 'var(--color-table-header-bg)',
               padding: '0 8px',
               boxShadow: '1px 2px 4px 0px rgba(0,0,0,0.05) inset',
             }}
@@ -491,7 +491,7 @@ function NexlyStyleTable<T>({
               value={pageSize}
               onChange={handlePageSizeChange}
               className="border-none bg-transparent text-sm font-medium cursor-pointer outline-none"
-              style={{ color: '#2B2F35', padding: '0 8px' }}
+              style={{ color: 'var(--color-text-heading)', padding: '0 8px' }}
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt}>

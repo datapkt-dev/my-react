@@ -42,7 +42,7 @@ const ActionDropdown: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 const RegionTableRow: React.FC<{ region: RegionData; index: number; isMenuOpen: boolean; toggleMenu: () => void; closeMenu: () => void }> = ({ region, index, isMenuOpen, toggleMenu, closeMenu }) => {
   return (
     <div
-      className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${
+      className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${
         index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
       }`}
     >
@@ -55,9 +55,9 @@ const RegionTableRow: React.FC<{ region: RegionData; index: number; isMenuOpen: 
           className="bg-transparent border-none cursor-pointer p-1 flex gap-[3px] items-center"
           onClick={(e) => { e.stopPropagation(); toggleMenu(); }}
         >
-          <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
-          <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
-          <div className="w-[3px] h-[3px] bg-[#28303F] rounded-full" />
+          <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
+          <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
+          <div className="w-[3px] h-[3px] bg-icon-dark rounded-full" />
         </button>
         <ActionDropdown isOpen={isMenuOpen} onClose={closeMenu} />
       </div>
@@ -82,7 +82,7 @@ const Region: React.FC = () => {
       {/* 麵包屑 */}
       <div className="flex items-center gap-2 h-10">
         <span className="text-text-muted text-sm">設定</span>
-        <div className="w-1 h-2 border-t border-r border-[#333] rotate-45 mx-1" />
+        <div className="w-1 h-2 border-t border-r border-text-dark rotate-45 mx-1" />
         <span className="text-text-dark text-sm">地區管理</span>
       </div>
 

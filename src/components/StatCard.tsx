@@ -37,7 +37,7 @@ const StatCard: React.FC<StatCardProps> = ({ data }) => {
           {/* icon 容器: bg-primary / p-5 / FIXED / rounded */}
           <div
             className="w-14 h-14 flex items-center justify-center rounded-lg shrink-0"
-            style={{ backgroundColor: data.iconBg || '#1383D2' }}
+            style={{ backgroundColor: data.iconBg || 'var(--color-primary)' }}
           >
             <span className="text-white text-xl">{data.icon || '📊'}</span>
           </div>

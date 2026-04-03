@@ -17,7 +17,7 @@ function Settings() {
     <div className="w-full py-5 px-7 bg-white font-sans">
       <h1 className="text-text-medium text-2xl font-medium m-0 tracking-wide mb-5">系統設定</h1>
 
-      <div className="bg-white rounded-[10px] border border-[#EDEDED] p-6">
+      <div className="bg-white rounded-[10px] border border-card-border p-6">
         <h2 className="text-text-medium text-lg font-semibold mb-5">一般設定</h2>
         <div className="mb-4">
           <label className="block mb-1.5 text-sm font-medium text-text-medium tracking-wide">網站名稱</label>
@@ -52,7 +52,7 @@ function Settings() {
         </div>
       </div>
 
-      <div className="bg-white rounded-[10px] border border-[#EDEDED] p-6 mt-5">
+      <div className="bg-white rounded-[10px] border border-card-border p-6 mt-5">
         <h2 className="text-text-medium text-lg font-semibold mb-5">偏好設定</h2>
         <div className="mb-4">
           <label className="flex items-center gap-2 cursor-pointer text-sm text-text-medium">

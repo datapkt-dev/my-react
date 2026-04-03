@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#E8F4FD] to-[#F0F4F8] p-4">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-login-gradient-from to-login-gradient-to p-4">
       <div className="w-full max-w-[420px] bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.08)] py-12 px-10">
         {/* Header */}
         <div className="text-center mb-8">

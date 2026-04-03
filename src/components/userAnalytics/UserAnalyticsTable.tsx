@@ -97,7 +97,7 @@ const TableHeader: React.FC<{ sortState: SortState; onSort: (field: SortableFiel
 // ==========================================
 
 const TableRow: React.FC<{ item: UserAnalytics; isZebra: boolean }> = ({ item, isZebra }) => (
-  <div className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${isZebra ? 'bg-bg-zebra' : 'bg-white'}`}>
+  <div className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${isZebra ? 'bg-bg-zebra' : 'bg-white'}`}>
     {COLUMNS.map((col) => (
       <div
         key={col.key}

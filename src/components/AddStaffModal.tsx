@@ -156,7 +156,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, loading = false, 
 
         {/* API 錯誤訊息 */}
         {apiError && (
-          <div className="mb-3 px-3 py-2 bg-danger-light border border-[#FFCCCC] rounded text-danger text-[13px] tracking-wide">
+          <div className="mb-3 px-3 py-2 bg-danger-light border border-danger-border rounded text-danger text-[13px] tracking-wide">
             {apiError}
           </div>
         )}
@@ -176,7 +176,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ isOpen, loading = false, 
             onClick={handleSubmit}
             disabled={loading}
             className={`h-10 min-w-[88px] px-4 text-white border-none rounded text-sm font-medium tracking-wide font-sans ${
-              loading ? 'bg-[#7FBDE8] cursor-not-allowed' : 'bg-primary cursor-pointer'
+              loading ? 'bg-primary-loading cursor-not-allowed' : 'bg-primary cursor-pointer'
             }`}
           >
             {loading ? '送出中...' : '送出'}

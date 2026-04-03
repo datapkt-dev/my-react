@@ -46,7 +46,7 @@ const getIcon = (iconName: string, isActive: boolean) => {
 
 /** 單一箭頭圖示，透過 rotate 控制展開方向 */
 const ChevronIcon: React.FC<{ color?: string; isOpen?: boolean }> = ({
-  color = '#333',
+  color = 'var(--color-text-dark)',
   isOpen = false,
 }) => (
   <svg
@@ -209,8 +209,8 @@ const SideMenu: React.FC = () => {
         minHeight: '100vh',
         padding: '40px 16px 16px 16px',
         gap: 24,
-        background: '#FAFAFB',
-        boxShadow: '2px 0px 4px 0px #0000001A',
+        background: 'var(--color-sidebar-bg)',
+        boxShadow: '2px 0px 4px 0px var(--color-shadow-light)',
         zIndex: 100,
       }}
     >
@@ -236,8 +236,8 @@ const SideMenu: React.FC = () => {
           // 父層 row 本身的 active 背景：有 subMenu 的父層不亮，只讓子項目亮
           const isMenuActive = hasSubMenu ? false : isGroupActive;
 
-          const activeTextColor = isMenuActive ? '#333' : '#333';
-          const activeBg = isMenuActive ? '#DAF0FF' : 'transparent';
+          const activeTextColor = isMenuActive ? 'var(--color-text-dark)' : 'var(--color-text-dark)';
+          const activeBg = isMenuActive ? 'var(--color-sidebar-active-bg)' : 'transparent';
 
           return (
             <div key={item.to} className="flex flex-col">
@@ -255,7 +255,7 @@ const SideMenu: React.FC = () => {
                     transition: 'all 0.3s',
                   }}
                   onMouseEnter={(e) => {
-                    if (!isMenuActive) e.currentTarget.style.background = '#F4F6F7';
+                    if (!isMenuActive) e.currentTarget.style.background = 'var(--color-bg-gray)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = activeBg;
@@ -273,7 +273,7 @@ const SideMenu: React.FC = () => {
                   </div>
                   <ChevronIcon
                     isOpen={isOpen}
-                    color={isGroupActive ? '#1383D3' : '#333'}
+                    color={isGroupActive ? 'var(--color-primary)' : 'var(--color-text-dark)'}
                   />
                 </div>
               ) : (
@@ -290,7 +290,7 @@ const SideMenu: React.FC = () => {
                     transition: 'all 0.3s',
                   }}
                   onMouseEnter={(e) => {
-                    if (!isMenuActive) e.currentTarget.style.background = '#F4F6F7';
+                    if (!isMenuActive) e.currentTarget.style.background = 'var(--color-bg-gray)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = activeBg;
@@ -315,8 +315,8 @@ const SideMenu: React.FC = () => {
                   <div className="flex flex-col" style={{ gap: 4, paddingTop: 4 }}>
                     {item.subMenu!.map((sub, subIdx) => {
                       const isSubActive = isPathActive(location.pathname, sub.to, true);
-                      const subBg = isSubActive ? '#DAF0FF' : 'transparent';
-                      const subColor = isSubActive ? '#1383D3' : '#333';
+                      const subBg = isSubActive ? 'var(--color-sidebar-active-bg)' : 'transparent';
+                      const subColor = isSubActive ? 'var(--color-primary)' : 'var(--color-text-dark)';
 
                       return (
                         <NavLink
@@ -335,7 +335,7 @@ const SideMenu: React.FC = () => {
                             transitionDelay: isOpen ? `${subIdx * 50}ms` : '0ms',
                           }}
                           onMouseEnter={(e) => {
-                            if (!isSubActive) e.currentTarget.style.background = '#F4F6F7';
+                            if (!isSubActive) e.currentTarget.style.background = 'var(--color-bg-gray)';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.background = subBg;
@@ -354,7 +354,7 @@ const SideMenu: React.FC = () => {
       </div>
 
       {/* ===== Footer ===== */}
-      <div style={{ fontSize: 14, color: '#999', paddingLeft: 12 }}>版本號</div>
+      <div style={{ fontSize: 14, color: 'var(--color-text-muted)', paddingLeft: 12 }}>版本號</div>
     </nav>
   );
 };

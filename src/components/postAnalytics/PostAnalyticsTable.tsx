@@ -110,7 +110,7 @@ const TableHeader: React.FC<{ sortState: PostSortState; onSort: (field: Sortable
 // ==========================================
 
 const TableRow: React.FC<{ item: PostAnalytics; isZebra: boolean }> = ({ item, isZebra }) => (
-  <div className={`flex items-center px-2.5 h-14 hover:bg-[#E0E0E0] ${isZebra ? 'bg-bg-zebra' : 'bg-white'}`}>
+  <div className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${isZebra ? 'bg-bg-zebra' : 'bg-white'}`}>
     {COLUMNS.map((col) => {
       const raw = item[col.key as keyof PostAnalytics];
       const display = col.key === 'timeAdded' ? formatTime(raw as string) : String(raw);
