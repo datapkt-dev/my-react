@@ -72,6 +72,12 @@ export interface DataTableProps<T> {
   emptyText?: string;
   /** 最小寬度（水平捲動用），如 'min-w-[1300px]' */
   minWidth?: string;
+  /**
+   * 欄位佈局模式：
+   * - 'scroll'（預設）：每欄固定寬度，超出容器時底部出現水平捲動條；actions 欄 sticky 固定在右側
+   * - 'fill'：justify-between，欄位自動分散填滿容器寬度，不出現水平捲動
+   */
+  layout?: 'scroll' | 'fill';
 }
 
 // ==========================================
@@ -254,6 +260,7 @@ function DataTable<T>({
   error = null,
   emptyText = '暫無資料',
   minWidth,
+  layout = 'scroll',
 }: DataTableProps<T>) {
   const [openMenuKey, setOpenMenuKey] = useState<string | number | null>(null);
 
@@ -288,9 +295,9 @@ function DataTable<T>({
       style={{ boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.08)' }}>
       {/* ===== 表格主體區域 — flex-1 + 內部捲動 ===== */}
       <div className="flex-1 overflow-auto min-h-0">
-        <div className={minWidth ?? ''}>
+        <div className={layout === 'scroll' ? (minWidth ?? '') : ''}>
           {/* 表頭 */}
-          <div className="flex items-center px-2.5 h-[52px] bg-white border-b border-border sticky top-0 z-10">
+          <div className={`flex items-center px-2.5 h-[52px] bg-white border-b border-border sticky top-0 z-10${layout === 'fill' ? ' justify-between' : ''}`}>
             {columns.map((col) => {
               const widthClass = col.width
                 ? `${col.width} shrink-0`
@@ -309,9 +316,15 @@ function DataTable<T>({
               );
             })}
             {hasActions && (
-              <div className="w-[50px] px-2.5 text-text-muted text-sm tracking-wide text-center shrink-0">
-                操作
-              </div>
+              layout === 'scroll' ? (
+                <div className="sticky right-0 w-[50px] px-2.5 text-text-muted text-sm tracking-wide text-center shrink-0 bg-white border-b border-border h-[52px] flex items-center justify-center z-20">
+                  操作
+                </div>
+              ) : (
+                <div className="w-[50px] px-2.5 text-text-muted text-sm tracking-wide text-center shrink-0">
+                  操作
+                </div>
+              )
             )}
           </div>
 
@@ -333,7 +346,7 @@ function DataTable<T>({
                 return (
                   <div
                     key={key}
-                    className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${
+                    className={`flex items-center px-2.5 h-14 hover:bg-hover-row ${layout === 'fill' ? 'justify-between' : ''} ${
                       index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
                     }`}
                   >
@@ -354,20 +367,42 @@ function DataTable<T>({
                       );
                     })}
                     {hasActions && (
-                      <div className="w-[50px] px-2.5 flex justify-center relative shrink-0">
-                        <DotsButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setOpenMenuKey((prev) => (prev === key ? null : key));
-                          }}
-                        />
-                        <ActionDropdown
-                          isOpen={openMenuKey === key}
-                          onClose={() => setOpenMenuKey(null)}
-                          item={item}
-                          actions={actions!}
-                        />
-                      </div>
+                      layout === 'scroll' ? (
+                        <div
+                          className={`sticky right-0 w-[50px] px-2.5 flex justify-center items-center relative shrink-0 h-14 ${
+                            index % 2 === 0 ? 'bg-white' : 'bg-bg-zebra'
+                          }`}
+                          style={{ zIndex: 1 }}
+                        >
+                          <DotsButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenMenuKey((prev) => (prev === key ? null : key));
+                            }}
+                          />
+                          <ActionDropdown
+                            isOpen={openMenuKey === key}
+                            onClose={() => setOpenMenuKey(null)}
+                            item={item}
+                            actions={actions!}
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-[50px] px-2.5 flex justify-center relative shrink-0">
+                          <DotsButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenMenuKey((prev) => (prev === key ? null : key));
+                            }}
+                          />
+                          <ActionDropdown
+                            isOpen={openMenuKey === key}
+                            onClose={() => setOpenMenuKey(null)}
+                            item={item}
+                            actions={actions!}
+                          />
+                        </div>
+                      )
                     )}
                   </div>
                 );
