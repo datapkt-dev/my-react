@@ -1,5 +1,4 @@
 import React from 'react';
-import Breadcrumbs from './Breadcrumbs';
 
 // ==========================================
 // Types
@@ -22,19 +21,16 @@ interface PageContainerProps {
 // ==========================================
 //
 // PageContainer （頁面容器）
-// ├── Breadcrumbs  （麵包屑導覽）
 // └── MainContent  （頁面主內容 — children）
 //
 // 注意：PageHeader 由各頁面自行放入 children，
 // 以保留最大彈性（有些頁面可能不需要 header）。
+// 注意：Breadcrumbs 已移至 PageHeader 內部顯示。
 //
 
-const PageContainer: React.FC<PageContainerProps> = ({ extraBreadcrumbs, children }) => {
+const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="px-5">
-        <Breadcrumbs extra={extraBreadcrumbs} />
-      </div>
       {/* MainContent — 對應 Figma mainContent: flex:1, flex-col, padding 10px 20px */}
       <div className="flex-1 flex flex-col min-h-0 px-5 py-2.5">{children}</div>
     </div>

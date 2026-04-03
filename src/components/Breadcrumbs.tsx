@@ -37,13 +37,15 @@ interface BreadcrumbItem {
 interface BreadcrumbsProps {
   /** 額外附加的麵包屑項目（例如動態的使用者名稱） */
   extra?: BreadcrumbItem[];
+  /** 尺寸變體：'sm' 用於標題下方，'default' 用於獨立列 */
+  size?: 'sm' | 'default';
 }
 
 // ==========================================
 // Breadcrumbs Component
 // ==========================================
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ extra }) => {
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ extra, size = 'default' }) => {
   const location = useLocation();
 
   // 從 pathname 建立麵包屑陣列
@@ -76,7 +78,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ extra }) => {
   if (crumbs.length <= 1) return null;
 
   return (
-    <nav className="flex items-center gap-2 h-10 text-sm">
+    <nav className={size === 'sm' ? 'flex items-center gap-2 h-6 text-xs' : 'flex items-center gap-2 h-10 text-sm'}>
       {crumbs.map((crumb, idx) => {
         const isLast = idx === crumbs.length - 1;
         return (

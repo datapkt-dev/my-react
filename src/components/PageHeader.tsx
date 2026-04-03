@@ -32,6 +32,8 @@ interface PageHeaderProps {
   actionButtons?: ActionButton[];
   /** 完全自訂的右側區塊（優先度高於 actionButtons） */
   actions?: React.ReactNode;
+  /** 標題下方的麵包屑導覽（可選） */
+  breadcrumbs?: React.ReactNode;
 }
 
 // ==========================================
@@ -79,64 +81,68 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   filterLabel = '篩選',
   actionButtons,
   actions,
+  breadcrumbs,
 }) => {
   const hasRightSide =
     actions || dateRange || showFilter || (actionButtons && actionButtons.length > 0);
 
   return (
-    <div className="flex items-center justify-between h-12 mb-2.5">
-      {/* ── 左側：標題 + 計數 ── */}
-      <div className="flex items-baseline gap-2.5">
-        <h1 className="text-2xl font-medium text-text-medium m-0 tracking-wide">{title}</h1>
-        {count !== undefined && (
-          <span className="text-base text-text-light tracking-wide">({count})</span>
+    <div className="mb-2.5">
+      <div className="flex items-center justify-between h-12">
+        {/* ── 左側：標題 + 計數 ── */}
+        <div className="flex items-baseline gap-2.5">
+          <h1 className="text-2xl font-medium text-text-medium m-0 tracking-wide">{title}</h1>
+          {count !== undefined && (
+            <span className="text-base text-text-light tracking-wide">({count})</span>
+          )}
+        </div>
+
+        {/* ── 右側操作區 ── */}
+        {hasRightSide && (
+          <div className="flex items-center gap-2.5">
+            {/* 完全自訂插槽（最高優先） */}
+            {actions}
+
+            {/* 日期範圍 Chip */}
+            {dateRange && (
+              <div className="h-10 px-4 flex items-center rounded-md bg-sidebar-active-bg text-sm text-primary tracking-wide">
+                {dateRange}
+              </div>
+            )}
+
+            {/* 分隔線（日期 + 篩選 同時存在時） */}
+            {dateRange && showFilter && (
+              <div className="w-px h-7 bg-border" />
+            )}
+
+            {/* 篩選按鈕 */}
+            {showFilter && (
+              <button
+                onClick={onFilterClick}
+                className="h-10 px-3 flex items-center gap-1 rounded border border-primary bg-sidebar-active-bg text-sm text-text-dark tracking-wide hover:bg-primary-light transition-colors cursor-pointer"
+              >
+                <FilterIcon />
+                {filterLabel}
+              </button>
+            )}
+
+            {/* 操作按鈕群組 */}
+            {actionButtons?.map((btn, idx) => (
+              <button
+                key={idx}
+                onClick={btn.onClick}
+                className={`h-10 min-w-[88px] px-3 flex items-center justify-center gap-1.5 rounded text-sm font-medium tracking-wide transition-colors cursor-pointer ${
+                  VARIANT_STYLES[btn.variant ?? 'primary']
+                }`}
+              >
+                {btn.icon}
+                {btn.label}
+              </button>
+            ))}
+          </div>
         )}
       </div>
-
-      {/* ── 右側操作區 ── */}
-      {hasRightSide && (
-        <div className="flex items-center gap-2.5">
-          {/* 完全自訂插槽（最高優先） */}
-          {actions}
-
-          {/* 日期範圍 Chip */}
-          {dateRange && (
-            <div className="h-10 px-4 flex items-center rounded-md bg-sidebar-active-bg text-sm text-primary tracking-wide">
-              {dateRange}
-            </div>
-          )}
-
-          {/* 分隔線（日期 + 篩選 同時存在時） */}
-          {dateRange && showFilter && (
-            <div className="w-px h-7 bg-border" />
-          )}
-
-          {/* 篩選按鈕 */}
-          {showFilter && (
-            <button
-              onClick={onFilterClick}
-              className="h-10 px-3 flex items-center gap-1 rounded border border-primary bg-sidebar-active-bg text-sm text-text-dark tracking-wide hover:bg-primary-light transition-colors cursor-pointer"
-            >
-              <FilterIcon />
-              {filterLabel}
-            </button>
-          )}
-
-          {/* 操作按鈕群組 */}
-          {actionButtons?.map((btn, idx) => (
-            <button
-              key={idx}
-              onClick={btn.onClick}
-              className={`h-10 min-w-[88px] px-3 flex items-center justify-center gap-1.5 rounded text-sm font-medium tracking-wide transition-colors cursor-pointer ${
-                VARIANT_STYLES[btn.variant ?? 'primary']
-              }`}
-            >
-              {btn.icon}
-              {btn.label}
-            </button>
-          ))}
-        </div>
-      )}
+      {breadcrumbs && <div className="mt-0.5">{breadcrumbs}</div>}
     </div>
   );
 };

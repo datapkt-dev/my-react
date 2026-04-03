@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PageContainer from '../components/PageContainer';
 import PageHeader from '../components/PageHeader';
+import Breadcrumbs from '../components/Breadcrumbs';
 import DataTable from '../components/DataTable';
 import type { ColumnDef } from '../components/DataTable';
 import { fetchPostAnalytics } from '../api/userApi';
@@ -105,6 +106,7 @@ const PostAnalyticsPage: React.FC = () => {
         dateRange="起迄日期：2025/08/01 ~ 2025/08/31"
         showFilter
         onFilterClick={() => console.log('open filter')}
+        breadcrumbs={<Breadcrumbs size="sm" />}
       />
       <DataTable<PostAnalytics>
         data={sortedData}

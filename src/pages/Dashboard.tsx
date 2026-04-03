@@ -12,6 +12,7 @@ import { Bar } from 'react-chartjs-2';
 
 import PageContainer from '../components/PageContainer';
 import PageHeader from '../components/PageHeader';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 // Icons
 import statUsersIcon from '../assets/icons/stat-users.svg';
@@ -188,7 +189,7 @@ const Dashboard: React.FC = () => {
   return (
     <PageContainer>
       {/* 頁面標題 + 篩選 */}
-      <PageHeader title="Dashboard" showFilter onFilterClick={() => {}} />
+      <PageHeader title="Dashboard" showFilter onFilterClick={() => {}} breadcrumbs={<Breadcrumbs size="sm" />} />
 
       {/* 卡片與圖表區 */}
       <div className="flex flex-col" style={{ width: '100%', gap: 20 }}>
