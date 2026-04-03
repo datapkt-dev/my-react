@@ -299,9 +299,11 @@ function DataTable<T>({
           {/* 表頭 */}
           <div className={`flex items-center px-2.5 h-[52px] bg-white border-b border-border sticky top-0 z-10${layout === 'fill' ? ' justify-between' : ''}`}>
             {columns.map((col) => {
-              const widthClass = col.width
-                ? `${col.width} shrink-0`
-                : 'flex-1';
+              const widthClass = layout === 'fill'
+                ? 'flex-1 min-w-0'
+                : col.width
+                  ? `${col.width} shrink-0`
+                  : 'flex-1';
               return (
                 <div
                   key={col.key}
@@ -354,9 +356,11 @@ function DataTable<T>({
                       const value = col.render
                         ? col.render(item, index)
                         : String((item as Record<string, unknown>)[col.key] ?? '--');
-                      const widthClass = col.width
-                        ? `${col.width} shrink-0`
-                        : 'flex-1';
+                      const widthClass = layout === 'fill'
+                        ? 'flex-1 min-w-0'
+                        : col.width
+                          ? `${col.width} shrink-0`
+                          : 'flex-1';
                       return (
                         <div
                           key={col.key}
