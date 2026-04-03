@@ -21,6 +21,8 @@ interface PageHeaderProps {
   title: string;
   /** 標題旁的計數（如 "(2)"） */
   count?: number | string;
+  /** 額外的麵包屑項目（如動態頁名） */
+  extraBreadcrumbs?: { label: string; path: string }[];
   /** 日期範圍文字（如 "起迄日期：2025/08/01 ~ 2025/08/31"） */
   dateRange?: string;
   /** 是否顯示篩選按鈕 */
@@ -33,8 +35,6 @@ interface PageHeaderProps {
   actionButtons?: ActionButton[];
   /** 完全自訂的右側區塊（優先度高於 actionButtons） */
   actions?: React.ReactNode;
-  /** 額外附加的麵包屑項目（用於動態頁面名稱，傳給 Breadcrumbs 的 extra prop） */
-  extraBreadcrumbs?: { label: string; path: string }[];
 }
 
 // ==========================================
@@ -64,42 +64,44 @@ const FilterIcon: React.FC = () => (
 // PageHeader Component
 // ==========================================
 //
-// PageHeader
+// PageHeader（flex justify-between）
 // ├── 左側（flex-col）
-// │   ├── Breadcrumbs（內建，自動從路由產生，size="sm"）
-// │   └── 標題 + 計數
-// └── 右側（self-center）
-//     └── DateRange / 篩選按鈕 / ActionButtons
+// │   ├── title + count（上）
+// │   └── Breadcrumbs size="sm"（下）
+// └── 右側（self-center，垂直置中對齊整體高度）
+//     ├── DateRange chip (可選)
+//     ├── Divider (當 dateRange 與篩選同時存在)
+//     ├── FilterButton (可選)
+//     └── ActionButton[] (可選)
 //
-
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   count,
+  extraBreadcrumbs,
   dateRange,
   showFilter = false,
   onFilterClick,
   filterLabel = '篩選',
   actionButtons,
   actions,
-  extraBreadcrumbs,
 }) => {
   const hasRightSide =
     actions || dateRange || showFilter || (actionButtons && actionButtons.length > 0);
 
   return (
     <div className="flex justify-between mb-2.5">
-      {/* ── 左側：Breadcrumbs + 標題 + 計數 ── */}
-      <div className="flex flex-col">
-        <Breadcrumbs extra={extraBreadcrumbs} size="sm" />
+      {/* ── 左側：標題 + 計數（上）、Breadcrumbs（下） ── */}
+      <div className="flex flex-col gap-1">
         <div className="flex items-baseline gap-2.5">
           <h1 className="text-2xl font-medium text-text-medium m-0 tracking-wide">{title}</h1>
           {count !== undefined && (
             <span className="text-base text-text-light tracking-wide">({count})</span>
           )}
         </div>
+        <Breadcrumbs extra={extraBreadcrumbs} size="sm" />
       </div>
 
-      {/* ── 右側操作區 ── */}
+      {/* ── 右側操作區（垂直置中） ── */}
       {hasRightSide && (
         <div className="flex items-center gap-2.5 self-center">
           {/* 完全自訂插槽（最高優先） */}
