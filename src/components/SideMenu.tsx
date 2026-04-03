@@ -44,18 +44,46 @@ const getIcon = (iconName: string, isActive: boolean) => {
 // Chevron Icons (matching Google Material Icons)
 // ==========================================
 
-/** chevron_right — 收合狀態 */
-const ChevronRight: React.FC<{ color?: string }> = ({ color = '#333' }) => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M9.29 6.71a1 1 0 0 0 0 1.42L13.17 12l-3.88 3.88a1 1 0 1 0 1.42 1.41l4.59-4.59a1 1 0 0 0 0-1.41L10.71 6.7a1 1 0 0 0-1.42.01z" fill={color} />
+/** 單一箭頭圖示，透過 rotate 控制展開方向 */
+const ChevronIcon: React.FC<{ color?: string; isOpen?: boolean }> = ({
+  color = '#333',
+  isOpen = false,
+}) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    style={{
+      transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+      transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      flexShrink: 0,
+    }}
+  >
+    <path
+      d="M9.29 6.71a1 1 0 0 0 0 1.42L13.17 12l-3.88 3.88a1 1 0 1 0 1.42 1.41l4.59-4.59a1 1 0 0 0 0-1.41L10.71 6.7a1 1 0 0 0-1.42.01z"
+      fill={color}
+    />
   </svg>
 );
 
-/** expand_more — 展開狀態 */
-const ExpandMore: React.FC<{ color?: string }> = ({ color = '#333' }) => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z" fill={color} />
-  </svg>
+// ==========================================
+// SubMenu Collapse Wrapper（CSS grid 動畫）
+// ==========================================
+
+const CollapsiblePanel: React.FC<{
+  isOpen: boolean;
+  children: React.ReactNode;
+}> = ({ isOpen, children }) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateRows: isOpen ? '1fr' : '0fr',
+      transition: 'grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    }}
+  >
+    <div style={{ overflow: 'hidden' }}>{children}</div>
+  </div>
 );
 
 // ==========================================
@@ -243,10 +271,10 @@ const SideMenu: React.FC = () => {
                     )}
                     <span style={{ fontSize: 14, fontWeight: 400 }}>{item.label}</span>
                   </div>
-                  {isOpen
-                    ? <ExpandMore color={isGroupActive ? '#1383D3' : '#333'} />
-                    : <ChevronRight color={isGroupActive ? '#1383D3' : '#333'} />
-                  }
+                  <ChevronIcon
+                    isOpen={isOpen}
+                    color={isGroupActive ? '#1383D3' : '#333'}
+                  />
                 </div>
               ) : (
                 <NavLink
@@ -281,39 +309,44 @@ const SideMenu: React.FC = () => {
                 </NavLink>
               )}
 
-              {/* ===== SubMenu ===== */}
-              {hasSubMenu && isOpen && (
-                <div className="flex flex-col" style={{ gap: 4, paddingTop: 4 }}>
-                  {item.subMenu!.map((sub) => {
-                    const isSubActive = isPathActive(location.pathname, sub.to, true);
-                    const subBg = isSubActive ? '#DAF0FF' : 'transparent';
-                    const subColor = isSubActive ? '#1383D3' : '#333';
+              {/* ===== SubMenu (animated) ===== */}
+              {hasSubMenu && (
+                <CollapsiblePanel isOpen={isOpen}>
+                  <div className="flex flex-col" style={{ gap: 4, paddingTop: 4 }}>
+                    {item.subMenu!.map((sub, subIdx) => {
+                      const isSubActive = isPathActive(location.pathname, sub.to, true);
+                      const subBg = isSubActive ? '#DAF0FF' : 'transparent';
+                      const subColor = isSubActive ? '#1383D3' : '#333';
 
-                    return (
-                      <NavLink
-                        key={sub.to}
-                        to={sub.to}
-                        className="flex items-center no-underline"
-                        style={{
-                          minHeight: 44,
-                          padding: '0 12px 0 48px',
-                          borderRadius: 10,
-                          background: subBg,
-                          color: subColor,
-                          transition: 'all 0.3s',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!isSubActive) e.currentTarget.style.background = '#F4F6F7';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = subBg;
-                        }}
-                      >
-                        <span style={{ fontSize: 14, fontWeight: isSubActive ? 500 : 400 }}>{sub.label}</span>
-                      </NavLink>
-                    );
-                  })}
-                </div>
+                      return (
+                        <NavLink
+                          key={sub.to}
+                          to={sub.to}
+                          className="flex items-center no-underline"
+                          style={{
+                            minHeight: 44,
+                            padding: '0 12px 0 48px',
+                            borderRadius: 10,
+                            background: subBg,
+                            color: subColor,
+                            transition: 'all 0.3s',
+                            opacity: isOpen ? 1 : 0,
+                            transform: isOpen ? 'translateY(0)' : 'translateY(-6px)',
+                            transitionDelay: isOpen ? `${subIdx * 50}ms` : '0ms',
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!isSubActive) e.currentTarget.style.background = '#F4F6F7';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = subBg;
+                          }}
+                        >
+                          <span style={{ fontSize: 14, fontWeight: isSubActive ? 500 : 400 }}>{sub.label}</span>
+                        </NavLink>
+                      );
+                    })}
+                  </div>
+                </CollapsiblePanel>
               )}
             </div>
           );
