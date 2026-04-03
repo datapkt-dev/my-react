@@ -4,7 +4,6 @@ import { fetchBannedUserList } from '../api/userApi'
 import FilterPanel, { type FilterValues } from '../components/FilterPanel'
 import PageContainer from '../components/PageContainer'
 import PageHeader from '../components/PageHeader'
-import Breadcrumbs from '../components/Breadcrumbs'
 import DataTable from '../components/DataTable'
 import type { ColumnDef } from '../components/DataTable'
 
@@ -149,7 +148,6 @@ const SuspendedUsers: React.FC = () => {
             )}
           </button>
         }
-        breadcrumbs={<Breadcrumbs size="sm" />}
       />
 
       <DataTable<User>

@@ -3,7 +3,6 @@ import { fetchReportList, fetchReportDetail, patchReportStatus } from '../api/us
 import type { Report, ReportDetailResponse } from '../types/user'
 import PageContainer from '../components/PageContainer'
 import PageHeader from '../components/PageHeader'
-import Breadcrumbs from '../components/Breadcrumbs'
 import DataTable from '../components/DataTable'
 import type { ColumnDef } from '../components/DataTable'
 
@@ -383,7 +382,6 @@ const ReportList: React.FC = () => {
             className="h-10 px-3 border border-border rounded text-sm w-[260px] outline-none focus:border-primary"
           />
         }
-        breadcrumbs={<Breadcrumbs size="sm" />}
       />
 
       <DataTable<ReportRow>

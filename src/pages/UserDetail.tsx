@@ -78,11 +78,7 @@ const UserDetails: React.FC = () => {
   }, [id]);
 
   return (
-    <PageContainer
-      extraBreadcrumbs={[
-        { label: '使用者詳情', path: `/users/userList/${id}` },
-      ]}
-    >
+    <PageContainer>
       {/* ===== 標題列（含返回按鈕） ===== */}
       <div className="flex items-center justify-between mb-6">
         <button

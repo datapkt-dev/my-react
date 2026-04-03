@@ -69,11 +69,7 @@ const UserDetailDemo: React.FC = () => {
   const [userData] = useState<MockUserDetail>(MOCK_USER);
 
   return (
-    <PageContainer
-      extraBreadcrumbs={[
-        { label: '使用者內頁 Demo', path: '/user-detail-demo' },
-      ]}
-    >
+    <PageContainer>
       {/* ===== 標題列（含返回按鈕） ===== */}
       <div className="flex items-center justify-between mb-6">
         <button

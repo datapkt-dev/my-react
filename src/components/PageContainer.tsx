@@ -4,14 +4,7 @@ import React from 'react';
 // Types
 // ==========================================
 
-interface BreadcrumbItem {
-  label: string;
-  path: string;
-}
-
 interface PageContainerProps {
-  /** @deprecated Breadcrumbs are now rendered inside PageHeader via the breadcrumbs prop. This prop is kept for backwards compatibility but is no longer rendered. */
-  extraBreadcrumbs?: BreadcrumbItem[];
   /** 頁面主內容 */
   children: React.ReactNode;
 }
@@ -25,7 +18,7 @@ interface PageContainerProps {
 //
 // 注意：PageHeader 由各頁面自行放入 children，
 // 以保留最大彈性（有些頁面可能不需要 header）。
-// 注意：Breadcrumbs 已移至 PageHeader 內部顯示。
+// 注意：Breadcrumbs 已整合至 PageHeader 內部自動渲染。
 //
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
