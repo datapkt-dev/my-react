@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PageContainer from '../components/PageContainer';
 import PageHeader from '../components/PageHeader';
-import Breadcrumbs from '../components/Breadcrumbs';
 import DataTable from '../components/DataTable';
 import type { ColumnDef } from '../components/DataTable';
 import NotificationDetailModal from '../components/NotificationDetailModal';
@@ -112,7 +111,6 @@ const NotificationManagement: React.FC = () => {
         actionButtons={[
           { label: '新增發佈', onClick: handleAdd },
         ]}
-        breadcrumbs={<Breadcrumbs size="sm" />}
       />
 
       {/* 通知列表 */}

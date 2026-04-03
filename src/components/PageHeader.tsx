@@ -1,4 +1,5 @@
 import React from 'react';
+import Breadcrumbs from './Breadcrumbs';
 
 // ==========================================
 // Types
@@ -32,8 +33,8 @@ interface PageHeaderProps {
   actionButtons?: ActionButton[];
   /** 完全自訂的右側區塊（優先度高於 actionButtons） */
   actions?: React.ReactNode;
-  /** 標題下方的麵包屑導覽（可選） */
-  breadcrumbs?: React.ReactNode;
+  /** 額外附加的麵包屑項目（用於動態頁面名稱，傳給 Breadcrumbs 的 extra prop） */
+  extraBreadcrumbs?: { label: string; path: string }[];
 }
 
 // ==========================================
@@ -64,12 +65,10 @@ const FilterIcon: React.FC = () => (
 // ==========================================
 //
 // PageHeader
-// ├── 標題 (Title + Count)
-// └── 右側操作區
-//     ├── DateRange chip (可選)
-//     ├── Divider (當 dateRange 與篩選同時存在)
-//     ├── FilterButton (可選)
-//     └── ActionButton[] (可選)
+// ├── Breadcrumbs（內建，自動從路由產生，size="sm"）
+// ├── 標題列（flex justify-between）
+// │   ├── 左側：標題 + 計數
+// │   └── 右側：DateRange / 篩選按鈕 / ActionButtons
 //
 
 const PageHeader: React.FC<PageHeaderProps> = ({
@@ -81,14 +80,15 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   filterLabel = '篩選',
   actionButtons,
   actions,
-  breadcrumbs,
+  extraBreadcrumbs,
 }) => {
   const hasRightSide =
     actions || dateRange || showFilter || (actionButtons && actionButtons.length > 0);
 
   return (
-    <div className="mb-2.5">
-      <div className="flex items-center justify-between h-12">
+    <div className="flex flex-col mb-2.5">
+      <Breadcrumbs extra={extraBreadcrumbs} size="sm" />
+      <div className="flex items-center justify-between">
         {/* ── 左側：標題 + 計數 ── */}
         <div className="flex items-baseline gap-2.5">
           <h1 className="text-2xl font-medium text-text-medium m-0 tracking-wide">{title}</h1>
@@ -142,7 +142,6 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           </div>
         )}
       </div>
-      {breadcrumbs && <div className="mt-0.5">{breadcrumbs}</div>}
     </div>
   );
 };
