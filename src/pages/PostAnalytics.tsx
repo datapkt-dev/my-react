@@ -20,8 +20,8 @@ function formatTime(iso: string): string {
 // ==========================================
 
 const POST_ANALYTICS_COLUMNS: ColumnDef<PostAnalytics>[] = [
-  { key: 'account', label: '會員帳號', width: 'w-[180px]', truncate: true },
-  { key: 'userName', label: '用戶名稱', width: 'w-[130px]' },
+  { key: 'account', label: '會員帳號', width: 'w-[350px]', truncate: true },
+  { key: 'userName', label: '用戶名稱', width: 'w-[180px]' },
   { key: 'title', label: '貼文標題', width: 'w-[160px]', truncate: true },
   { key: 'content', label: '貼文內容', width: 'w-[200px]', truncate: true },
   { key: 'commentCount', label: '留言數', sortable: true, width: 'w-[80px]' },

@@ -11,13 +11,13 @@ import type { UserAnalytics, SortableField, SortState } from '../types/userAnaly
 // ==========================================
 
 const USER_ANALYTICS_COLUMNS: ColumnDef<UserAnalytics>[] = [
-  { key: 'account', label: '會員帳號', width: 'w-[180px]', truncate: true },
-  { key: 'displayName', label: '用戶名稱', width: 'w-[140px]' },
+  { key: 'account', label: '會員帳號', width: 'w-[350px]', truncate: true },
+  { key: 'displayName', label: '用戶名稱', width: 'w-[180px]' },
   { key: 'postCount', label: '貼文數', sortable: true, width: 'w-[90px]' },
   { key: 'commentCount', label: '留言數', sortable: true, width: 'w-[90px]' },
   { key: 'likeCount', label: '按讚數', sortable: true, width: 'w-[90px]' },
   { key: 'reportCount', label: '檢舉數', sortable: true, width: 'w-[90px]' },
-  { key: 'reportedPostCount', label: '被檢舉貼文數', sortable: true, width: 'w-[130px]' },
+  { key: 'reportedPostCount', label: '被檢舉貼文數', sortable: true, width: 'w-[150px]' },
   { key: 'bookmarkCount', label: '收藏數', sortable: true, width: 'w-[90px]' },
 ];
 
