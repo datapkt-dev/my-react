@@ -10,7 +10,7 @@ interface BreadcrumbItem {
 }
 
 interface PageContainerProps {
-  /** 額外的麵包屑項目（如動態頁名） */
+  /** @deprecated Breadcrumbs are now rendered inside PageHeader via the breadcrumbs prop. This prop is kept for backwards compatibility but is no longer rendered. */
   extraBreadcrumbs?: BreadcrumbItem[];
   /** 頁面主內容 */
   children: React.ReactNode;
