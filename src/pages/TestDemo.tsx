@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import PageContainer from '../components/PageContainer';
 import PageHeader from '../components/PageHeader';
+import Breadcrumbs from '../components/Breadcrumbs';
 import NexlyStyleTable from '../components/NexlyStyleTable';
 import type { NexlyColumnDef } from '../components/NexlyStyleTable';
 
@@ -140,7 +141,7 @@ const TestDemo: React.FC = () => {
 
   return (
     <PageContainer>
-      <PageHeader title="使用者列表" count={totalItems} />
+      <PageHeader title="使用者列表" count={totalItems} breadcrumbs={<Breadcrumbs size="sm" />} />
 
       <NexlyStyleTable<MockUser>
         data={items}

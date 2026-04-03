@@ -4,6 +4,7 @@ import type { CreateStaffPayload } from '../types/staff';
 import AddStaffModal from '../components/AddStaffModal';
 import PageContainer from '../components/PageContainer';
 import PageHeader from '../components/PageHeader';
+import Breadcrumbs from '../components/Breadcrumbs';
 import DataTable from '../components/DataTable';
 import type { ColumnDef } from '../components/DataTable';
 
@@ -96,6 +97,7 @@ const Staffs: React.FC = () => {
         actionButtons={[
           { label: '新增', onClick: () => setIsAddModalOpen(true) },
         ]}
+        breadcrumbs={<Breadcrumbs size="sm" />}
       />
 
       <DataTable<AdminUser>
