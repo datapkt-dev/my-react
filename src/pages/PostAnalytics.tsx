@@ -127,7 +127,7 @@ const PostAnalyticsPage: React.FC = () => {
         }}
         loading={loading}
         error={error}
-        minWidth="min-w-[1300px]"
+        minWidth="min-w-[1500px]"
       />
     </PageContainer>
   );
