@@ -3,8 +3,8 @@ import PageContainer from '../shared/components/layout/PageContainer';
 import PageHeader from '../shared/components/layout/PageHeader';
 import DataTable from '../shared/components/data-display/DataTable';
 import type { ColumnDef } from '../shared/components/data-display/DataTable';
-import NotificationDetailModal from '../components/NotificationDetailModal';
-import type { NotificationDetail } from '../components/NotificationDetailModal';
+import NotificationDetailModal from '../features/notifications/components/NotificationModal';
+import type { NotificationDetail } from '../features/notifications/components/NotificationModal';
 import { getNotifications } from '../api/notificationApi';
 import type { NotificationItem } from '../api/notificationApi';
 

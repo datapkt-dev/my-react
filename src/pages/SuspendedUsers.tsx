@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fetchBannedUserList } from '../api/userApi'
-import FilterPanel, { type FilterValues } from '../components/FilterPanel'
+import FilterPanel, { type FilterValues } from '../features/users/components/UserFilterPanel'
 import PageContainer from '../shared/components/layout/PageContainer'
 import PageHeader from '../shared/components/layout/PageHeader'
 import DataTable from '../shared/components/data-display/DataTable'

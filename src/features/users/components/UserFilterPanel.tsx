@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import DatePic from '../assets/date.svg'
-import SearchPic from '../assets/search.svg'
+import DatePic from '../../../assets/date.svg'
+import SearchPic from '../../../assets/search.svg'
 
 export interface FilterValues {
   account: string;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { CreateStaffPayload } from '../types/staff';
+import type { CreateStaffPayload } from '../../../types/staff';
 
 interface AddStaffModalProps {
   isOpen: boolean;
