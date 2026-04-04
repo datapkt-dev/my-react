@@ -1,0 +1,43 @@
+分類,變數名,色碼,用途
+品牌主色,--color-primary,#1383D3,主色調
+品牌主色,--color-primary-light,#EBF5FF,主色淺底（tag、hover 背景）
+品牌主色,--color-primary-hover,#0F6DB3,按鈕 hover / active
+品牌主色,--color-primary-loading,#7FBDE8,載入中動畫色
+文字,--color-text-dark,#333333,主要內文
+文字,--color-text-medium,#454545,次要內文
+文字,--color-text-light,#888888,輔助說明
+文字,--color-text-muted,#999999,最淡提示文字
+文字,--color-text-heading,#2B2F35,標題
+文字,--color-text-secondary,#5F6E7B,副標題 / 描述
+文字,--color-placeholder,#B0B0B0,輸入框 placeholder
+背景,--color-white,#FFFFFF,白色
+背景,--color-bg-gray,#F4F6F7,通用灰底
+背景,--color-bg-zebra,#F5F5F5,表格斑馬紋
+邊框 / 分隔線,--color-border,#DEE2E6,通用邊框
+邊框 / 分隔線,--color-card-border,#EDEDED,卡片邊框
+邊框 / 分隔線,--color-danger-border,#FFCCCC,危險狀態邊框
+狀態色,--color-success,#059669,成功
+狀態色,--color-success-light,#ECFDF5,成功淺底
+狀態色,--color-warning,#D97706,警告
+狀態色,--color-warning-light,#FFF8E1,警告淺底
+狀態色,--color-danger,#FF4444,危險 / 錯誤
+狀態色,--color-danger-light,#FFF0F0,危險淺底
+狀態色,--color-status-pending,#E6A817,待處理
+狀態色,--color-status-resolved,#28A745,已處理
+側邊選單,--color-sidemenu-bg,#FAFAFB,選單底色
+側邊選單,--color-sidemenu-active-bg,#DAF0FF,選中項目背景
+互動狀態,--color-hover-row,#E0E0E0,表格列 hover
+互動狀態,--color-hover-light,#E8EAEB,一般元素 hover
+互動狀態,--color-disabled-bg,#F0F0F0,禁用背景
+互動狀態,--color-disabled-text,#CCCCCC,禁用文字
+表格,--color-table-header-bg,#F8F9FA,表頭背景
+頭像,--color-avatar-bg,#B6E4D0,預設頭像底色
+頭像,--color-avatar-text,#2B7A5B,預設頭像文字
+圖示,--color-icon-dark,#28303F,深色圖示
+登入頁漸層,--color-login-gradient-from,#E8F4FD,漸層起始色
+登入頁漸層,--color-login-gradient-to,#F0F4F8,漸層結束色
+圖表配色,--color-chart-1,#FF6384,粉紅
+圖表配色,--color-chart-2,#36A2EB,藍
+圖表配色,--color-chart-3,#FFCE56,黃
+圖表配色,--color-chart-4,#4BC0C0,青
+陰影,--color-shadow-light,#0000001A,淡投影（10% 黑）
