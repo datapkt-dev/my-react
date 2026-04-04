@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import AddRegion from '../features/settings/components/AddRegionModal';
+import AddRegion from '../components/AddRegionModal';
 
 interface RegionData {
   id: number;

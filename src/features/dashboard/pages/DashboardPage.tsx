@@ -10,13 +10,13 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import PageContainer from '../shared/components/layout/PageContainer';
-import PageHeader from '../shared/components/layout/PageHeader';
+import PageContainer from '../../../shared/components/layout/PageContainer';
+import PageHeader from '../../../shared/components/layout/PageHeader';
 
 // Icons
-import statUsersIcon from '../assets/icons/stat-users.svg';
-import statPostsIcon from '../assets/icons/stat-posts.svg';
-import statCommentsIcon from '../assets/icons/stat-comments.svg';
+import statUsersIcon from '../../../assets/icons/stat-users.svg';
+import statPostsIcon from '../../../assets/icons/stat-posts.svg';
+import statCommentsIcon from '../../../assets/icons/stat-comments.svg';
 
 // ==========================================
 // Register Chart.js modules
@@ -184,7 +184,7 @@ const DashboardCard: React.FC<{ card: StatCard }> = ({ card }) => (
 // Dashboard Page (仿 Vue nexly-web dashboard.vue)
 // ==========================================
 
-const Dashboard: React.FC = () => {
+const DashboardPage: React.FC = () => {
   return (
     <PageContainer>
       {/* 頁面標題 + 篩選 */}
@@ -239,4 +239,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

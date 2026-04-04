@@ -3,18 +3,14 @@ import { logout } from './shared/api/authApi'
 import SideMenu from './shared/components/layout/SideMenu'
 import TopBar from './shared/components/layout/TopBar'
 import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Users from './pages/Users'
-import Staffs from './pages/Staffs'
-import Region from './pages/Region'
-import UserDetail from './pages/UserDetail'
-import SuspendedUsers from './pages/SuspendedUsers'
-import ReportList from './pages/ReportList'
-import UserAnalytics from './pages/UserAnalytics'
-import PostAnalytics from './pages/PostAnalytics'
-import NotificationManagement from './pages/NotificationManagement'
 import TestDemo from './pages/TestDemo'
 import UserDetailDemo from './pages/UserDetailDemo'
+import { DashboardPage } from './features/dashboard'
+import { UserListPage, UserDetailPage, SuspendedUsersPage, ReportListPage } from './features/users'
+import { StaffsPage } from './features/staffs'
+import { RegionPage } from './features/settings'
+import { UserAnalyticsPage, PostAnalyticsPage } from './features/analysis'
+import { NotificationManagementPage } from './features/notifications'
 import './App.css'
 
 /**
@@ -71,26 +67,26 @@ function App() {
             </RequireAuth>
           }
         >
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<DashboardPage />} />
           <Route path="/users" element={<Outlet />} >
-            <Route path="userList" element={<Users />} />
-            <Route path="/users/userList/:id" element={<UserDetail />} />
-            <Route path="suspendedList" element={<SuspendedUsers />} />
-            <Route path="reportList" element={<ReportList />} />
+            <Route path="userList" element={<UserListPage />} />
+            <Route path="/users/userList/:id" element={<UserDetailPage />} />
+            <Route path="suspendedList" element={<SuspendedUsersPage />} />
+            <Route path="reportList" element={<ReportListPage />} />
           </Route>
-          <Route path="/staffs" element={<Staffs />} />
-          <Route path="/region" element={<Region />} />
+          <Route path="/staffs" element={<StaffsPage />} />
+          <Route path="/region" element={<RegionPage />} />
           <Route path="/analysis" element={<Outlet />}>
-            <Route path="users" element={<UserAnalytics />} />
-            <Route path="posts" element={<PostAnalytics />} />
+            <Route path="users" element={<UserAnalyticsPage />} />
+            <Route path="posts" element={<PostAnalyticsPage />} />
           </Route>
           <Route path="/test-demo" element={<TestDemo />} />
           <Route path="/user-detail-demo" element={<UserDetailDemo />} />
-          <Route path="/notifications" element={<NotificationManagement />} />
+          <Route path="/notifications" element={<NotificationManagementPage />} />
           <Route path="/settings" element={<Outlet />}> 
             {/* 當使用者進入 /settings 時，自動跳轉到地區管理 */}
             <Route index element={<Navigate to="region" replace />} />
-            <Route path="region" element={<Region />} />
+            <Route path="region" element={<RegionPage />} />
           </Route>
         </Route>
       </Routes>
