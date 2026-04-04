@@ -1,24 +1,24 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import LogoSvg from '../assets/icons/logo.svg';
+import LogoSvg from '../../../assets/icons/logo.svg';
 
 // ==========================================
 // Menu Icons (dark / light pairs)
 // ==========================================
-import dashboardDark from '../assets/icons/menu/dashboard-dark.svg';
-import dashboardLight from '../assets/icons/menu/dashboard-light.svg';
-import accountDark from '../assets/icons/menu/account-dark.svg';
-import accountLight from '../assets/icons/menu/account-light.svg';
-import customerDark from '../assets/icons/menu/customer-dark.svg';
-import customerLight from '../assets/icons/menu/customer-light.svg';
-import monitoringDark from '../assets/icons/menu/monitoring-dark.svg';
-import monitoringLight from '../assets/icons/menu/monitoring-light.svg';
-import analysisDark from '../assets/icons/menu/analysis-dark.svg';
-import analysisLight from '../assets/icons/menu/analysis-light.svg';
-import notificationDark from '../assets/icons/menu/notification-dark.svg';
-import notificationLight from '../assets/icons/menu/notification-light.svg';
-import settingsDark from '../assets/icons/menu/settings-dark.svg';
-import settingsLight from '../assets/icons/menu/settings-light.svg';
+import dashboardDark from '../../../assets/icons/menu/dashboard-dark.svg';
+import dashboardLight from '../../../assets/icons/menu/dashboard-light.svg';
+import accountDark from '../../../assets/icons/menu/account-dark.svg';
+import accountLight from '../../../assets/icons/menu/account-light.svg';
+import customerDark from '../../../assets/icons/menu/customer-dark.svg';
+import customerLight from '../../../assets/icons/menu/customer-light.svg';
+import monitoringDark from '../../../assets/icons/menu/monitoring-dark.svg';
+import monitoringLight from '../../../assets/icons/menu/monitoring-light.svg';
+import analysisDark from '../../../assets/icons/menu/analysis-dark.svg';
+import analysisLight from '../../../assets/icons/menu/analysis-light.svg';
+import notificationDark from '../../../assets/icons/menu/notification-dark.svg';
+import notificationLight from '../../../assets/icons/menu/notification-light.svg';
+import settingsDark from '../../../assets/icons/menu/settings-dark.svg';
+import settingsLight from '../../../assets/icons/menu/settings-light.svg';
 
 const iconMap: Record<string, { dark: string; light: string }> = {
   dashboard: { dark: dashboardDark, light: dashboardLight },

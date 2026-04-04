@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import NotificationIcon from '../assets/notification.png';
+import NotificationIcon from '../../../assets/notification.png';
 
 // ==========================================
 // Types & Interfaces
