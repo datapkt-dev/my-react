@@ -135,15 +135,6 @@ const menuData: MenuItemConfig[] = [
     ],
   },
   {
-    label: '測試demo',
-    icon: 'monitoring',
-    to: '/test-demo',
-    subMenu: [
-      { label: '使用者列表', to: '/test-demo' },
-      { label: '使用者內頁', to: '/user-detail-demo' },
-    ],
-  },
-  {
     label: '通知管理',
     icon: 'notification',
     to: '/notifications',
@@ -205,7 +196,7 @@ const SideMenu: React.FC = () => {
         minHeight: '100vh',
         padding: '0 0 16px 0',
         gap: 8,
-        background: 'var(--color-sidebar-bg)',
+        background: 'var(--color-sidemenu-bg)',
         boxShadow: '2px 0px 4px 0px var(--color-shadow-light)',
         zIndex: 100,
       }}
@@ -241,7 +232,7 @@ const SideMenu: React.FC = () => {
           const isMenuActive = hasSubMenu ? false : isGroupActive;
 
           const activeTextColor = isMenuActive ? 'var(--color-text-dark)' : 'var(--color-text-dark)';
-          const activeBg = isMenuActive ? 'var(--color-sidebar-active-bg)' : 'transparent';
+          const activeBg = isMenuActive ? 'var(--color-sidemenu-active-bg)' : 'transparent';
 
           return (
             <div key={item.to} className="flex flex-col">
@@ -319,7 +310,7 @@ const SideMenu: React.FC = () => {
                   <div className="flex flex-col" style={{ gap: 4, paddingTop: 4 }}>
                     {item.subMenu!.map((sub, subIdx) => {
                       const isSubActive = isPathActive(location.pathname, sub.to, true);
-                      const subBg = isSubActive ? 'var(--color-sidebar-active-bg)' : 'transparent';
+                      const subBg = isSubActive ? 'var(--color-sidemenu-active-bg)' : 'transparent';
                       const subColor = isSubActive ? 'var(--color-primary)' : 'var(--color-text-dark)';
 
                       return (

@@ -3,8 +3,6 @@ import { logout } from './shared/api/authApi'
 import SideMenu from './shared/components/layout/SideMenu'
 import TopBar from './shared/components/layout/TopBar'
 import Login from './pages/Login'
-import TestDemo from './pages/TestDemo'
-import UserDetailDemo from './pages/UserDetailDemo'
 import { DashboardPage } from './features/dashboard'
 import { UserListPage, UserDetailPage, SuspendedUsersPage, ReportListPage } from './features/users'
 import { StaffsPage } from './features/staffs'
@@ -80,8 +78,6 @@ function App() {
             <Route path="users" element={<UserAnalyticsPage />} />
             <Route path="posts" element={<PostAnalyticsPage />} />
           </Route>
-          <Route path="/test-demo" element={<TestDemo />} />
-          <Route path="/user-detail-demo" element={<UserDetailDemo />} />
           <Route path="/notifications" element={<NotificationManagementPage />} />
           <Route path="/settings" element={<Outlet />}> 
             {/* 當使用者進入 /settings 時，自動跳轉到地區管理 */}
