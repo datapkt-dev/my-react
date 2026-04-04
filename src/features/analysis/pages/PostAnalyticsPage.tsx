@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import PageContainer from '../shared/components/layout/PageContainer';
-import PageHeader from '../shared/components/layout/PageHeader';
-import DataTable from '../shared/components/data-display/DataTable';
-import type { ColumnDef } from '../shared/components/data-display/DataTable';
-import { fetchPostAnalytics } from '../features/users/api/userApi';
-import type { PostAnalytics, SortablePostField, PostSortState } from '../features/analysis/types/postAnalytics';
+import PageContainer from '../../../shared/components/layout/PageContainer';
+import PageHeader from '../../../shared/components/layout/PageHeader';
+import DataTable from '../../../shared/components/data-display/DataTable';
+import type { ColumnDef } from '../../../shared/components/data-display/DataTable';
+import { fetchPostAnalytics } from '../../users/api/userApi';
+import type { PostAnalytics, SortablePostField, PostSortState } from '../types/postAnalytics';
 
 // ==========================================// Helpers
 // ==========================================
