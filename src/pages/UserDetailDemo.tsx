@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageContainer from '../components/PageContainer';
+import PageContainer from '../shared/components/layout/PageContainer';
 
 // ==========================================
 // Mock Data

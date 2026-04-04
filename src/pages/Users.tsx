@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fetchUserList } from '../api/userApi'
 import FilterPanel, { type FilterValues } from '../components/FilterPanel'
-import PageContainer from '../components/PageContainer'
-import PageHeader from '../components/PageHeader'
-import DataTable from '../components/DataTable'
-import type { ColumnDef } from '../components/DataTable'
+import PageContainer from '../shared/components/layout/PageContainer'
+import PageHeader from '../shared/components/layout/PageHeader'
+import DataTable from '../shared/components/data-display/DataTable'
+import type { ColumnDef } from '../shared/components/data-display/DataTable'
 
 interface User {
   id: number

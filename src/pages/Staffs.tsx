@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { fetchStaffList, createStaff } from '../api/staffApi';
 import type { CreateStaffPayload } from '../types/staff';
 import AddStaffModal from '../components/AddStaffModal';
-import PageContainer from '../components/PageContainer';
-import PageHeader from '../components/PageHeader';
-import DataTable from '../components/DataTable';
-import type { ColumnDef } from '../components/DataTable';
+import PageContainer from '../shared/components/layout/PageContainer';
+import PageHeader from '../shared/components/layout/PageHeader';
+import DataTable from '../shared/components/data-display/DataTable';
+import type { ColumnDef } from '../shared/components/data-display/DataTable';
 
 // ==========================================
 // Types & Interfaces

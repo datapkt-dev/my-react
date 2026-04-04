@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import PageContainer from '../components/PageContainer';
-import PageHeader from '../components/PageHeader';
-import DataTable from '../components/DataTable';
-import type { ColumnDef } from '../components/DataTable';
+import PageContainer from '../shared/components/layout/PageContainer';
+import PageHeader from '../shared/components/layout/PageHeader';
+import DataTable from '../shared/components/data-display/DataTable';
+import type { ColumnDef } from '../shared/components/data-display/DataTable';
 import NotificationDetailModal from '../components/NotificationDetailModal';
 import type { NotificationDetail } from '../components/NotificationDetailModal';
 import { getNotifications } from '../api/notificationApi';
