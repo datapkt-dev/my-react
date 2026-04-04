@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import AddRegion from '../components/AddRegion';
+import AddRegion from '../features/settings/components/AddRegionModal';
 
 interface RegionData {
   id: number;
@@ -66,10 +66,10 @@ const RegionTableRow: React.FC<{ region: RegionData; index: number; isMenuOpen: 
 };
 
 const Region: React.FC = () => {
-  const [regions, setRegions] = useState<RegionData[]>(initalRegions);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [total, setTotal] = useState(0);
+  const [regions] = useState<RegionData[]>(initalRegions);
+  const [loading] = useState(false);
+  const [error] = useState<string | null>(null);
+  const [total] = useState(0);
   const [openDropdownId, setOpenDropdownId] = useState<string | null | number>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
