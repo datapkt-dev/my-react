@@ -10,8 +10,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import PageContainer from '../components/PageContainer';
-import PageHeader from '../components/PageHeader';
+import PageContainer from '../shared/components/layout/PageContainer';
+import PageHeader from '../shared/components/layout/PageHeader';
 
 // Icons
 import statUsersIcon from '../assets/icons/stat-users.svg';

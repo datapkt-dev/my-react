@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import PageContainer from '../components/PageContainer';
-import PageHeader from '../components/PageHeader';
-import DataTable from '../components/DataTable';
-import type { ColumnDef } from '../components/DataTable';
+import PageContainer from '../shared/components/layout/PageContainer';
+import PageHeader from '../shared/components/layout/PageHeader';
+import DataTable from '../shared/components/data-display/DataTable';
+import type { ColumnDef } from '../shared/components/data-display/DataTable';
 import { fetchUserAnalytics } from '../api/userApi';
 import type { UserAnalytics, SortableField, SortState } from '../types/userAnalytics';
 

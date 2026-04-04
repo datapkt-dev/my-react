@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { fetchUserDetailList } from '../api/userApi';
-import PageContainer from '../components/PageContainer';
+import PageContainer from '../shared/components/layout/PageContainer';
 import UserProfileCard from '../components/UserProfileCard';
 
 // ==========================================

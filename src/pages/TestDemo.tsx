@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import PageContainer from '../components/PageContainer';
-import PageHeader from '../components/PageHeader';
-import NexlyStyleTable from '../components/NexlyStyleTable';
-import type { NexlyColumnDef } from '../components/NexlyStyleTable';
+import PageContainer from '../shared/components/layout/PageContainer';
+import PageHeader from '../shared/components/layout/PageHeader';
+import NexlyStyleTable from '../shared/components/data-display/NexlyStyleTable';
+import type { NexlyColumnDef } from '../shared/components/data-display/NexlyStyleTable';
 
 // ==========================================
 // Types
