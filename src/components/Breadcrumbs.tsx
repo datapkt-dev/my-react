@@ -12,7 +12,6 @@ const ROUTE_LABELS: Record<string, string> = {
   '/users/suspendedList': '停權使用者列表',
   '/users/reportList': '檢舉清單',
   '/staffs': '管理員管理',
-  '/products': '產品管理',
   '/region': '地區管理',
   '/anomaly': '異常監控',
   '/anomaly/inActiveList': '非活躍名單分析',

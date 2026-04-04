@@ -6,7 +6,6 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Users from './pages/Users'
 import Staffs from './pages/Staffs'
-import Products from './pages/Products'
 import Region from './pages/Region'
 import UserDetail from './pages/UserDetail'
 import SuspendedUsers from './pages/SuspendedUsers'
@@ -81,7 +80,6 @@ function App() {
             <Route path="reportList" element={<ReportList />} />
           </Route>
           <Route path="/staffs" element={<Staffs />} />
-          <Route path="/products" element={<Products />} />
           <Route path="/region" element={<Region />} />
           <Route path="/analysis" element={<Outlet />}>
             <Route path="users" element={<UserAnalytics />} />
