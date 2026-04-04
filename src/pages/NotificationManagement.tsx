@@ -5,8 +5,8 @@ import DataTable from '../shared/components/data-display/DataTable';
 import type { ColumnDef } from '../shared/components/data-display/DataTable';
 import NotificationDetailModal from '../features/notifications/components/NotificationModal';
 import type { NotificationDetail } from '../features/notifications/components/NotificationModal';
-import { getNotifications } from '../api/notificationApi';
-import type { NotificationItem } from '../api/notificationApi';
+import { getNotifications } from '../features/notifications/api/notificationApi';
+import type { NotificationItem } from '../features/notifications/api/notificationApi';
 
 // ==========================================
 // Helpers

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addNotification } from '../../../api/notificationApi';
+import { addNotification } from '../api/notificationApi';
 
 // ==========================================
 // Types

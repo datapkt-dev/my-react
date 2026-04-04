@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { fetchReportList, fetchReportDetail, patchReportStatus } from '../api/userApi'
-import type { Report, ReportDetailResponse } from '../types/user'
+import { fetchReportList, fetchReportDetail, patchReportStatus } from '../features/users/api/userApi'
+import type { Report, ReportDetailResponse } from '../features/users/types/user'
 import PageContainer from '../shared/components/layout/PageContainer'
 import PageHeader from '../shared/components/layout/PageHeader'
 import DataTable from '../shared/components/data-display/DataTable'
