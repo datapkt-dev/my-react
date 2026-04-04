@@ -3,8 +3,8 @@ import PageContainer from '../shared/components/layout/PageContainer';
 import PageHeader from '../shared/components/layout/PageHeader';
 import DataTable from '../shared/components/data-display/DataTable';
 import type { ColumnDef } from '../shared/components/data-display/DataTable';
-import { fetchPostAnalytics } from '../api/userApi';
-import type { PostAnalytics, SortablePostField, PostSortState } from '../types/postAnalytics';
+import { fetchPostAnalytics } from '../features/users/api/userApi';
+import type { PostAnalytics, SortablePostField, PostSortState } from '../features/analysis/types/postAnalytics';
 
 // ==========================================// Helpers
 // ==========================================

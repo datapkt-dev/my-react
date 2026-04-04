@@ -74,7 +74,7 @@ export async function patchReportStatus(
   return response.json();
 }
 
-export async function fetchUserAnalytics(projectId: number): Promise<import('../types/userAnalytics').UserAnalyticsApiResponse> {
+export async function fetchUserAnalytics(projectId: number): Promise<import('../../analysis/types/userAnalytics').UserAnalyticsApiResponse> {
   const token = localStorage.getItem('access_token');
   const response = await fetch(`${BASE_URL}/api/v1/admin/projects/${projectId}/visitors/analytics`, {
     headers: {
@@ -87,7 +87,7 @@ export async function fetchUserAnalytics(projectId: number): Promise<import('../
   return response.json();
 }
 
-export async function fetchPostAnalytics(projectId: number): Promise<import('../types/postAnalytics').PostAnalyticsApiResponse> {
+export async function fetchPostAnalytics(projectId: number): Promise<import('../../analysis/types/postAnalytics').PostAnalyticsApiResponse> {
   const token = localStorage.getItem('access_token');
   const response = await fetch(`${BASE_URL}/api/v1/admin/projects/${projectId}/tales/analytics`, {
     headers: {

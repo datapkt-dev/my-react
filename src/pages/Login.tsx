@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { validateAccount, login, parseProjectIdFromToken } from '../api/authApi';
+import { validateAccount, login, parseProjectIdFromToken } from '../shared/api/authApi';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

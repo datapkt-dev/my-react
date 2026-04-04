@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom'
-import { logout } from './api/authApi'
+import { logout } from './shared/api/authApi'
 import SideMenu from './shared/components/layout/SideMenu'
 import TopBar from './shared/components/layout/TopBar'
 import Login from './pages/Login'
